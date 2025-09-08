@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>PLNT · Tunes</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Daily music rituals for Illumina cycles. Switch Neon/Honey modes, play the playlist, and track your anchor tests.">
+<meta name="description" content="Daily music rituals for Illumina cycles. Switch Neon/Honey modes, play playlists, and run anchor tests.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' x='6' font-size='48'%3E🌕%3C/text%3E%3C/svg%3E">
 <meta name="color-scheme" content="dark light">
 <meta property="og:title" content="PLNT · Tunes">
@@ -47,7 +47,7 @@
   .links{display:flex; gap:10px; flex-wrap:wrap}
   .link{
     display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
-    border:1px solid var(--ring); background:var(--char); color:var(--ink); text-decoration:none; font-weight:600;
+    border:1px solid var(--ring); background:var(--char); color:var(--ink); text-decoration:none; font-weight:600
   }
   .link[aria-current="page"]{outline:2px solid var(--accent); outline-offset:2px}
 
@@ -126,6 +126,22 @@
       <div id="playlists" class="grid" aria-live="polite"></div>
     </section>
 
+    <!-- ===== Illumina 1 · auto-wired from your files ===== -->
+    <section class="card" id="illumina1-block">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Illumina 1 · Launch Cycle</h2>
+        <div class="row">
+          <a class="pill" href="https://www.youtube.com/playlist?list=PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3" target="_blank" rel="noopener">Open YouTube Playlist</a>
+          <a class="pill" href="https://music.apple.com/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y" target="_blank" rel="noopener">Open Apple Playlist</a>
+          <button id="toggleIllumina1Embeds">Toggle Embeds</button>
+        </div>
+      </div>
+      <p class="hint" style="margin:8px 0 12px">
+        Full track list with direct YouTube + Apple links. “Toggle Embeds” shows inline players (heavier).
+      </p>
+      <div id="illumina1-list" class="grid"></div>
+    </section>
+
     <!-- ===== Mapping Videos (placeholders you can edit) ===== -->
     <section class="card">
       <div class="row" style="justify-content:space-between">
@@ -153,21 +169,23 @@
   <footer>
     <div class="foot">
       <div>PLNT · Tunes — Neon/Honey modes • pepper-black theme</div>
-      <div class="hint">Playlists are external links; embeds are optional per your preference.</div>
+      <div class="hint">Illumina-1 data sourced from your uploaded files for Apple & YouTube IDs.</div>
     </div>
   </footer>
 
 <script>
 /* =========================
-   Data: edit these safely
+   Playlists (top tiles)
    ========================= */
+/* Illumina 1 playlist links come from your uploads:
+   - Apple Music playlist id: pl.u-NpXmzemC4Y1N49y:contentReference[oaicite:2]{index=2}
+   - YouTube playlist id: PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3:contentReference[oaicite:3]{index=3} */
 var playlists = [
-  /* Example entries — replace hrefs with your real ones. */
   {
     title: "Illumina 1 · Launch Cycle",
     desc: "Mantra + Honey ignition",
     youtube: "https://www.youtube.com/playlist?list=PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3",
-    apple: "https://music.apple.com/us/playlist/example-illumina-1/pl.u-XXXXXXX",
+    apple: "https://music.apple.com/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y",
     cover: "🌕"
   },
   {
@@ -183,31 +201,60 @@ var playlists = [
     youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_janet",
     apple: "https://music.apple.com/us/playlist/example-janet/pl.u-XXXX",
     cover: "🌙"
-  },
-  {
-    title: "Identity Flare / Emma",
-    desc: "Spotlight & roles",
-    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_emma",
-    apple: "https://music.apple.com/us/playlist/example-emma/pl.u-XXXX",
-    cover: "☀️"
-  },
-  {
-    title: "Chaos Trickster / Doechii",
-    desc: "Graffiti energy",
-    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_doechii",
-    apple: "https://music.apple.com/us/playlist/example-doechii/pl.u-XXXX",
-    cover: "🔥"
-  },
-  {
-    title: "Collective Joy / Hot To Go!",
-    desc: "Neon dancefloor",
-    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_h2g",
-    apple: "https://music.apple.com/us/playlist/example-hot-to-go/pl.u-XXXX",
-    cover: "🐝"
   }
 ];
 
-/* Mapping videos — fill in YouTube watch links; empty ones render as editable placeholders */
+/* =========================
+   Illumina 1 full track list (from uploads)
+   Apple serviceId values and YouTube IDs are from:
+   - JSON (Apple):contentReference[oaicite:4]{index=4}, TXT (YouTube):contentReference[oaicite:5]{index=5}
+   ========================= */
+const ILLUMINA1 = [
+  {t:"White America",a:"Eminem",           yt:"RZIzD0ZfTFg", am:"1440903544"},
+  {t:"HOT TO GO!", a:"Chappell Roan",      yt:"xaPNR-_Cfn0", am:"1698723221"},
+  {t:"Honey", a:"Robyn",                   yt:"Mru9GG3ur9U", am:"1436781347"},
+  {t:"Strawberry Swing", a:"Coldplay",     yt:"h3pJZSTQqIg", am:"1122773712"},
+  {t:"Honey", a:"Mariah Carey",            yt:"w3KOowB4k_k", am:"192812332"},
+  {t:"HUMBLE.", a:"Kendrick Lamar",        yt:"tvTRZJ-4EyI", am:"1440881684"},
+  {t:"Sweet Disposition", a:"The Temper Trap", yt:"jxKjOOR9sPU", am:"1771693670"},
+  {t:"Taste (feat. Offset)", a:"Tyga",     yt:"LjxulQ1bEWg", am:"1384304787"},
+  {t:"Froot", a:"Marina and The Diamonds", yt:"WZzcY7ASQno", am:"936941149"},
+  {t:"Do It", a:"Chloe x Halle",           yt:"a9HIaGcBocc", am:"1512284179"},
+  {t:"Good as Hell", a:"Lizzo",            yt:"SmbmeOgWsqE", am:"1150159755"},
+  {t:"Truth Hurts", a:"Lizzo",             yt:"P00HMxdsVZI", am:"1494981961"},
+  {t:"Take a Bow", a:"Madonna",            yt:"XDeiovnCv1o", am:"80814995"},
+  {t:"Bitter Sweet Symphony", a:"The Verve", yt:"1lyu1KKwC74", am:"1443258189"},
+  {t:"Work It", a:"Missy Elliott",         yt:"cjIvu7e6Wq8", am:"254167909"},
+  {t:"Juice", a:"Lizzo",                   yt:"XaCrQL_8eMY", am:"1452319283"},
+  {t:"Controversy (Single Version)", a:"Prince", yt:"4gazNwzC4H0", am:"1545712802"},
+  {t:"Cinnamon Girl", a:"Lana Del Rey",    yt:"DCYmJDO2_IE", am:"1474669074"},
+  {t:"Dog Days Are Over", a:"Florence + the Machine", yt:"iWOyfLBYtuU", am:"1440729744"},
+  {t:"Don't Start Now", a:"Dua Lipa",      yt:"oygrmJFKYZY", am:"1484636829"},
+  {t:"Sunflower", a:"Post Malone & Swae Lee", yt:"ApXoWvfEYVU", am:"1445949267"},
+  {t:"Formation", a:"Beyoncé",             yt:"WDZJPJV__bQ", am:"1460430757"},
+  {t:"Illuminated", a:"Hurts",             yt:"6CvuyaKmLnw", am:"387681168"},
+  {t:"HONEY (ARE U COMING?)", a:"Måneskin", yt:"HZnNt9nnEhw", am:"1701785550"},
+  {t:"Express Yourself", a:"Madonna",      yt:"GsVcUzP_O_8", am:"329043302"},
+  {t:"Savage Remix (feat. Beyoncé)", a:"Megan Thee Stallion", yt:"lEIqjoO0-Bs", am:"1510814146"},
+  {t:"Paper Planes", a:"M.I.A.",           yt:"ewRjZoRtu0Y", am:"296393515"},
+  {t:"Viva La Vida", a:"Coldplay",         yt:"dvgZkm1xWPE", am:"1122773680"},
+  {t:"Lose Yourself", a:"Eminem",          yt:"xFYQQPAOz7Y", am:"1444221569"},
+  {t:"Shake It Off", a:"Taylor Swift",     yt:"nfWlot6h_JM", am:"1440936016"},
+  {t:"Levitating", a:"Dua Lipa",           yt:"TUVcZfQe-Kw", am:"1538003843"},
+  {t:"ENERGY (feat. BEAM)", a:"Beyoncé",   yt:"O9rk6ldyFkA", am:"1630005852"},
+  {t:"Dreams", a:"Fleetwood Mac",          yt:"5oWyMakvQew", am:"202272624"},
+  {t:"Edge of Seventeen", a:"Stevie Nicks", yt:"UmPgMc3R8zg", am:"219393906"},
+  {t:"Born This Way", a:"Lady Gaga",       yt:"wV1FrqwZyKw", am:"1440857424"},
+  {t:"Fix You", a:"Coldplay",              yt:"k4V3Mo61fJM", am:"1123076826"},
+  {t:"Alright", a:"Kendrick Lamar",        yt:"Z-48u_uWMHY", am:"1440829463"},
+  {t:"thank u, next", a:"Ariana Grande",   yt:"gl1aHhXnN1k", am:"1450330686"},
+  {t:"Back to Black", a:"Amy Winehouse",   yt:"TJAfLE39ZZ8", am:"1422677785"},
+  {t:"XO", a:"Beyoncé",                    yt:"3xUfCUFPL-8", am:"780519977"},
+  {t:"Nights", a:"Frank Ocean",            yt:"r4l9bFqgMaQ", am:"1146195720"},
+  {t:"Closing Time", a:"Semisonic",        yt:"xGytDsqkQY8", am:"1443912092"}
+];
+
+/* Mapping videos — fill in YouTube watch links; empty strings render as editable placeholders */
 var mappingVideos = [
   { title:"Eminem · Victory Song", url:"https://www.youtube.com/watch?v=_Yhyp-_hX2s" },
   { title:"Taylor · Release Loop", url:"https://www.youtube.com/watch?v=nfWlot6h_JM" },
@@ -221,7 +268,6 @@ var mappingVideos = [
 /* =========================
    Preferences
    ========================= */
-var root = document.documentElement;
 var body = document.body;
 var neonBtn = document.getElementById("neon");
 var honeyBtn = document.getElementById("honey");
@@ -271,15 +317,19 @@ function renderPlaylists(){
     var row = document.createElement("div");
     row.className = "row";
 
-    var yt = document.createElement("a");
-    yt.className = "pill"; yt.href = p.youtube; yt.textContent = "YouTube";
-    yt.target = "_blank"; yt.rel = "noopener";
-    row.appendChild(yt);
+    if(p.youtube){
+      var yt = document.createElement("a");
+      yt.className = "pill"; yt.href = p.youtube; yt.textContent = "YouTube";
+      yt.target = "_blank"; yt.rel = "noopener";
+      row.appendChild(yt);
+    }
 
-    var am = document.createElement("a");
-    am.className = "pill"; am.href = p.apple; am.textContent = "Apple Music";
-    am.target = "_blank"; am.rel = "noopener";
-    row.appendChild(am);
+    if(p.apple){
+      var am = document.createElement("a");
+      am.className = "pill"; am.href = p.apple; am.textContent = "Apple Music";
+      am.target = "_blank"; am.rel = "noopener";
+      row.appendChild(am);
+    }
 
     card.appendChild(row);
 
@@ -295,8 +345,7 @@ function renderPlaylists(){
       }
     }
     if(pref === "apple" && p.apple){
-      /* Apple embeds generally require full Apple Music embed URLs.
-         If you paste a share link, it will still open in a new tab via the link buttons above. */
+      /* Apple playlist embeds require a full Apple Music embed URL; link above covers it. */
     }
 
     frag.appendChild(card);
@@ -310,13 +359,85 @@ function extractYTListId(url){
   try{
     var u = new URL(url);
     return u.searchParams.get("list") || "";
-  }catch(e){
-    return "";
-  }
+  }catch(e){ return ""; }
 }
 
 /* =========================
-   Mapping videos (editable placeholders)
+   Illumina 1 renderer
+   ========================= */
+(function renderIllumina1(){
+  const wrap = document.getElementById("illumina1-list");
+  const frag = document.createDocumentFragment();
+  const embedsOn = localStorage.getItem("ill1_embeds") === "1";
+
+  ILLUMINA1.forEach((s, idx) => {
+    const card = document.createElement("article");
+    card.className = "tile";
+
+    const h = document.createElement("h3");
+    h.textContent = (idx+1)+". "+s.t+" — "+s.a;
+    card.appendChild(h);
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const y = document.createElement("a");
+    y.className = "pill";
+    y.href = "https://www.youtube.com/watch?v=" + s.yt;
+    y.target = "_blank"; y.rel = "noopener";
+    y.textContent = "YouTube";
+    row.appendChild(y);
+
+    const am = document.createElement("a");
+    am.className = "pill";
+    am.href = "https://music.apple.com/us/album/" + s.am;
+    am.target = "_blank"; am.rel = "noopener";
+    am.textContent = "Apple Music";
+    row.appendChild(am);
+
+    card.appendChild(row);
+
+    if (embedsOn) {
+      const iframe = document.createElement("iframe");
+      iframe.loading = "lazy";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.src = "https://www.youtube-nocookie.com/embed/" + s.yt;
+      card.appendChild(iframe);
+    }
+
+    frag.appendChild(card);
+  });
+
+  wrap.innerHTML = "";
+  wrap.appendChild(frag);
+})();
+
+document.getElementById("toggleIllumina1Embeds").addEventListener("click", function(){
+  const key = "ill1_embeds";
+  const next = localStorage.getItem(key) === "1" ? "0" : "1";
+  localStorage.setItem(key, next);
+
+  const wrap = document.getElementById("illumina1-list");
+  wrap.innerHTML = "";
+  const embedsOn = next === "1";
+  const frag = document.createDocumentFragment();
+
+  ILLUMINA1.forEach((s, idx) => {
+    const card=document.createElement("article"); card.className="tile";
+    const h=document.createElement("h3"); h.textContent=(idx+1)+". "+s.t+" — "+s.a; card.appendChild(h);
+    const row=document.createElement("div"); row.className="row";
+    const y=document.createElement("a"); y.className="pill"; y.href="https://www.youtube.com/watch?v="+s.yt; y.target="_blank"; y.rel="noopener"; y.textContent="YouTube"; row.appendChild(y);
+    const am=document.createElement("a"); am.className="pill"; am.href="https://music.apple.com/us/album/"+s.am; am.target="_blank"; am.rel="noopener"; am.textContent="Apple Music"; row.appendChild(am);
+    card.appendChild(row);
+    if(embedsOn){ const iframe=document.createElement("iframe"); iframe.loading="lazy"; iframe.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"; iframe.referrerPolicy="strict-origin-when-cross-origin"; iframe.src="https://www.youtube-nocookie.com/embed/"+s.yt; card.appendChild(iframe); }
+    frag.appendChild(card);
+  });
+  wrap.appendChild(frag);
+});
+
+/* =========================
+   Mapping videos
    ========================= */
 function renderVideos(){
   var wrap = document.getElementById("videos");
@@ -392,9 +513,7 @@ function extractYTVideoId(url){
       return (u.pathname || "").replace("/","").trim();
     }
     return "";
-  }catch(e){
-    return "";
-  }
+  }catch(e){ return ""; }
 }
 
 /* =========================
