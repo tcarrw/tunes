@@ -5,7 +5,480 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Illumina 1 · Nov 5 – Dec 17, 2025 · Lunar Song Calendar</title>
   <meta name="description" content="Illumina 1 (42 days): 2 weeks prep + 4 weeks action. Daily song vibes mapped to lunar rhythm. Single-file HTML." />
+  <style><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Illumina 1 · Nov 5 – Dec 17, 2025 · Lunar Song Calendar</title>
+  <meta name="description" content="Illumina 1 (42 days): 2 weeks prep + 4 weeks action. Daily song vibes mapped to lunar rhythm. Single-file HTML." />
   <style>
+    :root{
+      --bg:#0c0c0f;--panel:#121217;--ink:#e9e9f2;--muted:#a6a6b4;--honey:#f6c44a;--moon:#cfd6ff;--flare:#ff4d4d;--accent:#6fe7d2;--grid:#1a1a22;--ok:#7cff9f;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:radial-gradient(1200px 800px at 80% -10%,rgba(255,255,255,0.06),transparent 60%),var(--bg);color:var(--ink);font:500 16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.00));border:1px solid var(--grid);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .header{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--grid)}
+    .title{font-weight:800;letter-spacing:.2px}
+    .subtitle{color:var(--muted);font-weight:600}
+    .controls{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{background:var(--panel);border:1px solid var(--grid);padding:10px 14px;border-radius:12px;color:var(--ink);font-weight:700;cursor:pointer}
+    .btn:hover{border-color:#2a2a36}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid var(--grid);background:rgba(255,255,255,.03);color:var(--muted);font-weight:700}
+    .legend{display:flex;gap:10px;flex-wrap:wrap}
+
+    .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:16px}
+    .cell{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.00));border:1px solid var(--grid);border-radius:16px;padding:12px;min-height:110px;display:flex;flex-direction:column;gap:8px}
+    .cell h4{margin:0;font-size:13px;color:var(--muted);font-weight:800}
+    .cell .date{font-size:12px;color:var(--moon);opacity:.9}
+    .cell .song{font-size:14px;font-weight:800}
+    .cell .artist{font-size:12px;color:var(--muted)}
+    .cell .focus{margin-top:auto;font-size:11px;color:#c3c3cf;opacity:.95}
+    .cell .cta{display:flex;gap:8px;margin-top:8px}
+    .cell .cta a{flex:1;text-align:center;border:1px solid var(--grid);border-radius:10px;padding:6px 8px;font-size:12px}
+
+    .prep{outline:1px solid rgba(246,196,74,.35)}
+    .action{outline:1px solid rgba(111,231,210,.22)}
+
+    .fm{position:absolute;top:8px;right:8px}
+    .fm .dot{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff, #dfe4ff 35%, #b0bcff 60%, #99a6ff 70%, #7a88ff 100%);box-shadow:0 0 10px rgba(207,214,255,.8)}
+    .fm small{display:block;text-align:center;font-size:10px;color:var(--moon);margin-top:2px}
+
+    .today{border-color:var(--ok);box-shadow:0 0 0 2px rgba(124,255,159,.35) inset,0 12px 30px rgba(0,0,0,.35)}
+    .today .song{color:var(--ok)}
+
+    .weeklabel{grid-column:1/-1;display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:900;padding:6px 2px}
+    .wkprep{color:var(--honey)}
+    .wkact{color:var(--accent)}
+
+    .footer{padding:12px 16px;border-top:1px solid var(--grid);color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+    .mantra{color:var(--ink);font-weight:900}
+
+    @media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.cell{min-height:120px}}
+    /* Neon + Honeycomb modes */
+    body.neon .cell{box-shadow:0 0 12px rgba(255,0,128,.35), inset 0 0 0 2px rgba(255,0,128,.25)}
+    body.neon .header, body.neon .footer{box-shadow:inset 0 -2px 0 0 rgba(255,0,128,.35)}
+    body.neon .title{background:linear-gradient(90deg,#ff4df0,#6fe7d2,#f6c44a);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+    body.honey .cell{clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)}
+    body.honey .cell{padding:18px 16px;min-height:130px}
+
+    @media (prefers-reduced-motion:no-preference){
+      body.neon .cell{animation:glow 3.2s ease-in-out infinite alternate}
+      @keyframes glow{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(30deg)}}
+    }
+      .note{font-size:11px;color:var(--honey)}
+    /* polish for neon & honey modes */
+    .cell{transition:box-shadow .25s ease,filter .25s ease,transform .25s ease;will-change:box-shadow,filter,transform}
+    body.honey .cell{-webkit-clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)}
+    body.honey .cell:hover{transform:translateY(-1px)}
+    body.honey .today{box-shadow:0 0 0 2px rgba(124,255,159,.35) inset,0 12px 30px rgba(0,0,0,.35)}
+    @supports not (clip-path: polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)){
+      body.honey .cell{-webkit-clip-path:none;clip-path:none}
+    }
+    .modebar{flex-basis:100%;font-size:12px;color:var(--muted)}
+    /* stronger visual feedback for modes */
+    body.neon{background:radial-gradient(800px 500px at 15% -10%,rgba(255,0,128,.12),transparent 60%),var(--bg)}
+    body.neon .cell{border-color:rgba(255,0,128,.45)!important;box-shadow:0 0 18px rgba(255,0,128,.35), inset 0 0 0 2px rgba(255,0,128,.25)}
+    body.neon .title{background:linear-gradient(90deg,#ff4df0,#6fe7d2,#f6c44a);-webkit-background-clip:text;background-clip:text;color:transparent}
+    body.neon .header, body.neon .footer{box-shadow:inset 0 -2px 0 0 rgba(255,0,128,.35)}
+
+    body.honey{background:radial-gradient(700px 480px at 85% -10%,rgba(246,196,74,.10),transparent 65%),var(--bg)}
+    body.honey .cell{border-color:rgba(246,196,74,.6)!important;background:linear-gradient(180deg,rgba(246,196,74,.08),rgba(246,196,74,.02))}
+
+  .modebar{flex-basis:100%;font-size:12px;color:var(--muted)}
+  </style>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs/%3E%3Crect width='64' height='64' rx='14' ry='14' fill='%230c0c0f'/%3E%3Cpath d='M42 12a18 18 0 1 0 0 40 18 18 0 0 1-8-34 18 18 0 0 0 8-6z' fill='%23cfd6ff'/%3E%3Cpath d='M34 46c0-3 3-6 6-6s6 3 6 6-3 6-6 6-6-3-6-6z' fill='%23f6c44a'/%3E%3C/svg%3E"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' ry='14' fill='%230c0c0f'/%3E%3Cpath d='M42 12a18 18 0 1 0 0 40 18 18 0 0 1-8-34 18 18 0 0 0 8-6z' fill='%23cfd6ff'/%3E%3Cpath d='M34 46c0-3 3-6 6-6s6 3 6 6-3 6-6 6-6-3-6-6z' fill='%23f6c44a'/%3E%3C/svg%3E"/>
+  <meta name="theme-color" content="#0c0c0f" />
+</head>
+<body>
+  <div class="wrap card">
+    <div class="header">
+      <div>
+        <div class="title">Illumina 1 — Lunar Song Calendar</div>
+        <div class="subtitle">Nov 5 – Dec 17, 2025 · 42 days · 2 weeks prep + 4 weeks action</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="btnToday">Jump to Today</button>
+        <button class="btn" id="btnPrint">Print / Save PDF</button>
+        <button class="btn" id="btnNeon">Neon Mode</button>
+        <button class="btn" id="btnHoney">Honeycomb Mode</button>
+        <a class="btn" id="linkApple" href="#" target="_blank" rel="noopener">Open Apple</a>
+        <a class="btn" id="linkYT" href="#" target="_blank" rel="noopener">Open YouTube</a>
+        <button class="btn" id="btnPlay">Play on: Apple</button>
+        <button class="btn" id="btnMapYT">Map Videos</button>
+        <span class="pill" id="status"></span>
+        <div class="modebar" id="modebar">Modes: Neon Off · Honey Off · Player Apple</div>
+      </div>
+      </div>
+    </div>
+
+    <div class="legend" style="padding:12px 16px;border-bottom:1px solid var(--grid)">
+      <span class="pill">🌕 Day 1 = Full Moon (Victory Song)</span>
+      <span class="pill">🌕 Day 38 = Full Moon (Closure)</span>
+      <span class="pill">Prep = Weeks 1–2</span>
+      <span class="pill">Action = Weeks 3–6</span>
+    </div>
+
+    <div style="padding:12px 16px;border-bottom:1px solid var(--grid)">
+      <div class="apple-embed" style="position:relative;padding-top:120px">
+        <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+          frameborder="0"
+          style="width:100%;overflow:hidden;border-radius:14px;position:absolute;top:0;left:0;height:100%"
+          height="150"
+          sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+          src="https://embed.music.apple.com/us/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y?app=music">
+        </iframe>
+      </div>
+    </div>
+
+    <div id="ytWrap" style="display:none;padding:12px 16px;border-bottom:1px solid var(--grid)">
+      <div class="yt-embed" style="position:relative;padding-top:56.25%">
+        <iframe id="ytFrame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
+          frameborder="0"
+          style="width:100%;overflow:hidden;border-radius:14px;position:absolute;top:0;left:0;height:100%"
+          src="">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div id="ytMapper" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:50;backdrop-filter:blur(6px)">
+      <div style="max-width:800px;margin:6vh auto;background:var(--panel);border:1px solid var(--grid);border-radius:16px;padding:16px">
+        <h3 style="margin:0 0 8px 0">Map Videos to Days</h3>
+        <p style="color:var(--muted);margin:0 0 12px">Paste up to <strong>42 YouTube URLs</strong> (one per line) in Day order. We’ll extract video IDs and wire Day 1–42 → Video 1–42. Mapping saves to this browser.</p>
+        <textarea id="ytMapInput" rows="10" style="width:100%;background:#0f0f14;color:var(--ink);border:1px solid var(--grid);border-radius:12px;padding:10px" placeholder="https://www.youtube.com/watch?v=...
+https://youtu.be/...
+https://www.youtube.com/shorts/...
+..."></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn" id="ytMapImport">Import from URLs</button>
+          <button class="btn" id="ytMapSave">Save Mapping</button>
+          <button class="btn" id="ytMapExport">Export JSON</button>
+          <button class="btn" id="ytMapClose">Close</button>
+        </div>
+        <div id="ytMapStatus" class="pill" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="mantra">Mantra: what’s mine is yours but if you fuck me I’ll fuck you</div>
+      <div>Share the rhythm. Honor the rules: humility · controversy · sweetness → growth.</div>
+    </div>
+  </div>
+
+  <script>
+  const data = [
+    {d:1, date:'2025-11-05', focus:'Victory Song', song:'White America', artist:'Eminem'},
+    {d:2, date:'2025-11-06', focus:'Sweet chaos', song:'Hot to Go!', artist:'Chappell Roan'},
+    {d:3, date:'2025-11-07', focus:'Honey entry', song:'Honey', artist:'Robyn'},
+    {d:4, date:'2025-11-08', focus:'Optimism', song:'Strawberry Swing', artist:'Coldplay'},
+    {d:5, date:'2025-11-09', focus:'Playful', song:'Honey', artist:'Mariah Carey'},
+    {d:6, date:'2025-11-10', focus:'Humility', song:'HUMBLE.', artist:'Kendrick Lamar'},
+    {d:7, date:'2025-11-11', focus:'Lift', song:'Sweet Disposition', artist:'The Temper Trap'},
+    {d:8, date:'2025-11-12', focus:'Taste ignition', song:'Taste', artist:'Tyga ft. Offset'},
+    {d:9, date:'2025-11-13', focus:'Flavor ID', song:'Froot', artist:'Marina'},
+    {d:10, date:'2025-11-14', focus:'Dual energy', song:'Do It', artist:'Chloe x Halle'},
+    {d:11, date:'2025-11-15', focus:'Confidence', song:'Good as Hell', artist:'Lizzo'},
+    {d:12, date:'2025-11-16', focus:'Controversy', song:'Truth Hurts', artist:'Lizzo'},
+    {d:13, date:'2025-11-17', focus:'Reflection', song:'Take a Bow', artist:'Madonna'},
+    {d:14, date:'2025-11-18', focus:'Sweet-bitter', song:'Bitter Sweet Symphony', artist:'The Verve'},
+    {d:15, date:'2025-11-19', focus:'Bee action', song:'Work It', artist:'Missy Elliott'},
+    {d:16, date:'2025-11-20', focus:'Sweet power', song:'Juice', artist:'Lizzo'},
+    {d:17, date:'2025-11-21', focus:'Controversy', song:'Controversy', artist:'Prince'},
+    {d:18, date:'2025-11-22', focus:'Pairings', song:'Cinnamon Girl', artist:'Lana Del Rey'},
+    {d:19, date:'2025-11-23', focus:'Release', song:'Dog Days Are Over', artist:'Florence + the Machine'},
+    {d:20, date:'2025-11-24', focus:'Momentum', song:'Don\'t Start Now', artist:'Dua Lipa'},
+    {d:21, date:'2025-11-25', focus:'Pollination', song:'Sunflower', artist:'Post Malone & Swae Lee'},
+    {d:22, date:'2025-11-26', focus:'Collective ID', song:'Formation', artist:'Beyoncé', note:'you line up, ill block'},
+    {d:23, date:'2025-11-27', focus:'Title synergy', song:'Illuminated', artist:'Hurts'},
+    {d:24, date:'2025-11-28', focus:'Flare provoke', song:'HONEY (Are U Coming?)', artist:'Måneskin'},
+    {d:25, date:'2025-11-29', focus:'Declaration', song:'Express Yourself', artist:'Madonna'},
+    {d:26, date:'2025-11-30', focus:'Sweet clash', song:'Savage Remix', artist:'Megan Thee Stallion & Beyoncé'},
+    {d:27, date:'2025-12-01', focus:'Playful edge', song:'Paper Planes', artist:'M.I.A.'},
+    {d:28, date:'2025-12-02', focus:'Anthem close', song:'Viva La Vida', artist:'Coldplay'},
+    {d:29, date:'2025-12-03', focus:'Peak grind', song:'Lose Yourself', artist:'Eminem'},
+    {d:30, date:'2025-12-04', focus:'Lightness', song:'Shake It Off', artist:'Taylor Swift', note:'shake off static, keep pollinating.'},
+    {d:31, date:'2025-12-05', focus:'Momentum', song:'Levitating', artist:'Dua Lipa'},
+    {d:32, date:'2025-12-06', focus:'Raw charge', song:'Energy', artist:'Beyoncé'},
+    {d:33, date:'2025-12-07', focus:'Dream track', song:'Dreams', artist:'Fleetwood Mac'},
+    {d:34, date:'2025-12-08', focus:'Mystic push', song:'Edge of Seventeen', artist:'Stevie Nicks'},
+    {d:35, date:'2025-12-09', focus:'Identity flare', song:'Born This Way', artist:'Lady Gaga'},
+    {d:36, date:'2025-12-10', focus:'Healing arc', song:'Fix You', artist:'Coldplay'},
+    {d:37, date:'2025-12-11', focus:'Resilience', song:'Alright', artist:'Kendrick Lamar'},
+    {d:38, date:'2025-12-12', focus:'Full Moon Closure', song:'Thank U, Next', artist:'Ariana Grande'},
+    {d:39, date:'2025-12-13', focus:'Bittersweet', song:'Back to Black', artist:'Amy Winehouse'},
+    {d:40, date:'2025-12-14', focus:'Reflection', song:'XO', artist:'Beyoncé'},
+    {d:41, date:'2025-12-15', focus:'Duality close', song:'Nights', artist:'Frank Ocean'},
+    {d:42, date:'2025-12-16', focus:'Archive end', song:'Closing Time', artist:'Semisonic'}
+  ];
+
+  const grid = document.querySelector('#grid');
+  const status = document.querySelector('#status');
+
+  const yts = q => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
+  const ams = q => `https://music.apple.com/us/search?term=${encodeURIComponent(q)}`;
+
+  const urlp = new URLSearchParams(location.search);
+  let YT_PLAYLIST_ID = 'PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3';
+  let YT_DEFAULT_VIDEO_ID = 'RZIzD0ZfTFg';
+  (function initYT(){
+    const ytParam = urlp.get('yt') || urlp.get('youtube');
+    const ytv = urlp.get('ytv') || urlp.get('yvideo') || urlp.get('v');
+    try{
+      if(ytParam){
+        try{
+          const u = new URL(ytParam);
+          const list = u.searchParams.get('list');
+          const v = u.searchParams.get('v');
+          if(list) YT_PLAYLIST_ID = list; else YT_PLAYLIST_ID = ytParam;
+          if(v) YT_DEFAULT_VIDEO_ID = v;
+        }catch(e){ YT_PLAYLIST_ID = ytParam; }
+      }
+      if(ytv) YT_DEFAULT_VIDEO_ID = ytv;
+    }catch(e){}
+  })();
+
+  let PLAY_PREF = localStorage.getItem('illumina1_play') || (YT_PLAYLIST_ID ? 'yt' : 'apple');
+  let ytVideoIds = {};
+  try{ const cached = localStorage.getItem('illumina1_yt_ids'); if(cached) ytVideoIds = JSON.parse(cached);}catch(e){}
+
+  function deepLinkYT(day, item){
+    const id = ytVideoIds[day];
+    if(YT_PLAYLIST_ID && id){ return `https://www.youtube.com/watch?v=${id}&list=${YT_PLAYLIST_ID}`; }
+    if(YT_PLAYLIST_ID && YT_DEFAULT_VIDEO_ID){ return `https://www.youtube.com/watch?v=${YT_DEFAULT_VIDEO_ID}&list=${YT_PLAYLIST_ID}`; }
+    if(YT_PLAYLIST_ID){ return `https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}`; }
+    return yts(`${item.song} ${item.artist}`);
+  }&list=${YT_PLAYLIST_ID}`; }
+    if(YT_PLAYLIST_ID){ return `https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}`; }
+    return yts(`${item.song} ${item.artist}`);
+  }
+  function deepLinkApple(day, item){ return ams(`${item.song} ${item.artist}`); }
+  const PLAYLIST_URL = 'https://music.apple.com/us/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y';
+
+  function weekLabelRow(label, kind){
+    const r = document.createElement('div');
+    r.className = 'weeklabel ' + (kind==='prep'?'wkprep':'wkact');
+    r.textContent = label;
+    grid.appendChild(r);
+  }
+
+  function build(){
+    grid.innerHTML='';
+    weekLabelRow('Week 1 (Prep · Honey)', 'prep');
+    for(let i=0;i<7;i++) grid.appendChild(cell(data[i], 'prep'));
+
+    weekLabelRow('Week 2 (Prep · Taste)', 'prep');
+    for(let i=7;i<14;i++) grid.appendChild(cell(data[i], 'prep'));
+
+    weekLabelRow('Week 3 (Action · Rules in Motion)', 'act');
+    for(let i=14;i<21;i++) grid.appendChild(cell(data[i], 'action'));
+
+    weekLabelRow('Week 4 (Action · Flare Expansion)', 'act');
+    for(let i=21;i<28;i++) grid.appendChild(cell(data[i], 'action'));
+
+    weekLabelRow('Week 5 (Action · Peak)', 'act');
+    for(let i=28;i<35;i++) grid.appendChild(cell(data[i], 'action'));
+
+    weekLabelRow('Week 6 (Action · Closure & Archive)', 'act');
+    for(let i=35;i<42;i++) grid.appendChild(cell(data[i], 'action'));
+
+    markToday();
+  }
+
+  function cell(item, phase){
+    const c = document.createElement('div');
+    c.className = `cell ${phase==='prep'?'prep':'action'}`;
+
+    const h = document.createElement('h4');
+    h.textContent = `Day ${item.d}`;
+    c.appendChild(h);
+
+    const dt = document.createElement('div');
+    dt.className='date';
+    dt.textContent = new Date(item.date).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    c.appendChild(dt);
+
+    const s = document.createElement('div');
+    s.className='song';
+    s.textContent = item.song;
+    c.appendChild(s);
+
+    const a = document.createElement('div');
+    a.className='artist';
+    a.textContent = item.artist;
+    c.appendChild(a);
+
+    const f = document.createElement('div');
+    f.className='focus';
+    f.textContent = item.focus;
+    c.appendChild(f);
+
+    if(item.note){
+      const n=document.createElement('div');
+      n.className='note';
+      n.textContent=item.note;
+      c.appendChild(n);
+    }
+
+    const cta = document.createElement('div');
+    cta.className='cta';
+    const m = document.createElement('a'); m.href = ams(`${item.song} ${item.artist}`); m.target='_blank'; m.rel='noopener'; m.textContent='Apple Music';
+    const y = document.createElement('a'); y.href = deepLinkYT(item.d, item); y.target='_blank'; y.rel='noopener'; y.textContent='YouTube';
+    cta.append(m,y); c.appendChild(cta);
+
+    if(item.d===1 || item.d===38){
+      const fm = document.createElement('div'); fm.className='fm';
+      const dot = document.createElement('div'); dot.className='dot';
+      const tag = document.createElement('small'); tag.textContent = item.d===1? 'Full Moon' : 'Full Moon';
+      fm.append(dot,tag); c.appendChild(fm);
+      if(item.d===1){ c.style.boxShadow='0 0 0 2px rgba(255,77,77,.45) inset, 0 14px 40px rgba(255,77,77,.15)'; }
+    }
+
+    c.addEventListener('click', e=>{ if(e.target.tagName!=='A'){ const link = PLAY_PREF==='yt' ? deepLinkYT(item.d,item) : deepLinkApple(item.d,item); window.open(link,'_blank'); }});
+    return c;
+  }
+
+  function markToday(){
+    const now = new Date();
+    // Local midnight anchors (viewer timezone)
+    const start = new Date(2025, 10, 5); // Nov = 10 (0-indexed)
+    const end   = new Date(2025, 11, 17); // Dec = 11
+    const msPerDay = 24*60*60*1000;
+
+    if(now < start || now > end){
+      const fmt = new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric'});
+      status.textContent = `Outside cycle — runs ${fmt.format(start)} → ${fmt.format(end)}, 2025`;
+      return;
+    }
+    // Normalize to local midnight for accurate day diff
+    const todayLocalMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diff = Math.floor((todayLocalMidnight - start)/msPerDay) + 1; // Day 1-based
+    status.textContent = `Today = Day ${diff}`;
+
+    const idx = data.findIndex(x=>x.d===diff);
+    if(idx>-1){
+      const cells = [...document.querySelectorAll('.cell')];
+      const el = cells[idx]; // cells NodeList excludes week labels
+      if(el){ el.classList.add('today'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
+    }
+  }
+  }
+
+  document.querySelector('#btnToday').addEventListener('click', markToday);
+  document.querySelector('#btnPrint').addEventListener('click', ()=>window.print());
+  const linkApple = document.getElementById('linkApple');
+  const linkYT = document.getElementById('linkYT');
+  if(linkApple){ linkApple.href = PLAYLIST_URL; }
+  if(linkYT){ linkYT.href = (YT_PLAYLIST_ID && YT_DEFAULT_VIDEO_ID)
+    ? `https://www.youtube.com/watch?v=${YT_DEFAULT_VIDEO_ID}&list=${YT_PLAYLIST_ID}`
+    : (YT_PLAYLIST_ID ? `https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}` : yts('Illumina 1 Tristan White')); }
+  const btnPlay = document.querySelector('#btnPlay');
+  if(btnPlay){ btnPlay.addEventListener('click', ()=>{ PLAY_PREF = (PLAY_PREF==='yt'?'apple':'yt'); localStorage.setItem('illumina1_play', PLAY_PREF); refreshEmbeds(); updateModeBar(); }); }); }); }
+  const btnNeon = document.querySelector('#btnNeon');
+  const btnHoney = document.querySelector('#btnHoney');
+  const btnPlaylist = document.querySelector('#btnPlaylist');
+  btnNeon.addEventListener('click',()=>{
+    const neonOn = document.body.classList.toggle('neon');
+    btnNeon.textContent = neonOn ? 'Neon Mode: On' : 'Neon Mode';
+    btnNeon.setAttribute('aria-pressed', neonOn);
+    updateModeBar();
+  });
+    btnNeon.textContent = neonOn ? 'Neon Mode: On' : 'Neon Mode';
+    btnNeon.setAttribute('aria-pressed', neonOn);
+  });
+    btnNeon.textContent = document.body.classList.contains('neon') ? 'Neon Mode: On' : 'Neon Mode';
+  });
+  btnHoney.addEventListener('click',()=>{
+    const honeyOn = document.body.classList.toggle('honey');
+    btnHoney.textContent = honeyOn ? 'Honeycomb Mode: On' : 'Honeycomb Mode';
+    btnHoney.setAttribute('aria-pressed', honeyOn);
+    updateModeBar();
+  });
+    btnHoney.textContent = honeyOn ? 'Honeycomb Mode: On' : 'Honeycomb Mode';
+    btnHoney.setAttribute('aria-pressed', honeyOn);
+  });
+
+  build();
+  refreshEmbeds();
+  updateModeBar();
+
+  // === YT Mapper UI ===
+  const btnMapYT = document.getElementById('btnMapYT');
+  const ytMapper = document.getElementById('ytMapper');
+  const ytMapInput = document.getElementById('ytMapInput');
+  const ytMapImport = document.getElementById('ytMapImport');
+  const ytMapSave = document.getElementById('ytMapSave');
+  const ytMapExport = document.getElementById('ytMapExport');
+  const ytMapClose = document.getElementById('ytMapClose');
+  const ytMapStatus = document.getElementById('ytMapStatus');
+
+  function extractVideoId(url){
+    const s = (url||'').trim(); if(!s) return null;
+    if(/^[a-zA-Z0-9_-]{11}$/.test(s)) return s; // raw ID
+    try{
+      const u = new URL(s);
+      const v = u.searchParams.get('v');
+      if(v && /^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
+      const mShorts = u.pathname.match(/\/shorts\/([a-zA-Z0-9_-]{11})/);
+      if(mShorts) return mShorts[1];
+      if(u.hostname.includes('youtu.be')){
+        const mBe = u.pathname.match(/^\/([a-zA-Z0-9_-]{11})/);
+        if(mBe) return mBe[1];
+      }
+    }catch(e){}
+    return null;
+  }
+
+  if(btnMapYT){ btnMapYT.addEventListener('click', ()=>{
+    ytMapper.style.display='block';
+    ytMapStatus.textContent='';
+    if(!ytMapInput.value.trim()){
+      const hasMap = ytVideoIds && Object.keys(ytVideoIds).length>0;
+      const lines = [];
+      for(let i=1;i<=42;i++){
+        const id = hasMap ? ytVideoIds[i] : '';
+        if(id){ lines.push(`https://www.youtube.com/watch?v=${id}${YT_PLAYLIST_ID?`&list=${YT_PLAYLIST_ID}`:''}`); }
+        else { lines.push('https://www.youtube.com/watch?v='); }
+      }
+      ytMapInput.value = lines.join('
+');
+      ytMapStatus.textContent = 'Loaded 42 placeholders. Paste your links over them → Import → Save.';
+      ytMapStatus.style.color = 'var(--ok)';
+    }
+    ytMapInput.focus();
+  }); }
+  if(ytMapClose){ ytMapClose.addEventListener('click', ()=>{ ytMapper.style.display='none'; }); }
+
+  if(ytMapImport){ ytMapImport.addEventListener('click', ()=>{
+    const lines = ytMapInput.value.split(/
++/).map(x=>x.trim()).filter(Boolean);
+    const incoming = {}; let ok=0, bad=0;
+    lines.forEach((line, idx)=>{ const id = extractVideoId(line); if(id){ incoming[idx+1]=id; ok++; } else { bad++; } });
+    if(ok>0){ ytVideoIds = incoming; ytMapStatus.textContent = `Imported ${ok} videos${bad?`, ${bad} could not be parsed`:''}.`; ytMapStatus.style.color='var(--ok)'; }
+    else { ytMapStatus.textContent='No valid YouTube URLs detected.'; ytMapStatus.style.color='var(--flare)'; }
+  }); }
+
+  if(ytMapSave){ ytMapSave.addEventListener('click', ()=>{
+    try{ localStorage.setItem('illumina1_yt_ids', JSON.stringify(ytVideoIds)); ytMapStatus.textContent='Mapping saved.'; ytMapStatus.style.color='var(--ok)'; }
+    catch(e){ ytMapStatus.textContent='Failed to save mapping.'; ytMapStatus.style.color='var(--flare)'; }
+  }); }
+
+  if(ytMapExport){ ytMapExport.addEventListener('click', async ()=>{
+    const txt = JSON.stringify(ytVideoIds, null, 2);
+    try{ await navigator.clipboard.writeText(txt); ytMapStatus.textContent='Copied JSON to clipboard.'; ytMapStatus.style.color='var(--ok)'; }
+    catch(e){ ytMapStatus.textContent='Copy failed. Select and copy manually.'; ytMapStatus.style.color='var(--flare)'; ytMapInput.value = txt; ytMapInput.select(); }
+  }); }
+  </script>
+  </body>
+</html>
+
     :root{
       --bg:#0c0c0f;--panel:#121217;--ink:#e9e9f2;--muted:#a6a6b4;--honey:#f6c44a;--moon:#cfd6ff;--flare:#ff4d4d;--accent:#6fe7d2;--grid:#1a1a22;--ok:#7cff9f;
     }
