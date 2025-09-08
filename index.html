@@ -54,7 +54,7 @@
     @media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.cell{min-height:120px}}
     /* Neon + Honeycomb modes */
     body.neon .cell{box-shadow:0 0 12px rgba(255,0,128,.35), inset 0 0 0 2px rgba(255,0,128,.25)}
-    body.neon .header,.neon .footer{box-shadow:inset 0 -2px 0 0 rgba(255,0,128,.35)}
+    body.neon .header, body.neon .footer{box-shadow:inset 0 -2px 0 0 rgba(255,0,128,.35)}
     body.neon .title{background:linear-gradient(90deg,#ff4df0,#6fe7d2,#f6c44a);-webkit-background-clip:text;background-clip:text;color:transparent}
 
     body.honey .cell{clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)}
@@ -64,6 +64,16 @@
       body.neon .cell{animation:glow 3.2s ease-in-out infinite alternate}
       @keyframes glow{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(30deg)}}
     }
+      .note{font-size:11px;color:var(--honey)}
+    /* polish for neon & honey modes */
+    .cell{transition:box-shadow .25s ease,filter .25s ease,transform .25s ease;will-change:box-shadow,filter,transform}
+    body.honey .cell{-webkit-clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)}
+    body.honey .cell:hover{transform:translateY(-1px)}
+    body.honey .today{box-shadow:0 0 0 2px rgba(124,255,159,.35) inset,0 12px 30px rgba(0,0,0,.35)}
+    @supports not (clip-path: polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)){
+      body.honey .cell{-webkit-clip-path:none;clip-path:none}
+    }
+    .modebar{flex-basis:100%;font-size:12px;color:var(--muted)}
   </style>
 </head>
 <body>
@@ -78,8 +88,11 @@
         <button class="btn" id="btnPrint">Print / Save PDF</button>
         <button class="btn" id="btnNeon">Neon Mode</button>
         <button class="btn" id="btnHoney">Honeycomb Mode</button>
-        <button class="btn" id="btnPlaylist">Open Playlist</button>
+        <button class="btn" id="btnPlaylist">Open Apple</button>
+        <button class="btn" id="btnYT">Open YouTube</button>
+        <button class="btn" id="btnPlay">Play on: Apple</button>
         <span class="pill" id="status"></span>
+        <div class="modebar" id="modebar">Modes: Neon Off · Honey Off · Player Apple</div>
       </div>
     </div>
 
@@ -98,6 +111,16 @@
           height="150"
           sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
           src="https://embed.music.apple.com/us/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y?app=music">
+        </iframe>
+      </div>
+    </div>
+
+    <div id="ytWrap" style="display:none;padding:12px 16px;border-bottom:1px solid var(--grid)">
+      <div class="yt-embed" style="position:relative;padding-top:56.25%">
+        <iframe id="ytFrame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
+          frameborder="0"
+          style="width:100%;overflow:hidden;border-radius:14px;position:absolute;top:0;left:0;height:100%"
+          src="">
         </iframe>
       </div>
     </div>
@@ -133,7 +156,7 @@
     {d:19, date:'2025-11-23', focus:'Release', song:'Dog Days Are Over', artist:'Florence + the Machine'},
     {d:20, date:'2025-11-24', focus:'Momentum', song:'Don\'t Start Now', artist:'Dua Lipa'},
     {d:21, date:'2025-11-25', focus:'Pollination', song:'Sunflower', artist:'Post Malone & Swae Lee'},
-    {d:22, date:'2025-11-26', focus:'Collective ID', song:'Formation', artist:'Beyoncé'},
+    {d:22, date:'2025-11-26', focus:'Collective ID', song:'Formation', artist:'Beyoncé', note:'you line up, ill block'},
     {d:23, date:'2025-11-27', focus:'Title synergy', song:'Illuminated', artist:'Hurts'},
     {d:24, date:'2025-11-28', focus:'Flare provoke', song:'HONEY (Are U Coming?)', artist:'Måneskin'},
     {d:25, date:'2025-11-29', focus:'Declaration', song:'Express Yourself', artist:'Madonna'},
@@ -141,7 +164,7 @@
     {d:27, date:'2025-12-01', focus:'Playful edge', song:'Paper Planes', artist:'M.I.A.'},
     {d:28, date:'2025-12-02', focus:'Anthem close', song:'Viva La Vida', artist:'Coldplay'},
     {d:29, date:'2025-12-03', focus:'Peak grind', song:'Lose Yourself', artist:'Eminem'},
-    {d:30, date:'2025-12-04', focus:'Lightness', song:'Shake It Off', artist:'Taylor Swift'},
+    {d:30, date:'2025-12-04', focus:'Lightness', song:'Shake It Off', artist:'Taylor Swift', note:'shake off static, keep pollinating.'},
     {d:31, date:'2025-12-05', focus:'Momentum', song:'Levitating', artist:'Dua Lipa'},
     {d:32, date:'2025-12-06', focus:'Raw charge', song:'Energy', artist:'Beyoncé'},
     {d:33, date:'2025-12-07', focus:'Dream track', song:'Dreams', artist:'Fleetwood Mac'},
@@ -161,6 +184,30 @@
 
   const yts = q => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
   const ams = q => `https://music.apple.com/us/search?term=${encodeURIComponent(q)}`;
+
+  const urlp = new URLSearchParams(location.search);
+  let YT_PLAYLIST_ID = 'PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3';
+  (function initYT(){
+    const ytParam = urlp.get('yt') || urlp.get('youtube');
+    if(!ytParam) return;
+    try{
+      const u = new URL(ytParam);
+      const list = u.searchParams.get('list');
+      YT_PLAYLIST_ID = list || ytParam;
+    }catch(e){ YT_PLAYLIST_ID = ytParam; }
+  })();
+
+  let PLAY_PREF = localStorage.getItem('illumina1_play') || (YT_PLAYLIST_ID ? 'yt' : 'apple');
+  let ytVideoIds = {};
+  try{ const cached = localStorage.getItem('illumina1_yt_ids'); if(cached) ytVideoIds = JSON.parse(cached);}catch(e){}
+
+  function deepLinkYT(day, item){
+    const id = ytVideoIds[day];
+    if(YT_PLAYLIST_ID && id){ return `https://www.youtube.com/watch?v=${id}&list=${YT_PLAYLIST_ID}`; }
+    if(YT_PLAYLIST_ID){ return `https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}`; }
+    return yts(`${item.song} ${item.artist}`);
+  }
+  function deepLinkApple(day, item){ return ams(`${item.song} ${item.artist}`); }
   const PLAYLIST_URL = 'https://music.apple.com/us/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y';
 
   function weekLabelRow(label, kind){
@@ -221,10 +268,17 @@
     f.textContent = item.focus;
     c.appendChild(f);
 
+    if(item.note){
+      const n=document.createElement('div');
+      n.className='note';
+      n.textContent=item.note;
+      c.appendChild(n);
+    }
+
     const cta = document.createElement('div');
     cta.className='cta';
     const m = document.createElement('a'); m.href = ams(`${item.song} ${item.artist}`); m.target='_blank'; m.rel='noopener'; m.textContent='Apple Music';
-    const y = document.createElement('a'); y.href = yts(`${item.song} ${item.artist}`); y.target='_blank'; y.rel='noopener'; y.textContent='YouTube';
+    const y = document.createElement('a'); y.href = deepLinkYT(item.d, item); y.target='_blank'; y.rel='noopener'; y.textContent='YouTube';
     cta.append(m,y); c.appendChild(cta);
 
     if(item.d===1 || item.d===38){
@@ -235,7 +289,7 @@
       if(item.d===1){ c.style.boxShadow='0 0 0 2px rgba(255,77,77,.45) inset, 0 14px 40px rgba(255,77,77,.15)'; }
     }
 
-    c.addEventListener('click', e=>{ if(e.target.tagName!=='A'){ window.open(ams(`${item.song} ${item.artist}`),'_blank'); }});
+    c.addEventListener('click', e=>{ if(e.target.tagName!=='A'){ const link = PLAY_PREF==='yt' ? deepLinkYT(item.d,item) : deepLinkApple(item.d,item); window.open(link,'_blank'); }});
     return c;
   }
 
@@ -263,38 +317,96 @@
       if(el){ el.classList.add('today'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
     }
   }
-    const diff = Math.floor((today - start)/86400000)+1;
-    status.textContent = `Today = Day ${diff}`;
-    const idx = data.findIndex(x=>x.d===diff);
-    if(idx>-1){
-      const cells = [...document.querySelectorAll('.cell')];
-      const el = cells[idx + Math.floor(idx/7) + 1]; // account for week labels
-      if(el){ el.classList.add('today'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
-    }
   }
 
   document.querySelector('#btnToday').addEventListener('click', markToday);
   document.querySelector('#btnPrint').addEventListener('click', ()=>window.print());
+  const btnYT = document.querySelector('#btnYT');
+  const btnPlay = document.querySelector('#btnPlay');
+
+  function updateModeBar(){
+    const bar = document.getElementById('modebar'); if(!bar) return;
+    const neonOn = document.body.classList.contains('neon');
+    const honeyOn = document.body.classList.contains('honey');
+    bar.textContent = `Modes: Neon ${neonOn?'On':'Off'} · Honey ${honeyOn?'On':'Off'} · Player ${PLAY_PREF==='yt'?'YouTube':'Apple'}`;
+  }
+
+  function refreshEmbeds(){
+    const ytWrap = document.getElementById('ytWrap');
+    const ytFrame = document.getElementById('ytFrame');
+    if(YT_PLAYLIST_ID && ytFrame && !ytFrame.dataset.init){ ytFrame.src = `https://www.youtube.com/embed/videoseries?list=${YT_PLAYLIST_ID}`; ytFrame.dataset.init='1'; }
+    const appleWrap = document.querySelector('.apple-embed')?.parentElement;
+    if(PLAY_PREF==='yt' && YT_PLAYLIST_ID){ if(ytWrap) ytWrap.style.display='block'; if(appleWrap) appleWrap.style.display='none'; }
+    else { if(ytWrap) ytWrap.style.display='none'; if(appleWrap) appleWrap.style.display='block'; }
+    const btn = document.getElementById('btnPlay'); if(btn) btn.textContent = `Play on: ${PLAY_PREF==='yt'?'YouTube':'Apple'}`;
+    updateModeBar();
+  }
+
+  if(btnYT){ btnYT.addEventListener('click', ()=>{ if(YT_PLAYLIST_ID){ window.open(`https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}`,'_blank'); } else { window.open(yts('Illumina 1 Tristan White'),'_blank'); } }); }
+  if(btnPlay){ btnPlay.addEventListener('click', ()=>{ PLAY_PREF = (PLAY_PREF==='yt'?'apple':'yt'); localStorage.setItem('illumina1_play', PLAY_PREF); refreshEmbeds(); updateModeBar(); }); }); }
   const btnNeon = document.querySelector('#btnNeon');
   const btnHoney = document.querySelector('#btnHoney');
   const btnPlaylist = document.querySelector('#btnPlaylist');
   btnNeon.addEventListener('click',()=>{
-    document.body.classList.toggle('neon');
+    const neonOn = document.body.classList.toggle('neon');
+    btnNeon.textContent = neonOn ? 'Neon Mode: On' : 'Neon Mode';
+    btnNeon.setAttribute('aria-pressed', neonOn);
+    updateModeBar();
+  });
+    btnNeon.textContent = neonOn ? 'Neon Mode: On' : 'Neon Mode';
+    btnNeon.setAttribute('aria-pressed', neonOn);
+  });
     btnNeon.textContent = document.body.classList.contains('neon') ? 'Neon Mode: On' : 'Neon Mode';
   });
   btnHoney.addEventListener('click',()=>{
-    document.body.classList.toggle('honey');
-    btnHoney.textContent = document.body.classList.contains('honey') ? 'Honeycomb Mode: On' : 'Honeycomb Mode';
+    const honeyOn = document.body.classList.toggle('honey');
+    btnHoney.textContent = honeyOn ? 'Honeycomb Mode: On' : 'Honeycomb Mode';
+    btnHoney.setAttribute('aria-pressed', honeyOn);
+    updateModeBar();
   });
-  const playlistParam = new URLSearchParams(location.search).get('playlist');
-  const playlistName = 'Illumina 1 by Tristan White';
-  btnPlaylist.addEventListener('click',()=>{
-    const url = playlistParam || PLAYLIST_URL; window.open(url,'_blank');
-  });
-    btnHoney.textContent = document.body.classList.contains('honey') ? 'Honeycomb Mode: On' : 'Honeycomb Mode';
+    btnHoney.textContent = honeyOn ? 'Honeycomb Mode: On' : 'Honeycomb Mode';
+    btnHoney.setAttribute('aria-pressed', honeyOn);
   });
 
   build();
+  refreshEmbeds();
+  updateModeBar();
   </script>
+  <div class="wrap card" style="margin-top:16px">
+    <div class="header">
+      <div>
+        <div class="title">Interlude — TASTE (coded)</div>
+        <div class="subtitle">4‑page insert · subtle motifs · no names in source</div>
+      </div>
+    </div>
+    <div style="padding:16px;display:grid;gap:16px">
+      <div>
+        <h3 style="margin:.2rem 0">Layout</h3>
+        <ul style="margin:.4rem 0 0 1rem;color:var(--muted)">
+          <li><strong>Page A (left):</strong> <em>easter‑egg hunt</em> — tiny symbols hidden in margins (bow, clock :13, archer glyph). Prompt: “circle what resonates.”</li>
+          <li><strong>Page B (inner‑left):</strong> <em>ownership / re‑record</em> — 3 lines: “reclaim · reframe · replay.” Micro‑task: rewrite one line you wish you owned.</li>
+          <li><strong>Page C (inner‑right):</strong> <em>snake→butterfly</em> — transformation meter (0–10). Note: “shed what doesn’t serve.”</li>
+          <li><strong>Page D (right):</strong> <em>archer</em> — target rings (Aim · Precision · Release). Write 1 target for this cycle and 1 for the year.</li>
+          <li><strong>Center fold (bookmark):</strong> tiny mantra strip: “taste chooses · honey fuels · humility anchors.”</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin:.2rem 0">Rules & Micro‑prompts</h3>
+        <ul style="margin:.4rem 0 0 1rem;color:var(--muted)">
+          <li>Humility first → “what did I learn from yesterday’s feedback?”</li>
+          <li>Controversy as catalyst (never cruelty) → “what truth can I sing cleaner?”</li>
+          <li>Sweetness carries → “how will I make this easy to share?”</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin:.2rem 0">Printing Notes</h3>
+        <ul style="margin:.4rem 0 0 1rem;color:var(--muted)">
+          <li>Format as a 4‑page signature; D page includes a half‑width fold to act as a bookmark tab.</li>
+          <li>Keep motifs minimal (line art). No names in source.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
