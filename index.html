@@ -1,169 +1,415 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tunes · Equations of Honey</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' x='0.1em' font-size='90'%3E%F0%9F%8E%B5%3C/text%3E%3C/svg%3E">
+<title>PLNT · Tunes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Daily music rituals for Illumina cycles. Switch Neon/Honey modes, play the playlist, and track your anchor tests.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' x='6' font-size='48'%3E🌕%3C/text%3E%3C/svg%3E">
+<meta name="color-scheme" content="dark light">
+<meta property="og:title" content="PLNT · Tunes">
+<meta property="og:description" content="Neon/Honey modes, playlists, and Illumina anchor tests.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Crect width='100%25' height='100%25' fill='%230a0b0c'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='84' fill='%23c3e8ff'%3EPLNT · Tunes%3C/text%3E%3C/svg%3E">
 <style>
-  :root{--bg:#0c0b0a;--ink:#f3efe7;--honey:#ffc847;--honey2:#ffb300;--card:#141210;--line:#26231f}
-  *{box-sizing:border-box} html,body{height:100%}
-  body{margin:0;background:radial-gradient(1200px 800px at 20% 0%,#171513,#0a0908 70%),var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto}
-  .wrap{max-width:1100px;margin:0 auto;padding:20px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  h1{margin:0;font-size:clamp(18px,3.5vw,26px)} .sub{opacity:.8;font-size:13px}
-  .now{border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:rgba(255,200,71,.08)}
-  .main{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
-  @media(min-width:900px){.main{grid-template-columns:1fr 1fr}}
-  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-  @media(max-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
-  .tile{border:1px solid var(--line);background:linear-gradient(180deg,#191715,#121110);border-radius:10px;padding:10px;text-align:center;cursor:pointer}
-  .tile small{opacity:.7}
-  .tile[data-active="true"]{outline:2px solid var(--honey);box-shadow:0 0 0 3px rgba(255,200,71,.18)}
-  .section{border:1px solid var(--line);border-radius:12px;background:var(--card)}
-  .section h2{margin:0;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px;opacity:.9}
-  .pad{padding:12px}
-  .player{aspect-ratio:16/9;width:100%;border:0;border-radius:12px;display:block;background:#000}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
-  .btn{border:1px solid var(--line);background:linear-gradient(180deg,#1b1815,#14120f);color:var(--ink);padding:8px 10px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block}
-  .pill{border:1px solid var(--line);padding:6px 10px;border-radius:999px}
+  /* ===== Pepper-Black base ===== */
+  :root{
+    --pepper:#0a0b0c; --char:#101214; --ink:#f1f2f3; --muted:#8e98a3;
+    --line: color-mix(in oklab, var(--ink) 12%, transparent);
+    --ring: color-mix(in oklab, var(--ink) 18%, transparent);
+    --accent:#c3e8ff; --ok:#7ee787; --warn:#f5d97b; --no:#ff7b72;
+    --pad:16px; --rad:16px; --rad-sm:10px; --fw:600;
+    --glow: 0 0 24px color-mix(in oklab, var(--accent) 60%, transparent);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --pepper:#fafafa; --char:#ffffff; --ink:#0b0d10; --muted:#596272;
+      --line: color-mix(in oklab, var(--ink) 16%, transparent);
+      --ring: color-mix(in oklab, var(--ink) 22%, transparent);
+      --accent:#144d7a; --glow: 0 0 0 transparent;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--pepper); color:var(--ink);
+    font:500 15px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Helvetica, Arial;
+  }
+
+  /* ===== Site chrome ===== */
+  .sitebar{
+    position:sticky; top:0; z-index:10;
+    background:linear-gradient(180deg, color-mix(in oklab,var(--char) 92%, transparent), var(--char));
+    border-bottom:1px solid var(--line); padding:10px 16px;
+  }
+  .nav{max-width:1120px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+  .dot{inline-size:9px; block-size:9px; border-radius:50%; background:var(--accent); box-shadow:var(--glow)}
+  .links{display:flex; gap:10px; flex-wrap:wrap}
+  .link{
+    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
+    border:1px solid var(--ring); background:var(--char); color:var(--ink); text-decoration:none; font-weight:600;
+  }
+  .link[aria-current="page"]{outline:2px solid var(--accent); outline-offset:2px}
+
+  .hero{
+    max-width:1120px; margin:18px auto; padding:0 16px;
+    display:grid; gap:10px; align-items:center; grid-template-columns:1fr auto;
+  }
+  h1{margin:0; font-size:28px; letter-spacing:.2px}
+  .modes{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  button, select{
+    border:1px solid var(--ring); background:var(--char); color:var(--ink);
+    border-radius:var(--rad-sm); padding:10px 12px; font-weight:var(--fw);
+  }
+  .mode[data-on="1"]{outline:2px solid var(--accent)}
+  .container{max-width:1120px; margin:0 auto 36px; padding:0 16px; display:grid; gap:16px}
+  .card{background:var(--char); border:1px solid var(--line); border-radius:var(--rad); padding:var(--pad)}
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+
+  /* ===== Neon / Honey aesthetic toggles ===== */
+  [data-mode="neon"] .brand .dot{background:#6cf; box-shadow:0 0 24px #6cf}
+  [data-mode="neon"] .accent{color:#9ddcff; text-shadow:0 0 10px #9ddcff}
+  [data-mode="honey"] .brand .dot{background:#ffcd66; box-shadow:0 0 24px #ffcd66}
+  [data-mode="honey"] .accent{color:#ffd58a; text-shadow:0 0 8px #663}
+  .hint{color:var(--muted); font-size:12px}
+
+  /* ===== Playlist / embeds ===== */
+  .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:12px}
+  .tile{
+    background:var(--char); border:1px solid var(--line); border-radius:12px; padding:12px;
+    display:grid; gap:8px
+  }
+  .tile h3{margin:0; font-size:16px}
+  .pill{display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px; background:var(--char); border:1px solid var(--line)}
+  iframe{width:100%; aspect-ratio:16/9; border:0; border-radius:12px}
+  .stage{width:100%; aspect-ratio:16/10; min-height:300px; border-radius:12px; border:1px dashed var(--line); display:grid; place-items:center; color:var(--muted)}
+
+  /* ===== Footer ===== */
+  footer{border-top:1px solid var(--line); padding:14px 16px; color:var(--muted)}
+  .foot{max-width:1120px; margin:0 auto; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
 </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Tunes · Equations of Honey</h1>
-      <div class="sub">Anchors: D01–D42 · IL1–IL6 · cyclic · victory</div>
-    </div>
-    <div class="now" id="now">Now Playing: D01</div>
-  </header>
-
-  <div class="main">
-    <div class="section">
-      <h2>Days 1–42</h2>
-      <div class="pad"><div class="grid" id="days"></div></div>
-    </div>
-
-    <div class="section">
-      <h2>Player</h2>
-      <div class="pad">
-        <iframe id="yt" class="player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <div class="row">
-          <a id="openYT" class="btn" target="_blank" rel="noopener">Open on YouTube</a>
-          <button id="copyLink" class="btn">Copy Link</button>
-          <span class="pill" id="linkText" style="font-size:12px;opacity:.85"></span>
-        </div>
+<body data-mode="neon">
+  <!-- ===== Header ===== -->
+  <div class="sitebar">
+    <nav class="nav" aria-label="Primary">
+      <div class="brand"><span class="dot"></span><span>PLNT · Tunes</span></div>
+      <div class="links">
+        <a class="link" aria-current="page" href="/">Home</a>
+        <a class="link" href="/pairs/">Pairs</a>
       </div>
-    </div>
-
-    <div class="section" style="grid-column:1/-1">
-      <h2>Interludes + Extras</h2>
-      <div class="pad"><div class="row" id="extras"></div></div>
-    </div>
+    </nav>
   </div>
-</div>
+
+  <!-- ===== Hero / Controls ===== -->
+  <section class="hero">
+    <h1><span class="accent">Daily Tunes</span> · Illumina Rituals</h1>
+    <div class="modes">
+      <button id="neon" class="mode" data-on="1" aria-pressed="true">Neon</button>
+      <button id="honey" class="mode" aria-pressed="false">Honey</button>
+      <select id="playerPref" title="Player">
+        <option value="links">Links only</option>
+        <option value="youtube">YouTube embeds</option>
+        <option value="apple">Apple embeds</option>
+      </select>
+    </div>
+  </section>
+
+  <main class="container">
+    <!-- ===== Playlists ===== -->
+    <section class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">Playlists</h2>
+        <span class="hint">Tip: set your default player above. Mode + player are saved on this device.</span>
+      </div>
+
+      <div id="playlists" class="grid" aria-live="polite"></div>
+    </section>
+
+    <!-- ===== Mapping Videos (placeholders you can edit) ===== -->
+    <section class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">Mapping Videos</h2>
+        <span class="hint">Short clips that introduce each archetype or weekly theme.</span>
+      </div>
+      <div id="videos" class="grid"></div>
+    </section>
+
+    <!-- ===== Anchor Tester CTA ===== -->
+    <section class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">Anchor Tests</h2>
+        <a class="link" href="/pairs/">Open Pairs & Tester</a>
+      </div>
+      <p class="hint">Try <strong>Eminem — “Lose Yourself” → Taylor Swift — “Shake It Off”</strong> and log your results in /pairs.</p>
+    </section>
+
+    <!-- ===== Visual Stage (optional hero art) ===== -->
+    <section class="card">
+      <div class="stage" id="stage">Mode preview (Neon / Honey)</div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot">
+      <div>PLNT · Tunes — Neon/Honey modes • pepper-black theme</div>
+      <div class="hint">Playlists are external links; embeds are optional per your preference.</div>
+    </div>
+  </footer>
 
 <script>
-  // Playlist + explicit day mapping (replace/extend as needed)
-  var PLAYLIST = "PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3";
-  // If you want to load an external JSON instead, fetch('/illumina-map.json') and merge.
-  var map = {
-    d01:{type:"video",id:"RZIzD0ZfTFg",title:"White America"},
-    d02:{type:"video",id:"xaPNR-_Cfn0",title:"HOT TO GO!"},
-    d03:{type:"video",id:"Mru9GG3ur9U",title:"Honey"},
-    d04:{type:"video",id:"h3pJZSTQqIg",title:"Strawberry Swing"},
-    d05:{type:"video",id:"w3KOowB4k_k",title:"Honey (Mariah Carey)"},
-    d06:{type:"video",id:"tvTRZJ-4EyI",title:"HUMBLE."},
-    d07:{type:"video",id:"jxKjOOR9sPU",title:"Sweet Disposition"},
-    d08:{type:"video",id:"LjxulQ1bEWg",title:"Taste"},
-    d09:{type:"video",id:"WZzcY7ASQno",title:"Froot"},
-    d10:{type:"video",id:"a9HIaGcBocc",title:"Do It"},
-    d11:{type:"video",id:"SmbmeOgWsqE",title:"Good As Hell"},
-    d12:{type:"video",id:"P00HMxdsVZI",title:"Truth Hurts"},
-    d13:{type:"video",id:"XDeiovnCv1o",title:"Take A Bow"},
-    d14:{type:"video",id:"1lyu1KKwC74",title:"Bitter Sweet Symphony"},
-    d15:{type:"video",id:"cjIvu7e6Wq8",title:"Work It"},
-    d16:{type:"video",id:"XaCrQL_8eMY",title:"Juice"},
-    d17:{type:"video",id:"4gazNwzC4H0",title:"Controversy"},
-    d18:{type:"video",id:"DCYmJDO2_IE",title:"Cinnamon Girl"},
-    d19:{type:"video",id:"iWOyfLBYtuU",title:"Dog Days Are Over"},
-    d20:{type:"video",id:"oygrmJFKYZY",title:"Don't Start Now"},
-    d21:{type:"video",id:"ApXoWvfEYVU",title:"Sunflower"},
-    d22:{type:"video",id:"WDZJPJV__bQ",title:"Formation"},
-    d23:{type:"video",id:"6CvuyaKmLnw",title:"Illuminated (Live)"},
-    d24:{type:"video",id:"HZnNt9nnEhw",title:"HONEY (ARE U COMING?)"},
-    d25:{type:"video",id:"GsVcUzP_O_8",title:"Express Yourself"},
-    d26:{type:"video",id:"lEIqjoO0-Bs",title:"Savage Remix"},
-    d27:{type:"video",id:"ewRjZoRtu0Y",title:"Paper Planes"},
-    d28:{type:"video",id:"dvgZkm1xWPE",title:"Viva La Vida"},
-    d29:{type:"video",id:"xFYQQPAOz7Y",title:"Lose Yourself"},
-    d30:{type:"video",id:"nfWlot6h_JM",title:"Shake It Off"},
-    d31:{type:"video",id:"TUVcZfQe-Kw",title:"Levitating"},
-    d32:{type:"video",id:"O9rk6ldyFkA",title:"ENERGY"},
-    d33:{type:"video",id:"5oWyMakvQew",title:"Dreams"},
-    d34:{type:"video",id:"UmPgMc3R8zg",title:"Edge of Seventeen"},
-    d35:{type:"video",id:"wV1FrqwZyKw",title:"Born This Way"},
-    d36:{type:"video",id:"k4V3Mo61fJM",title:"Fix You"},
-    d37:{type:"video",id:"Z-48u_uWMHY",title:"Alright"},
-    d38:{type:"video",id:"gl1aHhXnN1k",title:"thank u, next"},
-    d39:{type:"video",id:"TJAfLE39ZZ8",title:"Back To Black"},
-    d40:{type:"video",id:"3xUfCUFPL-8",title:"XO"},
-    d41:{type:"video",id:"r4l9bFqgMaQ",title:"Nights"},
-    d42:{type:"video",id:"xGytDsqkQY8",title:"Closing Time"}
-  };
-
-  var days = document.getElementById('days');
-  for (var i=1;i<=42;i++){
-    var tag = "d"+String(i).padStart(2,"0");
-    var b = document.createElement('div');
-    b.className = "tile"; b.setAttribute("data-tag", tag);
-    b.innerHTML = "<div><b>D"+String(i).padStart(2,"0")+"</b><br><small>Day "+i+"</small></div>";
-    b.onclick = (t=>()=>select(t))(tag);
-    days.appendChild(b);
+/* =========================
+   Data: edit these safely
+   ========================= */
+var playlists = [
+  /* Example entries — replace hrefs with your real ones. */
+  {
+    title: "Illumina 1 · Launch Cycle",
+    desc: "Mantra + Honey ignition",
+    youtube: "https://www.youtube.com/playlist?list=PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3",
+    apple: "https://music.apple.com/us/playlist/example-illumina-1/pl.u-XXXXXXX",
+    cover: "🌕"
+  },
+  {
+    title: "Taste / Sabrina Lens",
+    desc: "Sweet magnet archetype",
+    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_sabrina",
+    apple: "https://music.apple.com/us/playlist/example-sabrina/pl.u-XXXX",
+    cover: "🍯"
+  },
+  {
+    title: "Cosmic Teacher / Janet",
+    desc: "Curiosity & STEAM",
+    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_janet",
+    apple: "https://music.apple.com/us/playlist/example-janet/pl.u-XXXX",
+    cover: "🌙"
+  },
+  {
+    title: "Identity Flare / Emma",
+    desc: "Spotlight & roles",
+    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_emma",
+    apple: "https://music.apple.com/us/playlist/example-emma/pl.u-XXXX",
+    cover: "☀️"
+  },
+  {
+    title: "Chaos Trickster / Doechii",
+    desc: "Graffiti energy",
+    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_doechii",
+    apple: "https://music.apple.com/us/playlist/example-doechii/pl.u-XXXX",
+    cover: "🔥"
+  },
+  {
+    title: "Collective Joy / Hot To Go!",
+    desc: "Neon dancefloor",
+    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_h2g",
+    apple: "https://music.apple.com/us/playlist/example-hot-to-go/pl.u-XXXX",
+    cover: "🐝"
   }
-  var extras = document.getElementById('extras');
-  [["il1","IL1"],["il2","IL2"],["il3","IL3"],["il4","IL4"],["il5","IL5"],["il6","IL6"],["cyclic","Cyclic"],["victory","Victory"]]
-    .forEach(([tag,label])=>{
-      var a=document.createElement('a'); a.className="btn"; a.textContent=label; a.href="#"+tag;
-      a.onclick=e=>{e.preventDefault(); select(tag);}
-      extras.appendChild(a);
+];
+
+/* Mapping videos — fill in YouTube watch links; empty ones render as editable placeholders */
+var mappingVideos = [
+  { title:"Eminem · Victory Song", url:"https://www.youtube.com/watch?v=_Yhyp-_hX2s" },
+  { title:"Taylor · Release Loop", url:"https://www.youtube.com/watch?v=nfWlot6h_JM" },
+  { title:"Sabrina · Taste Spark", url:"" },
+  { title:"Janet · Cosmic Teacher", url:"" },
+  { title:"Emma · Identity Flare", url:"" },
+  { title:"Doechii · Trickster", url:"" },
+  { title:"Hot To Go! · Swarm", url:"" }
+];
+
+/* =========================
+   Preferences
+   ========================= */
+var root = document.documentElement;
+var body = document.body;
+var neonBtn = document.getElementById("neon");
+var honeyBtn = document.getElementById("honey");
+var playerPref = document.getElementById("playerPref");
+
+(function initPrefs(){
+  var mode = localStorage.getItem("plnt_tunes_mode") || "neon";
+  applyMode(mode);
+  playerPref.value = localStorage.getItem("plnt_tunes_player") || "links";
+
+  neonBtn.addEventListener("click", function(){ applyMode("neon"); saveMode("neon"); });
+  honeyBtn.addEventListener("click", function(){ applyMode("honey"); saveMode("honey"); });
+  playerPref.addEventListener("change", function(){ localStorage.setItem("plnt_tunes_player", this.value); renderPlaylists(); });
+
+  function saveMode(m){ localStorage.setItem("plnt_tunes_mode", m); }
+  function applyMode(m){
+    body.setAttribute("data-mode", m);
+    neonBtn.dataset.on = m==="neon" ? "1" : "";
+    neonBtn.setAttribute("aria-pressed", m==="neon");
+    honeyBtn.dataset.on = m==="honey" ? "1" : "";
+    honeyBtn.setAttribute("aria-pressed", m==="honey");
+    document.getElementById("stage").textContent = m==="neon" ? "Neon mode active" : "Honey mode active";
+  }
+})();
+
+/* =========================
+   Playlists renderer
+   ========================= */
+function renderPlaylists(){
+  var wrap = document.getElementById("playlists");
+  var pref = playerPref.value;
+  var frag = document.createDocumentFragment();
+
+  playlists.forEach(function(p){
+    var card = document.createElement("article");
+    card.className = "tile";
+
+    var h = document.createElement("h3");
+    h.textContent = (p.cover ? p.cover + " " : "") + p.title;
+    card.appendChild(h);
+
+    var d = document.createElement("p");
+    d.className = "hint";
+    d.textContent = p.desc || "";
+    card.appendChild(d);
+
+    var row = document.createElement("div");
+    row.className = "row";
+
+    var yt = document.createElement("a");
+    yt.className = "pill"; yt.href = p.youtube; yt.textContent = "YouTube";
+    yt.target = "_blank"; yt.rel = "noopener";
+    row.appendChild(yt);
+
+    var am = document.createElement("a");
+    am.className = "pill"; am.href = p.apple; am.textContent = "Apple Music";
+    am.target = "_blank"; am.rel = "noopener";
+    row.appendChild(am);
+
+    card.appendChild(row);
+
+    if(pref === "youtube" && p.youtube){
+      var id = extractYTListId(p.youtube);
+      if(id){
+        var iframe = document.createElement("iframe");
+        iframe.loading = "lazy";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + id;
+        card.appendChild(iframe);
+      }
+    }
+    if(pref === "apple" && p.apple){
+      /* Apple embeds generally require full Apple Music embed URLs.
+         If you paste a share link, it will still open in a new tab via the link buttons above. */
+    }
+
+    frag.appendChild(card);
+  });
+
+  wrap.innerHTML = "";
+  wrap.appendChild(frag);
+}
+
+function extractYTListId(url){
+  try{
+    var u = new URL(url);
+    return u.searchParams.get("list") || "";
+  }catch(e){
+    return "";
+  }
+}
+
+/* =========================
+   Mapping videos (editable placeholders)
+   ========================= */
+function renderVideos(){
+  var wrap = document.getElementById("videos");
+  var frag = document.createDocumentFragment();
+
+  mappingVideos.forEach(function(v, i){
+    var card = document.createElement("article");
+    card.className = "tile";
+
+    var h = document.createElement("h3");
+    h.textContent = v.title || ("Video " + (i+1));
+    card.appendChild(h);
+
+    var inputWrap = document.createElement("div");
+    inputWrap.className = "row";
+    var urlInput = document.createElement("input");
+    urlInput.type = "url";
+    urlInput.placeholder = "https://www.youtube.com/watch?v=...";
+    urlInput.value = v.url || "";
+    urlInput.style.cssText = "flex:1;min-width:160px;border:1px solid var(--line);border-radius:10px;padding:10px;background:transparent;color:var(--ink)";
+    inputWrap.appendChild(urlInput);
+
+    var saveBtn = document.createElement("button");
+    saveBtn.textContent = "Save";
+    inputWrap.appendChild(saveBtn);
+
+    card.appendChild(inputWrap);
+
+    var embedBox = document.createElement("div");
+    if(v.url){
+      var vid = extractYTVideoId(v.url);
+      if(vid){
+        var iframe = document.createElement("iframe");
+        iframe.loading = "lazy";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.src = "https://www.youtube-nocookie.com/embed/" + vid;
+        embedBox.appendChild(iframe);
+      }else{
+        var p = document.createElement("p");
+        p.className = "hint";
+        p.textContent = "Enter a valid YouTube URL to preview here.";
+        embedBox.appendChild(p);
+      }
+    }else{
+      var p2 = document.createElement("p");
+      p2.className = "hint";
+      p2.textContent = "Paste a YouTube link and Save to store locally.";
+      embedBox.appendChild(p2);
+    }
+    card.appendChild(embedBox);
+
+    saveBtn.addEventListener("click", function(){
+      mappingVideos[i].url = urlInput.value.trim();
+      localStorage.setItem("plnt_tunes_videos", JSON.stringify(mappingVideos));
+      renderVideos();
     });
 
-  var now = document.getElementById('now'), yt = document.getElementById('yt'),
-      openYT=document.getElementById('openYT'), copyLink=document.getElementById('copyLink'),
-      linkText=document.getElementById('linkText');
+    frag.appendChild(card);
+  });
 
-  function embedFor(tag){
-    var m = map[tag];
-    if(m && m.type==="video"){ return { src:"https://www.youtube.com/embed/"+m.id+"?rel=0&modestbranding=1", open:"https://youtu.be/"+m.id }; }
-    if(m && m.type==="playlist"){ return { src:"https://www.youtube.com/embed/videoseries?list="+m.id+"&rel=0&modestbranding=1", open:"https://www.youtube.com/playlist?list="+m.id }; }
-    if(/^d\d{2}$/.test(tag)){
-      var idx=parseInt(tag.slice(1),10);
-      return { src:"https://www.youtube.com/embed/videoseries?list="+PLAYLIST+"&rel=0&modestbranding=1&index="+idx, open:"https://www.youtube.com/playlist?list="+PLAYLIST+"&index="+idx };
+  wrap.innerHTML = "";
+  wrap.appendChild(frag);
+}
+
+function extractYTVideoId(url){
+  try{
+    var u = new URL(url);
+    if(u.hostname.includes("youtube.com")){
+      return u.searchParams.get("v") || "";
     }
-    return { src:"https://www.youtube.com/embed/videoseries?list="+PLAYLIST+"&rel=0&modestbranding=1", open:"https://www.youtube.com/playlist?list="+PLAYLIST };
+    if(u.hostname.includes("youtu.be")){
+      return (u.pathname || "").replace("/","").trim();
+    }
+    return "";
+  }catch(e){
+    return "";
   }
-  function labelFor(tag){
-    if(/^d\d{2}$/.test(tag)) return "D"+tag.slice(1);
-    if(/^il\d$/.test(tag)) return tag.toUpperCase();
-    if(tag==="cyclic") return "Cyclic";
-    if(tag==="victory") return "Victory";
-    return "D01";
-  }
-  function select(tag){
-    document.querySelectorAll(".tile").forEach(c=>c.setAttribute("data-active","false"));
-    if(/^d\d{2}$/.test(tag)){ var card=days.querySelector('[data-tag="'+tag+'"]'); if(card) card.setAttribute("data-active","true"); }
-    var e=embedFor(tag); yt.src=e.src; openYT.href=e.open;
-    var link=location.origin+location.pathname+"#"+tag; linkText.textContent=link;
-    now.textContent="Now Playing: "+labelFor(tag); history.replaceState(null,"","#"+tag);
-  }
-  function fromHash(){
-    var m=(location.hash||"").replace("#","").toLowerCase();
-    if(m && (/^d\d{2}$/.test(m)||/^il\d$/.test(m)||m==="cyclic"||m==="victory")) select(m); else select("d01");
-  }
-  copyLink.onclick=()=>{ var text=linkText.textContent||location.href; if(navigator.clipboard){navigator.clipboard.writeText(text);} };
-  window.addEventListener("hashchange", fromHash); fromHash();
+}
+
+/* =========================
+   Boot
+   ========================= */
+(function boot(){
+  try{
+    var savedVideos = JSON.parse(localStorage.getItem("plnt_tunes_videos") || "null");
+    if(Array.isArray(savedVideos) && savedVideos.length === mappingVideos.length){
+      mappingVideos = savedVideos;
+    }
+  }catch(e){}
+  renderPlaylists();
+  renderVideos();
+})();
 </script>
 </body>
 </html>
