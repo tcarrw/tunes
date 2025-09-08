@@ -74,6 +74,16 @@
       body.honey .cell{-webkit-clip-path:none;clip-path:none}
     }
     .modebar{flex-basis:100%;font-size:12px;color:var(--muted)}
+    /* stronger visual feedback for modes */
+    body.neon{background:radial-gradient(800px 500px at 15% -10%,rgba(255,0,128,.12),transparent 60%),var(--bg)}
+    body.neon .cell{border-color:rgba(255,0,128,.45)!important;box-shadow:0 0 18px rgba(255,0,128,.35), inset 0 0 0 2px rgba(255,0,128,.25)}
+    body.neon .title{background:linear-gradient(90deg,#ff4df0,#6fe7d2,#f6c44a);-webkit-background-clip:text;background-clip:text;color:transparent}
+    body.neon .header, body.neon .footer{box-shadow:inset 0 -2px 0 0 rgba(255,0,128,.35)}
+
+    body.honey{background:radial-gradient(700px 480px at 85% -10%,rgba(246,196,74,.10),transparent 65%),var(--bg)}
+    body.honey .cell{border-color:rgba(246,196,74,.6)!important;background:linear-gradient(180deg,rgba(246,196,74,.08),rgba(246,196,74,.02))}
+
+  .modebar{flex-basis:100%;font-size:12px;color:var(--muted)}
   </style>
 </head>
 <body>
@@ -88,8 +98,8 @@
         <button class="btn" id="btnPrint">Print / Save PDF</button>
         <button class="btn" id="btnNeon">Neon Mode</button>
         <button class="btn" id="btnHoney">Honeycomb Mode</button>
-        <button class="btn" id="btnPlaylist">Open Apple</button>
-        <button class="btn" id="btnYT">Open YouTube</button>
+        <a class="btn" id="linkApple" href="#" target="_blank" rel="noopener">Open Apple</a>
+        <a class="btn" id="linkYT" href="#" target="_blank" rel="noopener">Open YouTube</a>
         <button class="btn" id="btnPlay">Play on: Apple</button>
         <span class="pill" id="status"></span>
         <div class="modebar" id="modebar">Modes: Neon Off · Honey Off · Player Apple</div>
@@ -321,29 +331,12 @@
 
   document.querySelector('#btnToday').addEventListener('click', markToday);
   document.querySelector('#btnPrint').addEventListener('click', ()=>window.print());
-  const btnYT = document.querySelector('#btnYT');
+  const linkApple = document.getElementById('linkApple');
+  const linkYT = document.getElementById('linkYT');
+  if(linkApple){ linkApple.href = PLAYLIST_URL; }
+  if(linkYT){ linkYT.href = YT_PLAYLIST_ID ? `https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}` : yts('Illumina 1 Tristan White'); }
   const btnPlay = document.querySelector('#btnPlay');
-
-  function updateModeBar(){
-    const bar = document.getElementById('modebar'); if(!bar) return;
-    const neonOn = document.body.classList.contains('neon');
-    const honeyOn = document.body.classList.contains('honey');
-    bar.textContent = `Modes: Neon ${neonOn?'On':'Off'} · Honey ${honeyOn?'On':'Off'} · Player ${PLAY_PREF==='yt'?'YouTube':'Apple'}`;
-  }
-
-  function refreshEmbeds(){
-    const ytWrap = document.getElementById('ytWrap');
-    const ytFrame = document.getElementById('ytFrame');
-    if(YT_PLAYLIST_ID && ytFrame && !ytFrame.dataset.init){ ytFrame.src = `https://www.youtube.com/embed/videoseries?list=${YT_PLAYLIST_ID}`; ytFrame.dataset.init='1'; }
-    const appleWrap = document.querySelector('.apple-embed')?.parentElement;
-    if(PLAY_PREF==='yt' && YT_PLAYLIST_ID){ if(ytWrap) ytWrap.style.display='block'; if(appleWrap) appleWrap.style.display='none'; }
-    else { if(ytWrap) ytWrap.style.display='none'; if(appleWrap) appleWrap.style.display='block'; }
-    const btn = document.getElementById('btnPlay'); if(btn) btn.textContent = `Play on: ${PLAY_PREF==='yt'?'YouTube':'Apple'}`;
-    updateModeBar();
-  }
-
-  if(btnYT){ btnYT.addEventListener('click', ()=>{ if(YT_PLAYLIST_ID){ window.open(`https://www.youtube.com/playlist?list=${YT_PLAYLIST_ID}`,'_blank'); } else { window.open(yts('Illumina 1 Tristan White'),'_blank'); } }); }
-  if(btnPlay){ btnPlay.addEventListener('click', ()=>{ PLAY_PREF = (PLAY_PREF==='yt'?'apple':'yt'); localStorage.setItem('illumina1_play', PLAY_PREF); refreshEmbeds(); updateModeBar(); }); }); }
+  if(btnPlay){ btnPlay.addEventListener('click', ()=>{ PLAY_PREF = (PLAY_PREF==='yt'?'apple':'yt'); localStorage.setItem('illumina1_play', PLAY_PREF); refreshEmbeds(); updateModeBar(); }); }); }); }
   const btnNeon = document.querySelector('#btnNeon');
   const btnHoney = document.querySelector('#btnHoney');
   const btnPlaylist = document.querySelector('#btnPlaylist');
