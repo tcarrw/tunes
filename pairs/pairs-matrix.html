@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pairs · Print Matrix</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' x='6' font-size='48'%3E🌕%3C/text%3E%3C/svg%3E">
+<meta name="color-scheme" content="dark light">
+<style>
+  :root{
+    --pepper:#0a0b0c; --char:#101214; --ink:#f1f2f3; --muted:#8e98a3;
+    --line: color-mix(in oklab, var(--ink) 12%, transparent);
+    --ok:#7ee787; --maybe:#f5d97b; --no:#ff7b72;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --pepper:#fafafa; --char:#ffffff; --ink:#0b0d10; --muted:#596272;
+      --line: color-mix(in oklab, var(--ink) 16%, transparent);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pepper);color:var(--ink);
+    font:500 15px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,Helvetica,Arial}
+  header{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  h1{font-size:20px;margin:0}
+  .btn{border:1px solid var(--line);background:var(--char);color:var(--ink);border-radius:10px;padding:8px 12px;font-weight:600;text-decoration:none}
+  main{max-width:1120px;margin:16px auto;padding:0 16px;display:grid;gap:16px}
+  .card{background:var(--char);border:1px solid var(--line);border-radius:16px;padding:16px}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid var(--line);padding:10px;text-align:center}
+  th{background:var(--char);position:sticky;top:0}
+  td.name,th.name{text-align:left;white-space:nowrap}
+  .legend{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-bottom:10px}
+  .dot{inline-size:9px;block-size:9px;border-radius:50%}
+  .ok{background:var(--ok)} .maybe{background:var(--maybe)} .no{background:var(--no)}
+  .log{display:grid;gap:12px}
+  .entry{border:1px dashed var(--line);border-radius:12px;padding:10px;background:transparent}
+  .hint{color:var(--muted);font-size:12px}
+  @media print{
+    body{background:#fff;color:#000}
+    header,.legend .btn{display:none !important}
+    main{max-width:100%;margin:0;padding:0}
+    .card{border:0;border-radius:0;padding:0}
+    .entry{border:1px solid #000}
+    .log{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pairs · Matrix (Print)</h1>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a class="btn" href="/pairs/">Back to Pairs</a>
+    <button id="printNow" class="btn">Print</button>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="legend">
+      <span><span class="dot ok"></span> strong</span>
+      <span><span class="dot maybe"></span> unstable</span>
+      <span><span class="dot no"></span> none</span>
+    </div>
+    <div style="overflow:auto">
+      <table id="matrixTable"></table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin:0 0 8px">Session Log (read-only)</h2>
+    <p class="hint" style="margin:0 0 8px">Shows sessions saved by the tester on this device.</p>
+    <div class="log" id="log"></div>
+  </section>
+</main>
+
+<script>
+/* --- Same data model as /pairs/index.html --- */
+var nodes = [
+  {id:"sabrina", label:"Sabrina 🍯", short:"Sabrina"},
+  {id:"janet",   label:"Janet 🌙",   short:"Janet"},
+  {id:"eminem",  label:"Eminem ⚡",  short:"Eminem"},
+  {id:"emma",    label:"Emma ☀️",    short:"Emma"},
+  {id:"doechii", label:"Doechii 🔥", short:"Doechii"},
+  {id:"h2g",     label:"Hot To Go! 🐝", short:"Hot To Go!"},
+  {id:"taylor",  label:"Taylor 🎶",  short:"Taylor"}
+];
+var pairs = {
+  sabrina:{janet:"ok", eminem:"maybe", emma:"ok", doechii:"maybe", h2g:"ok", taylor:"maybe"},
+  janet:{sabrina:"ok", eminem:"maybe", emma:"maybe", doechii:"ok", h2g:"maybe", taylor:"ok"},
+  eminem:{sabrina:"maybe", janet:"maybe", emma:"maybe", doechii:"ok", h2g:"ok", taylor:"ok"},
+  emma:{sabrina:"ok", janet:"maybe", eminem:"maybe", doechii:"ok", h2g:"maybe", taylor:"maybe"},
+  doechii:{sabrina:"maybe", janet:"ok", eminem:"ok", emma:"ok", h2g:"maybe", taylor:"maybe"},
+  h2g:{sabrina:"ok", janet:"maybe", eminem:"ok", emma:"maybe", doechii:"maybe", taylor:"ok"},
+  taylor:{sabrina:"maybe", janet:"ok", eminem:"ok", emma:"maybe", doechii:"maybe", h2g:"ok"}
+};
+
+/* --- Render Matrix --- */
+(function renderMatrix(){
+  var t=document.getElementById("matrixTable");
+  var head="<tr><th class='name'>From → To</th>"+nodes.map(function(n){return "<th>"+n.short+"</th>"}).join("")+"</tr>";
+  var rows=nodes.map(function(row){
+    var cells=nodes.map(function(col){
+      if(col.id===row.id) return "<td>—</td>";
+      var v=(pairs[row.id]||{})[col.id]||"";
+      var mark=v==="ok"?"✓":v==="maybe"?"~":v==="no"?"✗":"";
+      var colr=v==="ok"?"var(--ok)":v==="maybe"?"var(--maybe)":v==="no"?"var(--no)":"var(--muted)";
+      return "<td style='color:"+colr+"'>"+mark+"</td>";
+    }).join("");
+    return "<tr><td class='name'>"+row.label+"</td>"+cells+"</tr>";
+  }).join("");
+  t.innerHTML=head+rows;
+})();
+
+/* --- Load Session Log (read-only) --- */
+(function loadLog(){
+  var log=document.getElementById("log");
+  var items=JSON.parse(localStorage.getItem("illumina_sessions")||"[]");
+  if(!items.length){
+    var p=document.createElement("p");
+    p.className="hint";
+    p.textContent="No local sessions found. Use the tester on /pairs/ to create some, then come back.";
+    log.appendChild(p);
+    return;
+  }
+  items.forEach(function(it){
+    var div=document.createElement("div"); div.className="entry";
+    function fmt(ms){ var s=Math.floor((ms||0)/1000), m=Math.floor(s/60), r=String(s%60).padStart(2,"0"); return String(m).padStart(2,"0")+":"+r; }
+    div.innerHTML="<strong>"+it.when+"</strong> — "+(it.label||"Session")+
+      "<br>Ignition: "+fmt(it.tIgn)+" · Release: "+fmt(it.tRel)+
+      "<br>Focus: "+(it.focus||"-")+" · Lightness: "+(it.light||"-")+
+      (it.notes ? "<br>"+String(it.notes).replace(/</g,"&lt;") : "");
+    log.appendChild(div);
+  });
+})();
+
+/* --- Print controls & auto-print --- */
+document.getElementById("printNow").addEventListener("click", function(){ window.print(); });
+(function(){
+  var u=new URL(location.href);
+  if(u.searchParams.get("print")==="1"){ setTimeout(function(){ window.print(); }, 200); }
+})();
+</script>
+</body>
+</html>
