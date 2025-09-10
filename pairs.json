@@ -1,0 +1,64 @@
+{
+  "pairs": [
+    {
+      "id": "px1m8x8k2gq6",
+      "aTitle": "Eminem — Lose Yourself",
+      "aUrl": "https://www.youtube.com/watch?v=_Yhyp-_hX2s",
+      "bTitle": "Taylor Swift — Shake It Off",
+      "bUrl": "https://www.youtube.com/watch?v=nfWlot6h_JM",
+      "focus": 7,
+      "light": 6,
+      "tags": ["victory", "high-energy"],
+      "notes": "Locks me in quickly; great for kick-off.",
+      "createdAt": "2025-09-08T18:05:00.000Z"
+    },
+    {
+      "id": "px1m8x8k2gq7",
+      "aTitle": "Nina Simone — Sinnerman",
+      "aUrl": "https://www.youtube.com/watch?v=QH3Fx41Jpl4",
+      "bTitle": "ODESZA — A Moment Apart",
+      "bUrl": "https://www.youtube.com/watch?v=HdzI-191xhU",
+      "focus": 6,
+      "light": 3,
+      "tags": ["deep", "flow"],
+      "notes": "Long arc; builds focus over ~8–10 min.",
+      "createdAt": "2025-09-08T19:12:00.000Z"
+    },
+    {
+      "id": "px1m8x8k2gq8",
+      "aTitle": "Eminem — White America",
+      "aUrl": "https://www.youtube.com/watch?v=R2rq-DnG8Ns",
+      "bTitle": "Kendrick Lamar — HUMBLE.",
+      "bUrl": "https://www.youtube.com/watch?v=tvTRZJ-4EyI",
+      "focus": 8,
+      "light": 4,
+      "tags": ["confrontation", "lyric"],
+      "notes": "Victory Song mood; sharp, declarative energy.",
+      "createdAt": "2025-09-09T14:30:00.000Z"
+    },
+    {
+      "id": "px1m8x8k2gq9",
+      "aTitle": "Doechii — What It Is",
+      "aUrl": "https://www.youtube.com/watch?v=4bQ53wF5F1c",
+      "bTitle": "Beyoncé — CUFF IT",
+      "bUrl": "https://www.youtube.com/watch?v=yrtWLyp5gLI",
+      "focus": 5,
+      "light": 9,
+      "tags": ["joy", "swarm"],
+      "notes": "Collective vibe; strong uplift for group energy.",
+      "createdAt": "2025-09-09T16:02:00.000Z"
+    },
+    {
+      "id": "px1m8x8k2gqa",
+      "aTitle": "Sabrina Carpenter — Espresso",
+      "aUrl": "https://www.youtube.com/watch?v=eVli-tstM5E",
+      "bTitle": "Chappell Roan — HOT TO GO!",
+      "bUrl": "https://www.youtube.com/watch?v=Fq-F9G0ZsWQ",
+      "focus": 4,
+      "light": 10,
+      "tags": ["dancefloor", "neon"],
+      "notes": "Glitter-pollen, instant movement; great for breaks.",
+      "createdAt": "2025-09-10T10:45:00.000Z"
+    }
+  ]
+}
