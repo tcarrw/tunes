@@ -1,391 +1,452 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pairs · PLNT Tunes</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' x='6' font-size='48'%3E🌕%3C/text%3E%3C/svg%3E">
-<meta name="color-scheme" content="dark light">
-<style>
-  :root{
-    --pepper:#0a0b0c; --char:#101214; --ink:#f1f2f3; --muted:#8e98a3;
-    --line: color-mix(in oklab, var(--ink) 12%, transparent);
-    --ring: color-mix(in oklab, var(--ink) 18%, transparent);
-    --accent:#c3e8ff; --ok:#7ee787; --maybe:#f5d97b; --no:#ff7b72;
-    --pad:16px; --rad:16px; --rad-sm:10px; --fw:600;
-  }
-  @media (prefers-color-scheme: light){
-    :root{ --pepper:#fafafa; --char:#ffffff; --ink:#0b0d10; --muted:#596272;
-      --line: color-mix(in oklab, var(--ink) 16%, transparent);
-      --ring: color-mix(in oklab, var(--ink) 24%, transparent);
-      --accent:#144d7a;
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Tunes — Pairs</title>
+  <meta name="color-scheme" content="light dark"/>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --surface:#111827;
+      --surface-2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --border:#1f2737;
+      --accent:#7c3aed;
+      --accent-ink:#ffffff;
+      --shadow:0 8px 24px rgba(0,0,0,.28);
+      --radius:12px;
+      --radius-sm:10px;
+      --radius-xs:8px;
+      --ring:0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
     }
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--pepper);color:var(--ink);font:500 15px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,Helvetica,Arial}
-  .sitebar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,color-mix(in oklab,var(--char) 92%,transparent),var(--char));border-bottom:1px solid var(--line);padding:10px 16px}
-  .nav{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:800}
-  .brand .dot{inline-size:9px;block-size:9px;border-radius:50%;background:var(--accent)}
-  .links{display:flex;gap:10px;flex-wrap:wrap}
-  .link{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--ring);background:var(--char);color:var(--ink);text-decoration:none;font-weight:600}
-  .link[aria-current="page"]{outline:2px solid var(--accent);outline-offset:2px}
-  main{max-width:1120px;margin:18px auto 32px;padding:0 16px;display:grid;gap:16px}
-  .card{background:var(--char);border:1px solid var(--line);border-radius:var(--rad);padding:var(--pad)}
-  h1{margin:0 0 6px;font-size:22px}
-  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  button,select{border:1px solid var(--ring);background:var(--char);color:var(--ink);border-radius:var(--rad-sm);padding:10px 12px;font-weight:var(--fw)}
-  button[data-on="1"]{outline:2px solid var(--accent)}
-  .stage{width:100%;aspect-ratio:16/10;min-height:380px;position:relative}
-  svg{width:100%;height:100%;display:block}
-  .badge{position:absolute;inset:auto 12px 12px auto;background:var(--char);padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
-  .legend{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px}
-  .pill{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:var(--char);border:1px solid var(--line)}
-  .dot{inline-size:9px;block-size:9px;border-radius:50%}
-  .ok{background:var(--ok)} .maybe{background:var(--maybe)} .no{background:var(--no)}
-  table{width:100%;border-collapse:collapse}
-  th,td{border:1px solid var(--line);padding:10px;text-align:center}
-  th{position:sticky;top:0;background:var(--char)}
-  td.name,th.name{text-align:left;white-space:nowrap}
-  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-  .meter{display:flex;align-items:center;gap:8px}
-  input[type="range"]{width:100%}
-  textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:12px;resize:vertical}
-  .hint{color:var(--muted);font-size:12px}
-  .log{display:grid;gap:12px}
-  .entry{border:1px dashed var(--ring);border-radius:12px;padding:10px}
-  footer{border-top:1px solid var(--line);padding:14px 16px;color:var(--muted)}
-  .foot{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  @media print{
-    body{background:#fff;color:#000}
-    .sitebar, footer, #theme, #viewMatrix, #viewSpiral, #jumpTester, #printView, #printMatrix, .legend, .badge {display:none !important}
-    main{max-width:100%;margin:0;padding:0}
-    .card{border:0;border-radius:0;padding:0}
-    #tester{page-break-before:always}
-    .log{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .entry{border:1px solid #000}
-    .stage{aspect-ratio:auto;min-height:0}
-    svg{max-height:45vh}
-  }
-</style>
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7fafc;
+        --surface:#ffffff;
+        --surface-2:#f8fafc;
+        --text:#0f172a;
+        --muted:#475569;
+        --border:#e2e8f0;
+        --accent:#6d28d9;
+        --accent-ink:#ffffff;
+        --shadow:0 8px 20px rgba(17,24,39,.08);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% -10%, color-mix(in oklab, var(--accent) 16%, transparent), transparent), var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .shell{max-width:1100px; margin:24px auto 56px; padding:0 16px}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      background:linear-gradient(180deg, color-mix(in oklab, var(--surface) 94%, transparent), var(--surface));
+      border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow);
+      position:sticky; top:12px; z-index:5; backdrop-filter:saturate(1.2) blur(6px)
+    }
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px}
+    .glyph{display:inline-grid; place-items:center; width:32px; height:32px; border-radius:8px; background:var(--accent); color:var(--accent-ink); font-size:18px}
+    .brand h1{font-size:18px; margin:0}
+    .controls{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+    .btn{
+      border:1px solid var(--border); background:var(--surface-2); color:var(--text);
+      padding:10px 12px; border-radius:var(--radius-xs); cursor:pointer; transition:transform .04s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:focus-visible{outline:none; box-shadow:var(--ring)}
+    .btn.primary{background:var(--accent); color:var(--accent-ink); border-color:color-mix(in oklab, var(--accent) 40%, var(--border))}
+    .btn.ghost{background:transparent}
+    .btn.mini{font-size:12px; padding:6px 8px}
+    input[type="text"], input[type="url"], input[type="number"], textarea{
+      border:1px solid var(--border); background:var(--surface-2); color:var(--text);
+      padding:10px 12px; border-radius:var(--radius-xs)
+    }
+    textarea{min-height:96px; resize:vertical}
+    .muted{color:var(--muted); font-size:12px}
+    .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px}
+    .stack{display:grid; gap:14px}
+    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:760px){.grid{grid-template-columns:1fr}}
+    .pl-card{display:grid; gap:12px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-2); padding:14px}
+    .pl-head{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .cover{display:inline-grid; place-items:center; width:36px; height:36px; border-radius:8px; background:color-mix(in oklab, var(--accent) 18%, var(--surface)); font-size:18px}
+    .title{font-weight:700}
+    .tag{display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px; background:transparent; border:1px dashed var(--border); font-size:11px; color:var(--muted)}
+    a.link{color:color-mix(in oklab, var(--accent) 88%, var(--text)); text-decoration:none; border-bottom:1px dashed color-mix(in oklab, var(--accent) 60%, var(--border))}
+    a.link:hover{border-bottom-style:solid}
+    .toast{
+      position:fixed; left:50%; bottom:20px; transform:translateX(-50%);
+      background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 14px;
+      box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+    }
+    .toast.show{opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px)}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+    @media print{
+      header, .btn, .controls{display:none !important}
+      .pl-card{break-inside:avoid}
+      body{background:#fff; color:#000}
+    }
+  </style>
 </head>
 <body>
-<div class="sitebar">
-  <nav class="nav">
-    <div class="brand"><span class="dot"></span><span>PLNT · Tunes</span></div>
-    <div class="links">
-      <a class="link" href="/" title="Home">Home</a>
-      <a class="link" href="/pairs/" aria-current="page" title="Pairs">Pairs</a>
-    </div>
-  </nav>
-</div>
+  <a class="sr-only" href="#content">Skip to content</a>
+  <div class="shell">
+    <header>
+      <div class="brand" aria-live="polite" aria-atomic="true">
+        <div class="glyph" aria-hidden="true">⚡</div>
+        <h1 id="brand">Tunes — Pairs</h1>
+      </div>
+      <div class="controls">
+        <a id="openJar" class="btn ghost" href="#" target="_blank" rel="noopener">Open Jar</a>
+        <label class="btn" for="importPairs" style="cursor:pointer">Import</label>
+        <input id="importPairs" type="file" accept="application/json" hidden/>
+        <button id="exportPairs" class="btn">Export</button>
+        <button id="clearPairs" class="btn">Clear</button>
+      </div>
+    </header>
 
-<main>
-  <section class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <h1>Illumina Pairs</h1>
-    <div class="row">
-      <button id="viewSpiral" data-on="1" aria-pressed="true">Spiral</button>
-      <button id="viewMatrix" aria-pressed="false">Matrix</button>
-      <a id="jumpTester" href="#tester" class="link" style="padding:8px 12px">Tester</a>
-      <button id="printView">Print</button>
-      <button id="printMatrix">Print Spread (Matrix)</button>
-      <select id="theme">
-        <option value="auto">Theme: Auto</option>
-        <option value="light">Theme: Light</option>
-        <option value="dark">Theme: Dark</option>
-      </select>
-    </div>
-  </section>
+    <main id="content" class="stack" style="margin-top:18px">
+      <section class="card stack">
+        <div class="grid">
+          <div class="stack">
+            <h2 style="margin:0;font-size:16px">Build Pair</h2>
+            <div class="row">
+              <input id="aTitle" type="text" placeholder="Track A title" style="flex:2;min-width:220px"/>
+              <input id="aUrl" type="url" placeholder="Track A URL" style="flex:2;min-width:240px"/>
+            </div>
+            <div class="row">
+              <input id="bTitle" type="text" placeholder="Track B title" style="flex:2;min-width:220px"/>
+              <input id="bUrl" type="url" placeholder="Track B URL" style="flex:2;min-width:240px"/>
+            </div>
+            <div class="row">
+              <label>Focus <input id="focus" type="number" min="0" max="10" step="1" value="5" style="width:80px"/></label>
+              <label>Lightness <input id="light" type="number" min="0" max="10" step="1" value="5" style="width:80px"/></label>
+              <input id="pairTags" type="text" placeholder="#tags" style="flex:1;min-width:180px"/>
+            </div>
+            <textarea id="pairNotes" placeholder="Notes (optional)"></textarea>
+            <div class="row" style="justify-content:space-between">
+              <div class="controls">
+                <button id="swapPair" class="btn">Swap</button>
+                <button id="clearPair" class="btn">Clear</button>
+              </div>
+              <div class="controls">
+                <a id="logPair" class="btn ghost" href="#" target="_blank" rel="noopener">Log to Jar</a>
+                <button id="savePair" class="btn primary">Save Pair</button>
+              </div>
+            </div>
+          </div>
 
-  <!-- Spiral View -->
-  <section id="spiralCard" class="card" aria-labelledby="spiralTitle">
-    <h2 id="spiralTitle" class="sr-only">Spiral Map</h2>
-    <div class="stage" id="stage"><div class="badge">✓ strong · ~ unstable · ✗ none</div></div>
-    <div class="legend" id="legend"></div>
-  </section>
-
-  <!-- Matrix View -->
-  <section id="matrixCard" class="card" hidden aria-labelledby="matrixTitle">
-    <h2 id="matrixTitle" class="sr-only">Pairing Matrix</h2>
-    <div class="legend" style="margin-bottom:10px">
-      <span class="pill"><span class="dot ok"></span> strong</span>
-      <span class="pill"><span class="dot maybe"></span> unstable</span>
-      <span class="pill"><span class="dot no"></span> none</span>
-    </div>
-    <div style="overflow:auto"><table id="matrixTable"></table></div>
-  </section>
-
-  <!-- Prefilled Two-Track Tester -->
-  <section id="tester" class="card">
-    <h2 style="margin:0 0 8px">Two-Track Anchor Tester (Prefilled)</h2>
-    <div class="grid2">
-      <div>
-        <div class="pill">Ignition → <strong>Eminem — “Lose Yourself”</strong></div>
-        <div class="row" style="margin-top:8px">
-          <button id="openEminem">Open Track</button>
-          <button id="start">Start Test</button>
-          <div class="pill" id="clock">00:00</div>
+          <div class="stack">
+            <div class="row" style="justify-content:space-between; align-items:center">
+              <h2 style="margin:0;font-size:16px">History</h2>
+              <div class="muted" id="countBar" aria-live="polite"></div>
+            </div>
+            <div id="pairsList" class="stack"></div>
+            <div id="pairsEmpty" class="muted">No pairs saved yet.</div>
+          </div>
         </div>
-        <p class="hint" style="margin-top:6px">Open in a new tab. When ignition lands, press “Next”.</p>
-      </div>
-      <div>
-        <div class="pill">Release → <strong>Taylor Swift — “Shake It Off”</strong></div>
-        <div class="row" style="margin-top:8px">
-          <button id="openTaylor">Open Track</button>
-          <button id="next" disabled>Next</button>
-          <button id="finish" disabled>Finish</button>
-        </div>
-        <p class="hint" style="margin-top:6px">Move to Release to test the loop lock-in.</p>
-      </div>
-    </div>
+      </section>
 
-    <div class="grid2" style="margin-top:12px">
-      <div class="meter"><label for="focus" style="min-width:90px">Focus</label><input id="focus" type="range" min="0" max="10" value="6"><span id="focusVal">6</span></div>
-      <div class="meter"><label for="light" style="min-width:90px">Lightness</label><input id="light" type="range" min="0" max="10" value="6"><span id="lightVal">6</span></div>
-    </div>
-    <textarea id="testerNotes" placeholder="What shifted? Did Release lock Ignition or wash it out?"></textarea>
-    <div class="row" style="justify-content:space-between;margin-top:8px">
-      <span class="hint">Session log saves privately on this device.</span>
-      <div class="row">
-        <button id="saveSession">Save Session</button>
-        <button id="export">Export JSON</button>
-        <label class="link" style="cursor:pointer;padding:8px 12px">
-          <input id="importFile" type="file" accept="application/json" class="sr-only">
-          Import JSON
-        </label>
-        <button id="clearLog">Clear Log</button>
-      </div>
-    </div>
-    <div class="log" id="log" style="margin-top:12px"></div>
-  </section>
-
-  <!-- General Notes -->
-  <section class="card">
-    <h2 style="margin:0 0 8px">Map Notes</h2>
-    <textarea id="notes" placeholder="Broader pairing insights, placement tweaks, cycle ideas…"></textarea>
-    <div class="row" style="justify-content:space-between;margin-top:8px">
-      <span class="hint">Saved to localStorage.</span>
-      <div class="row">
-        <button id="save">Save</button>
-        <button id="clear">Clear</button>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="foot">
-    <div>PLNT · Tunes — Pairs</div>
-    <div class="hint">Print-ready via buttons or Cmd/Ctrl-P</div>
+      <section class="card stack">
+        <h2 style="margin:0;font-size:16px">About Data</h2>
+        <p class="muted">Pairs are stored locally under a namespaced key. Export regularly if you need backups or to move devices.</p>
+      </section>
+    </main>
   </div>
-</footer>
 
-<script>
-/* ===== Data (archetypes + pair ratings) ===== */
-var nodes = [
-  {id:"sabrina", label:"Sabrina 🍯", short:"Sabrina"},
-  {id:"janet",   label:"Janet 🌙",   short:"Janet"},
-  {id:"eminem",  label:"Eminem ⚡",  short:"Eminem"},
-  {id:"emma",    label:"Emma ☀️",    short:"Emma"},
-  {id:"doechii", label:"Doechii 🔥", short:"Doechii"},
-  {id:"h2g",     label:"Hot To Go! 🐝", short:"Hot To Go!"},
-  {id:"taylor",  label:"Taylor 🎶",  short:"Taylor"}
-];
-var pairs = {
-  sabrina:{janet:"ok", eminem:"maybe", emma:"ok", doechii:"maybe", h2g:"ok", taylor:"maybe"},
-  janet:{sabrina:"ok", eminem:"maybe", emma:"maybe", doechii:"ok", h2g:"maybe", taylor:"ok"},
-  eminem:{sabrina:"maybe", janet:"maybe", emma:"maybe", doechii:"ok", h2g:"ok", taylor:"ok"},
-  emma:{sabrina:"ok", janet:"maybe", eminem:"maybe", doechii:"ok", h2g:"maybe", taylor:"maybe"},
-  doechii:{sabrina:"maybe", janet:"ok", eminem:"ok", emma:"ok", h2g:"maybe", taylor:"maybe"},
-  h2g:{sabrina:"ok", janet:"maybe", eminem:"ok", emma:"maybe", doechii:"maybe", taylor:"ok"},
-  taylor:{sabrina:"maybe", janet:"ok", eminem:"ok", emma:"maybe", doechii:"maybe", h2g:"ok"}
-};
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-/* ===== Theme ===== */
-var themeSel = document.getElementById("theme");
-(function(){
-  var t = localStorage.getItem("illumina_theme") || "auto";
-  themeSel.value = t; applyTheme(t);
-  themeSel.addEventListener("change", function(){ applyTheme(this.value); localStorage.setItem("illumina_theme", this.value); });
-  function applyTheme(mode){
-    if(mode==="dark"){ document.documentElement.style.colorScheme = "dark"; }
-    else if(mode==="light"){ document.documentElement.style.colorScheme = "light"; }
-    else { document.documentElement.style.colorScheme = "light dark"; }
-  }
-})();
+  <script defer>
+    (function(){
+      "use strict";
 
-/* ===== Notes (general) ===== */
-var notesEl = document.getElementById("notes");
-document.getElementById("save").addEventListener("click", function(){ localStorage.setItem("illumina_pair_notes", notesEl.value); });
-document.getElementById("clear").addEventListener("click", function(){ notesEl.value=""; localStorage.removeItem("illumina_pair_notes"); });
-notesEl.value = localStorage.getItem("illumina_pair_notes") || "";
+      const $  = (s, r=document) => r.querySelector(s);
+      const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-/* ===== Spiral / Matrix toggle ===== */
-var stage = document.getElementById("stage"), legend = document.getElementById("legend");
-var viewSpiral = document.getElementById("viewSpiral"), viewMatrix = document.getElementById("viewMatrix");
-var spiralCard = document.getElementById("spiralCard"), matrixCard = document.getElementById("matrixCard");
-viewSpiral.addEventListener("click", function(){ toggle(true); renderSpiral(); });
-viewMatrix.addEventListener("click", function(){ toggle(false); renderMatrix(); });
-function toggle(isSpiral){
-  viewSpiral.dataset.on = isSpiral ? "1" : ""; viewSpiral.setAttribute("aria-pressed", isSpiral);
-  viewMatrix.dataset.on = isSpiral ? "" : "1"; viewMatrix.setAttribute("aria-pressed", !isSpiral);
-  spiralCard.hidden = !isSpiral; matrixCard.hidden = isSpiral;
-}
+      const els = {
+        brand: $("#brand"),
+        openJar: $("#openJar"),
+        aTitle: $("#aTitle"),
+        aUrl: $("#aUrl"),
+        bTitle: $("#bTitle"),
+        bUrl: $("#bUrl"),
+        focus: $("#focus"),
+        light: $("#light"),
+        pairTags: $("#pairTags"),
+        pairNotes: $("#pairNotes"),
+        swapPair: $("#swapPair"),
+        clearPair: $("#clearPair"),
+        savePair: $("#savePair"),
+        logPair: $("#logPair"),
+        importPairs: $("#importPairs"),
+        exportPairs: $("#exportPairs"),
+        clearPairs: $("#clearPairs"),
+        pairsList: $("#pairsList"),
+        pairsEmpty: $("#pairsEmpty"),
+        countBar: $("#countBar"),
+        toast: $("#toast")
+      };
 
-/* legend chips */
-(function(){
-  var frag = document.createDocumentFragment();
-  nodes.forEach(function(n){ var s=document.createElement("span"); s.className="pill"; s.textContent=n.label; frag.appendChild(s); });
-  legend.appendChild(frag);
-})();
+      const cfg = (window.APP_CONFIG && typeof window.APP_CONFIG === "object") ? window.APP_CONFIG : {};
+      const ns = cfg.namespace || cfg.appId || "plnt";
+      const DBKEY = `tunes.v1.${ns}`;
+      const accent = (cfg.theme && cfg.theme.accent) ? String(cfg.theme.accent) : null;
+      if (accent) document.documentElement.style.setProperty("--accent", accent);
+      if (cfg.brand || cfg.title){
+        const label = `${cfg.brand || cfg.title}`.replace(/\s+—.*$/,"");
+        els.brand.textContent = (label ? `${label} — Pairs` : "Tunes — Pairs");
+        document.title = els.brand.textContent;
+      }
 
-/* ===== Spiral drawing ===== */
-function renderSpiral(){
-  stage.innerHTML = '<div class="badge">✓ strong · ~ unstable · ✗ none</div>';
-  var w = stage.clientWidth, h = stage.clientHeight, cx=w/2, cy=h/2, turns=2.5, maxR=Math.min(w,h)*0.44;
-  var svg = document.createElementNS("http://www.w3.org/2000/svg","svg"); svg.setAttribute("viewBox","0 0 "+w+" "+h);
-  var path = document.createElementNS(svg.namespaceURI,"path"), pts=[], total=420;
-  for(var i=0;i<=total;i++){ var t=i/total*(Math.PI*2*turns), r=(i/total)*maxR, x=cx+r*Math.cos(t), y=cy+r*Math.sin(t); pts.push((i===0?"M":"L")+x.toFixed(2)+","+y.toFixed(2)); }
-  path.setAttribute("d", pts.join(" ")); path.setAttribute("fill","none"); path.setAttribute("stroke","currentColor"); path.setAttribute("stroke-opacity","0.25"); path.setAttribute("stroke-width","2"); svg.appendChild(path);
-  var positions=[], j;
-  for(j=0;j<nodes.length;j++){ var t=(j/(nodes.length-0.2))*(Math.PI*2*turns), r=(0.18+j/(nodes.length+0.6))*maxR; positions.push([cx+r*Math.cos(t), cy+r*Math.sin(t)]); }
-  nodes.forEach(function(n, idx){
-    var g = document.createElementNS(svg.namespaceURI,"g"), x=positions[idx][0], y=positions[idx][1];
-    var circle = document.createElementNS(svg.namespaceURI,"circle"); circle.setAttribute("cx",x); circle.setAttribute("cy",y); circle.setAttribute("r",22); circle.setAttribute("fill","var(--char)"); circle.setAttribute("stroke","currentColor"); circle.setAttribute("stroke-opacity","0.25"); circle.setAttribute("stroke-width","2"); g.appendChild(circle);
-    var text = document.createElementNS(svg.namespaceURI,"text"); text.setAttribute("x",x); text.setAttribute("y",y+5); text.setAttribute("font-size","13"); text.setAttribute("text-anchor","middle"); text.setAttribute("fill","currentColor"); text.textContent = nodes[idx].short; g.appendChild(text);
-    svg.appendChild(g);
-  });
-  function color(v){ if(v==="ok") return "var(--ok)"; if(v==="maybe") return "var(--maybe)"; return "var(--no)"; }
-  for(var a=0;a<nodes.length;a++){ for(var b=a+1;b<nodes.length;b++){ var A=nodes[a].id, B=nodes[b].id, r=(pairs[A]&&pairs[A][B])||(pairs[B]&&pairs[B][A]); if(!r) continue;
-    var line=document.createElementNS(svg.namespaceURI,"line"); line.setAttribute("x1",positions[a][0]); line.setAttribute("y1",positions[a][1]); line.setAttribute("x2",positions[b][0]); line.setAttribute("y2",positions[b][1]);
-    line.setAttribute("stroke",color(r)); line.setAttribute("stroke-width", r==="ok"?3:2); if(r==="maybe"){ line.setAttribute("stroke-dasharray","6,6"); } if(r==="no"){ line.setAttribute("stroke-opacity","0.35"); }
-    svg.appendChild(line);
-  }}
-  stage.prepend(svg);
-}
-renderSpiral();
+      function showToast(msg){
+        els.toast.textContent = msg;
+        els.toast.classList.add("show");
+        setTimeout(()=> els.toast.classList.remove("show"), 1400);
+      }
 
-/* ===== Matrix ===== */
-function renderMatrix(){
-  var t=document.getElementById("matrixTable");
-  var head="<tr><th class='name'>From → To</th>"+nodes.map(function(n){return "<th>"+n.short+"</th>"}).join("")+"</tr>";
-  var rows=nodes.map(function(row){
-    var cells=nodes.map(function(col){
-      if(col.id===row.id) return "<td>—</td>";
-      var v=(pairs[row.id]||{})[col.id]||"", mark=v==="ok"?"✓":v==="maybe"?"~":v==="no"?"✗":"", colr=v==="ok"?"var(--ok)":v==="maybe"?"var(--maybe)":v==="no"?"var(--no)":"var(--muted)";
-      return "<td style='color:"+colr+"'>"+mark+"</td>";
-    }).join("");
-    return "<tr><td class='name'>"+row.label+"</td>"+cells+"</tr>";
-  }).join("");
-  t.innerHTML=head+rows;
-}
+      function parseTags(raw){
+        if (!raw) return [];
+        return raw.split(/[\s,]+/).map(s=>s.trim().replace(/^#/, "")).filter(Boolean).slice(0, 16);
+      }
+      function todayISO(){
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      }
+      function humanDate(iso){
+        const [y,m,d] = iso.split("-").map(Number);
+        const dt = new Date(y, m-1, d);
+        return dt.toLocaleDateString(undefined, {weekday:"short", year:"numeric", month:"short", day:"numeric"});
+      }
 
-/* ===== Prefilled tester ===== */
-var emUrl="https://www.youtube.com/watch?v=_Yhyp-_hX2s";  /* Lose Yourself */
-var tsUrl="https://www.youtube.com/watch?v=nfWlot6h_JM";  /* Shake It Off */
-document.getElementById("openEminem").addEventListener("click", function(){ window.open(emUrl,"_blank","noopener"); });
-document.getElementById("openTaylor").addEventListener("click", function(){ window.open(tsUrl,"_blank","noopener"); });
+      const memory = { db:null };
+      function readDB(){
+        if (memory.db) return JSON.parse(JSON.stringify(memory.db));
+        try{
+          const raw = localStorage.getItem(DBKEY);
+          const obj = raw ? JSON.parse(raw) : {};
+          const safe = {playlists: obj.playlists||[], pairs: obj.pairs||[]};
+          memory.db = JSON.parse(JSON.stringify(safe));
+          return safe;
+        }catch(_){ return {playlists:[], pairs:[]}; }
+      }
+      function writeDB(obj){
+        const safe = {playlists: obj.playlists||[], pairs: obj.pairs||[]};
+        try{ localStorage.setItem(DBKEY, JSON.stringify(safe)); memory.db = JSON.parse(JSON.stringify(safe)); }
+        catch(_){ memory.db = JSON.parse(JSON.stringify(safe)); }
+      }
 
-var startBtn=document.getElementById("start"), nextBtn=document.getElementById("next"), finishBtn=document.getElementById("finish"), clock=document.getElementById("clock");
-var t0=0, tIgn=0, tRel=0, tickId=null, phase="idle";
-function fmt(ms){ var s=Math.floor(ms/1000); var m=Math.floor(s/60); var r=(s%60).toString().padStart(2,"0"); return String(m).padStart(2,"0")+":"+r; }
-startBtn.addEventListener("click", function(){ if(phase!=="idle") return; phase="ignition"; t0=performance.now(); tickId=setInterval(function(){ clock.textContent=fmt(performance.now()-t0); }, 200); nextBtn.disabled=false; finishBtn.disabled=true; });
-nextBtn.addEventListener("click", function(){ if(phase!=="ignition") return; tIgn=performance.now()-t0; phase="release"; nextBtn.disabled=true; finishBtn.disabled=false; });
-finishBtn.addEventListener("click", function(){ if(phase!=="release") return; tRel=performance.now()-t0 - tIgn; clearInterval(tickId); clock.textContent=fmt(performance.now()-t0); phase="done"; });
+      function jarBase(){
+        if (cfg.basePathJar){
+          if (/^https?:\/\//i.test(cfg.basePathJar)) return cfg.basePathJar.replace(/\/?$/, "/");
+          return cfg.basePathJar.replace(/\/?$/, "/");
+        }
+        const h = location.host;
+        if (h.startsWith("tunes.")) return `${location.protocol}//jar.${h.slice(6)}/`;
+        return "/jar/";
+      }
+      function jarLink({date, type, tags, text}){
+        const d = date || new Date();
+        const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+        const qp = new URLSearchParams();
+        qp.set("date", iso);
+        if (type) qp.set("type", type);
+        if (tags && tags.length) qp.set("tags", tags.map(t=> t.startsWith("#")? t : "#"+t).join(" "));
+        if (text) qp.set("text", text);
+        return jarBase() + "day/?" + qp.toString();
+      }
 
-var focus=document.getElementById("focus"), light=document.getElementById("light"), focusVal=document.getElementById("focusVal"), lightVal=document.getElementById("lightVal");
-focus.addEventListener("input", function(){ focusVal.textContent=this.value; });
-light.addEventListener("input", function(){ lightVal.textContent=this.value; });
+      function updateHeader(){
+        $("#openJar").href = jarBase() + "index.html";
+      }
 
-/* ===== Session log (Export/Import) ===== */
-var testerNotes=document.getElementById("testerNotes"), saveSession=document.getElementById("saveSession"), clearLog=document.getElementById("clearLog"), log=document.getElementById("log");
-var exportBtn=document.getElementById("export"), importFile=document.getElementById("importFile");
+      function updateLogPairLink(){
+        const txt = `${String(els.aTitle.value||"A").trim()} → ${String(els.bTitle.value||"B").trim()} • F${els.focus.value}/L${els.light.value}`;
+        els.logPair.href = jarLink({type:"Honey", tags:["tunes","pair"], text:txt, date:new Date()});
+      }
 
-function loadLog(){
-  log.innerHTML="";
-  var items=JSON.parse(localStorage.getItem("illumina_sessions")||"[]");
-  items.forEach(function(it){
-    var div=document.createElement("div"); div.className="entry";
-    div.innerHTML="<strong>"+it.when+"</strong> — "+it.label+
-      "<br>Ignition: "+fmt(it.tIgn)+" · Release: "+fmt(it.tRel)+
-      "<br>Focus: "+it.focus+" · Lightness: "+it.light+
-      (it.notes ? "<br>"+it.notes.replace(/</g,"&lt;") : "");
-    log.appendChild(div);
-  });
-}
-loadLog();
+      function savePair(){
+        const aTitle = String(els.aTitle.value||"").trim();
+        const aUrl = String(els.aUrl.value||"").trim();
+        const bTitle = String(els.bTitle.value||"").trim();
+        const bUrl = String(els.bUrl.value||"").trim();
+        const focus = Number(els.focus.value||0);
+        const light = Number(els.light.value||0);
+        const tags = parseTags(els.pairTags.value);
+        const notes = String(els.pairNotes.value||"").trim();
+        const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        const p = {id, aTitle, aUrl, bTitle, bUrl, focus, light, tags, notes, createdAt: new Date().toISOString()};
+        const db = readDB();
+        db.pairs.push(p);
+        writeDB(db);
+        renderPairs();
+        showToast("Pair saved");
+      }
 
-saveSession.addEventListener("click", function(){
-  var items=JSON.parse(localStorage.getItem("illumina_sessions")||"[]");
-  items.unshift({
-    when:new Date().toLocaleString(),
-    label:'Lose Yourself → Shake It Off',
-    tIgn:tIgn||0, tRel:tRel||0,
-    focus:focus.value, light:light.value,
-    notes:testerNotes.value
-  });
-  localStorage.setItem("illumina_sessions", JSON.stringify(items));
-  testerNotes.value=""; loadLog();
-});
-clearLog.addEventListener("click", function(){ localStorage.removeItem("illumina_sessions"); loadLog(); });
+      function renderPairs(){
+        const db = readDB();
+        els.pairsList.innerHTML = "";
+        const list = db.pairs.slice().sort((a,b)=> a.createdAt > b.createdAt ? -1 : 1);
+        els.countBar.textContent = `${list.length} saved`;
+        if (!list.length){
+          els.pairsEmpty.style.display = "block";
+          return;
+        }
+        els.pairsEmpty.style.display = "none";
+        const frag = document.createDocumentFragment();
+        list.forEach(p=>{
+          const card = document.createElement("div");
+          card.className = "pl-card";
 
-/* Export as JSON file */
-exportBtn.addEventListener("click", function(){
-  var data=localStorage.getItem("illumina_sessions")||"[]";
-  var blob=new Blob([data],{type:"application/json"});
-  var a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  var ts=new Date().toISOString().split("T")[0];
-  a.download="illumina_pairs_sessions_"+ts+".json";
-  document.body.appendChild(a); a.click(); a.remove();
-});
+          const head = document.createElement("div");
+          head.className = "pl-head";
+          const left = document.createElement("div");
+          left.style.display = "flex";
+          left.style.alignItems = "center";
+          left.style.gap = "10px";
+          const icon = document.createElement("div");
+          icon.className = "cover";
+          icon.textContent = "⚡";
+          const title = document.createElement("div");
+          title.className = "title";
+          title.textContent = `${p.aTitle||"A"} → ${p.bTitle||"B"}`;
+          left.appendChild(icon); left.appendChild(title);
 
-/* Import from JSON file */
-importFile.addEventListener("change", function(){
-  var file=this.files[0]; if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(){
-    try{
-      var incoming=JSON.parse(reader.result||"[]");
-      var current=JSON.parse(localStorage.getItem("illumina_sessions")||"[]");
-      var merged=[].concat(incoming, current);
-      localStorage.setItem("illumina_sessions", JSON.stringify(merged));
-      loadLog();
-      alert("Imported "+incoming.length+" session(s).");
-    }catch(e){ alert("Import failed: invalid JSON."); }
-  };
-  reader.readAsText(file);
-  this.value="";
-});
+          const right = document.createElement("div");
+          right.className = "controls";
+          const a = document.createElement("a");
+          a.className = "btn mini"; a.href = p.aUrl||"#"; a.textContent = "A"; a.target="_blank"; a.rel="noopener";
+          const b = document.createElement("a");
+          b.className = "btn mini"; b.href = p.bUrl||"#"; b.textContent = "B"; b.target="_blank"; b.rel="noopener";
+          const log = document.createElement("a");
+          log.className = "btn mini ghost"; log.target="_blank"; log.rel="noopener";
+          log.href = jarLink({type:"Honey", tags:["tunes","pair"], text:`${p.aTitle||"A"} → ${p.bTitle||"B"} • F${p.focus}/L${p.light}`});
+          log.textContent = "Log to Jar";
+          const del = document.createElement("button");
+          del.className = "btn mini"; del.textContent = "Delete";
+          del.addEventListener("click", ()=>{
+            const next = db.pairs.filter(x => x.id !== p.id);
+            writeDB({playlists: db.playlists, pairs: next});
+            renderPairs();
+            showToast("Pair deleted");
+          });
+          right.appendChild(a);
+          right.appendChild(b);
+          right.appendChild(log);
+          right.appendChild(del);
 
-/* ===== Print: current view ===== */
-var printBtn = document.getElementById("printView");
-if (printBtn) {
-  printBtn.addEventListener("click", function () {
-    if (!spiralCard.hidden) { renderSpiral(); } else { renderMatrix(); }
-    window.print();
-  });
-}
+          head.appendChild(left); head.appendChild(right);
 
-/* ===== Print: Matrix one-click ===== */
-var printMatrixBtn = document.getElementById("printMatrix");
-if (printMatrixBtn) {
-  printMatrixBtn.addEventListener("click", function () {
-    toggle(false);
-    renderMatrix();
-    setTimeout(function(){ window.print(); }, 150);
-  });
-}
+          const meta = document.createElement("div");
+          meta.className = "row";
+          meta.appendChild(chip(`Date: ${humanDate((p.createdAt||"").slice(0,10)||todayISO())}`));
+          meta.appendChild(chip(`F${p.focus}`));
+          meta.appendChild(chip(`L${p.light}`));
+          if (p.tags && p.tags.length){ p.tags.forEach(t=> meta.appendChild(tag(`#${t}`))); }
+          else { meta.appendChild(muted("No tags")); }
 
-/* ===== Auto-print via URL ===== */
-(function(){
-  var u = new URL(location.href);
-  var wantPrint = u.searchParams.get("print");
-  var wantView  = (u.searchParams.get("view")||"").toLowerCase();
-  if (wantView==="matrix"){ toggle(false); renderMatrix(); }
-  else if (wantView==="spiral"){ toggle(true); renderSpiral(); }
-  if (wantPrint==="1"){ setTimeout(function(){ window.print(); },200); }
-})();
-</script>
+          const notes = document.createElement("div");
+          notes.className = "muted";
+          notes.textContent = p.notes || "";
+
+          card.appendChild(head);
+          card.appendChild(meta);
+          if (p.notes) card.appendChild(notes);
+          frag.appendChild(card);
+        });
+        els.pairsList.appendChild(frag);
+      }
+
+      function chip(text){
+        const n = document.createElement("div");
+        n.className = "tag";
+        n.textContent = text;
+        return n;
+      }
+      function tag(text){
+        const n = document.createElement("span");
+        n.className = "tag";
+        n.textContent = text;
+        return n;
+      }
+      function muted(text){
+        const n = document.createElement("span");
+        n.className = "muted";
+        n.textContent = text;
+        return n;
+      }
+
+      function onExportPairs(){
+        const db = readDB();
+        const out = {pairs: db.pairs||[]};
+        const blob = new Blob([JSON.stringify(out, null, 2)], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "tunes-pairs.json";
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      }
+      function onImportPairs(file){
+        if (!file) return;
+        const fr = new FileReader();
+        fr.onload = () => {
+          let data;
+          try{ data = JSON.parse(fr.result); }catch(_){ showToast("Invalid JSON"); return; }
+          const db = readDB();
+          const incoming = Array.isArray(data) ? data : (data.pairs||[]);
+          const next = {playlists: db.playlists||[], pairs: (db.pairs||[]).concat(incoming)};
+          writeDB(next);
+          renderPairs();
+          showToast("Imported pairs");
+        };
+        fr.readAsText(file);
+      }
+
+      function onClearPairs(){
+        if (!confirm("Clear all saved pairs?")) return;
+        const db = readDB();
+        writeDB({playlists: db.playlists||[], pairs: []});
+        renderPairs();
+        showToast("Pairs cleared");
+      }
+
+      els.swapPair.addEventListener("click", ()=>{
+        const t = els.aTitle.value, u = els.aUrl.value;
+        els.aTitle.value = els.bTitle.value; els.aUrl.value = els.bUrl.value;
+        els.bTitle.value = t; els.bUrl.value = u;
+        updateLogPairLink();
+      });
+      els.clearPair.addEventListener("click", ()=>{
+        els.aTitle.value = ""; els.aUrl.value = "";
+        els.bTitle.value = ""; els.bUrl.value = "";
+        els.focus.value = "5"; els.light.value = "5";
+        els.pairTags.value = ""; els.pairNotes.value = "";
+        updateLogPairLink();
+      });
+      els.savePair.addEventListener("click", (e)=>{ e.preventDefault(); savePair(); });
+
+      ["aTitle","bTitle","focus","light"].forEach(id=>{
+        els[id].addEventListener("input", updateLogPairLink);
+      });
+
+      els.importPairs.addEventListener("change", e => onImportPairs(e.target.files && e.target.files[0]));
+      els.exportPairs.addEventListener("click", onExportPairs);
+      els.clearPairs.addEventListener("click", onClearPairs);
+
+      function init(){
+        updateHeader();
+        renderPairs();
+        updateLogPairLink();
+      }
+      init();
+    })();
+  </script>
 </body>
 </html>
