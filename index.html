@@ -1,534 +1,857 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>PLNT · Tunes</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Daily music rituals for Illumina cycles. Switch Neon/Honey modes, play playlists, and run anchor tests.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' x='6' font-size='48'%3E🌕%3C/text%3E%3C/svg%3E">
-<meta name="color-scheme" content="dark light">
-<meta property="og:title" content="PLNT · Tunes">
-<meta property="og:description" content="Neon/Honey modes, playlists, and Illumina anchor tests.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Crect width='100%25' height='100%25' fill='%230a0b0c'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='84' fill='%23c3e8ff'%3EPLNT · Tunes%3C/text%3E%3C/svg%3E">
-<style>
-  /* ===== Pepper-Black base ===== */
-  :root{
-    --pepper:#0a0b0c; --char:#101214; --ink:#f1f2f3; --muted:#8e98a3;
-    --line: color-mix(in oklab, var(--ink) 12%, transparent);
-    --ring: color-mix(in oklab, var(--ink) 18%, transparent);
-    --accent:#c3e8ff; --ok:#7ee787; --warn:#f5d97b; --no:#ff7b72;
-    --pad:16px; --rad:16px; --rad-sm:10px; --fw:600;
-    --glow: 0 0 24px color-mix(in oklab, var(--accent) 60%, transparent);
-  }
-  @media (prefers-color-scheme: light){
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Tunes</title>
+  <meta name="color-scheme" content="light dark"/>
+  <style>
     :root{
-      --pepper:#fafafa; --char:#ffffff; --ink:#0b0d10; --muted:#596272;
-      --line: color-mix(in oklab, var(--ink) 16%, transparent);
-      --ring: color-mix(in oklab, var(--ink) 22%, transparent);
-      --accent:#144d7a; --glow: 0 0 0 transparent;
+      --bg:#0b0f14;
+      --surface:#111827;
+      --surface-2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --border:#1f2737;
+      --accent:#7c3aed;
+      --accent-ink:#ffffff;
+      --shadow:0 8px 24px rgba(0,0,0,.28);
+      --radius:12px;
+      --radius-sm:10px;
+      --radius-xs:8px;
+      --ring:0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
     }
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--pepper); color:var(--ink);
-    font:500 15px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Helvetica, Arial;
-  }
-
-  /* ===== Site chrome ===== */
-  .sitebar{
-    position:sticky; top:0; z-index:10;
-    background:linear-gradient(180deg, color-mix(in oklab,var(--char) 92%, transparent), var(--char));
-    border-bottom:1px solid var(--line); padding:10px 16px;
-  }
-  .nav{max-width:1120px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px}
-  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
-  .dot{inline-size:9px; block-size:9px; border-radius:50%; background:var(--accent); box-shadow:var(--glow)}
-  .links{display:flex; gap:10px; flex-wrap:wrap}
-  .link{
-    display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px;
-    border:1px solid var(--ring); background:var(--char); color:var(--ink); text-decoration:none; font-weight:600
-  }
-  .link[aria-current="page"]{outline:2px solid var(--accent); outline-offset:2px}
-
-  .hero{
-    max-width:1120px; margin:18px auto; padding:0 16px;
-    display:grid; gap:10px; align-items:center; grid-template-columns:1fr auto;
-  }
-  h1{margin:0; font-size:28px; letter-spacing:.2px}
-  .modes{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-  button, select{
-    border:1px solid var(--ring); background:var(--char); color:var(--ink);
-    border-radius:var(--rad-sm); padding:10px 12px; font-weight:var(--fw);
-  }
-  .mode[data-on="1"]{outline:2px solid var(--accent)}
-  .container{max-width:1120px; margin:0 auto 36px; padding:0 16px; display:grid; gap:16px}
-  .card{background:var(--char); border:1px solid var(--line); border-radius:var(--rad); padding:var(--pad)}
-  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-
-  /* ===== Neon / Honey aesthetic toggles ===== */
-  [data-mode="neon"] .brand .dot{background:#6cf; box-shadow:0 0 24px #6cf}
-  [data-mode="neon"] .accent{color:#9ddcff; text-shadow:0 0 10px #9ddcff}
-  [data-mode="honey"] .brand .dot{background:#ffcd66; box-shadow:0 0 24px #ffcd66}
-  [data-mode="honey"] .accent{color:#ffd58a; text-shadow:0 0 8px #663}
-  .hint{color:var(--muted); font-size:12px}
-
-  /* ===== Playlist / embeds ===== */
-  .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:12px}
-  .tile{
-    background:var(--char); border:1px solid var(--line); border-radius:12px; padding:12px;
-    display:grid; gap:8px
-  }
-  .tile h3{margin:0; font-size:16px}
-  .pill{display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px; background:var(--char); border:1px solid var(--line)}
-  iframe{width:100%; aspect-ratio:16/9; border:0; border-radius:12px}
-  .stage{width:100%; aspect-ratio:16/10; min-height:300px; border-radius:12px; border:1px dashed var(--line); display:grid; place-items:center; color:var(--muted)}
-
-  /* ===== Footer ===== */
-  footer{border-top:1px solid var(--line); padding:14px 16px; color:var(--muted)}
-  .foot{max-width:1120px; margin:0 auto; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
-</style>
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7fafc;
+        --surface:#ffffff;
+        --surface-2:#f8fafc;
+        --text:#0f172a;
+        --muted:#475569;
+        --border:#e2e8f0;
+        --accent:#6d28d9;
+        --accent-ink:#ffffff;
+        --shadow:0 8px 20px rgba(17,24,39,.08);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% -10%, color-mix(in oklab, var(--accent) 16%, transparent), transparent), var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .shell{max-width:1100px; margin:24px auto 56px; padding:0 16px}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      background:linear-gradient(180deg, color-mix(in oklab, var(--surface) 94%, transparent), var(--surface));
+      border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow);
+      position:sticky; top:12px; z-index:5; backdrop-filter:saturate(1.2) blur(6px)
+    }
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px}
+    .glyph{display:inline-grid; place-items:center; width:32px; height:32px; border-radius:8px; background:var(--accent); color:var(--accent-ink); font-size:18px}
+    .brand h1{font-size:18px; margin:0}
+    .controls{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+    .btn{
+      border:1px solid var(--border); background:var(--surface-2); color:var(--text);
+      padding:10px 12px; border-radius:var(--radius-xs); cursor:pointer; transition:transform .04s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:focus-visible{outline:none; box-shadow:var(--ring)}
+    .btn.primary{background:var(--accent); color:var(--accent-ink); border-color:color-mix(in oklab, var(--accent) 40%, var(--border))}
+    .btn.ghost{background:transparent}
+    .btn.mini{font-size:12px; padding:6px 8px}
+    input[type="text"], input[type="url"], input[type="number"], textarea, select{
+      border:1px solid var(--border); background:var(--surface-2); color:var(--text);
+      padding:10px 12px; border-radius:var(--radius-xs)
+    }
+    textarea{min-height:96px; resize:vertical}
+    .muted{color:var(--muted); font-size:12px}
+    .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px}
+    .stack{display:grid; gap:14px}
+    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .toolbar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--border); background:var(--surface-2); font-size:12px; color:var(--muted)
+    }
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:680px){.grid{grid-template-columns:1fr}}
+    .pl-card{display:grid; gap:12px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-2); padding:14px}
+    .pl-head{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .cover{display:inline-grid; place-items:center; width:36px; height:36px; border-radius:8px; background:color-mix(in oklab, var(--accent) 18%, var(--surface)); font-size:18px}
+    .title{font-weight:700}
+    .tag{display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px; background:transparent; border:1px dashed var(--border); font-size:11px; color:var(--muted)}
+    .list{display:grid; gap:10px}
+    .track{display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid var(--border); border-radius:10px; padding:8px 10px; background:var(--surface)}
+    .track a.link{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60ch}
+    a.link{color:color-mix(in oklab, var(--accent) 88%, var(--text)); text-decoration:none; border-bottom:1px dashed color-mix(in oklab, var(--accent) 60%, var(--border))}
+    a.link:hover{border-bottom-style:solid}
+    iframe{width:100%; border:0; border-radius:10px}
+    .split{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:760px){.split{grid-template-columns:1fr}}
+    .toast{
+      position:fixed; left:50%; bottom:20px; transform:translateX(-50%);
+      background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 14px;
+      box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+    }
+    .toast.show{opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(-4px)}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+    @media print{
+      header, .btn, .controls, .toolbar .controls{display:none !important}
+      .pl-card, .entry{break-inside:avoid}
+      body{background:#fff; color:#000}
+    }
+  </style>
 </head>
-<body data-mode="neon">
-  <!-- ===== Header ===== -->
-  <div class="sitebar">
-    <nav class="nav" aria-label="Primary">
-      <div class="brand"><span class="dot"></span><span>PLNT · Tunes</span></div>
-      <div class="links">
-        <a class="link" aria-current="page" href="/">Home</a>
-        <a class="link" href="/pairs/">Pairs</a>
+<body>
+  <a class="sr-only" href="#content">Skip to content</a>
+  <div class="shell">
+    <header>
+      <div class="brand" aria-live="polite" aria-atomic="true">
+        <div class="glyph" aria-hidden="true">🎧</div>
+        <h1 id="brand">Tunes</h1>
       </div>
-    </nav>
+      <div class="controls">
+        <div class="row" role="group" aria-label="Player mode">
+          <label class="btn mini"><input type="radio" name="playerMode" value="links" checked style="margin-right:8px">Links only</label>
+          <label class="btn mini"><input type="radio" name="playerMode" value="youtube" style="margin-right:8px">YouTube embeds</label>
+          <label class="btn mini"><input type="radio" name="playerMode" value="apple" style="margin-right:8px">Apple embeds</label>
+        </div>
+        <a id="openJar" class="btn ghost" href="#" target="_blank" rel="noopener">Open Jar</a>
+      </div>
+    </header>
+
+    <main id="content" class="stack" style="margin-top:18px">
+      <section class="card stack">
+        <div class="toolbar">
+          <div class="controls" style="gap:14px">
+            <input id="tagFilter" type="text" placeholder="#tag filter (space/comma/#)"/>
+            <input id="textFilter" type="text" placeholder="Search playlists…"/>
+          </div>
+          <div class="controls">
+            <label class="btn" for="importAll" style="cursor:pointer">Import JSON</label>
+            <input id="importAll" type="file" accept="application/json" hidden/>
+            <button class="btn" id="exportAll">Export JSON</button>
+            <button class="btn" id="clearAll">Clear All</button>
+          </div>
+        </div>
+        <div class="muted" id="summary" aria-live="polite"></div>
+      </section>
+
+      <section class="card stack">
+        <div class="toolbar">
+          <h2 style="margin:0;font-size:16px">Playlists</h2>
+          <div class="controls">
+            <button class="btn" id="toggleAdd">Add Playlist</button>
+          </div>
+        </div>
+
+        <form id="addForm" class="stack" hidden autocomplete="off">
+          <div class="row">
+            <input id="plTitle" type="text" placeholder="Title" required style="flex:2;min-width:220px"/>
+            <select id="plType" style="min-width:160px">
+              <option value="links">Links</option>
+              <option value="youtube">YouTube</option>
+              <option value="apple">Apple Music</option>
+            </select>
+            <input id="plCover" type="text" placeholder="Cover emoji (optional)" style="min-width:160px"/>
+          </div>
+          <input id="plUrl" type="url" placeholder="Playlist URL (YouTube or Apple). For Links, leave blank or add tracks below."/>
+          <textarea id="plTracks" placeholder="Tracks for Links mode: one per line. Optional title and URL separated by | or —"></textarea>
+          <input id="plTags" type="text" placeholder="#tags (space/comma/#)"/>
+          <textarea id="plDesc" placeholder="Description (optional)"></textarea>
+          <div class="row" style="justify-content:flex-end">
+            <button type="reset" class="btn">Clear</button>
+            <button type="submit" class="btn primary">Save Playlist</button>
+          </div>
+        </form>
+
+        <div id="playlistGrid" class="grid"></div>
+        <div id="playlistEmpty" class="muted">No playlists yet. Add one above or import JSON.</div>
+      </section>
+
+      <section class="card stack">
+        <div class="toolbar">
+          <h2 style="margin:0;font-size:16px">Pairs Tester</h2>
+          <div class="controls">
+            <button id="swapPair" class="btn">Swap</button>
+            <button id="clearPair" class="btn">Clear</button>
+            <button id="savePair" class="btn primary">Save Pair</button>
+          </div>
+        </div>
+        <div class="split">
+          <div class="stack">
+            <div class="row">
+              <input id="aTitle" type="text" placeholder="Track A title" style="flex:2;min-width:220px"/>
+              <input id="aUrl" type="url" placeholder="Track A URL" style="flex:2;min-width:240px"/>
+            </div>
+            <div class="row">
+              <input id="bTitle" type="text" placeholder="Track B title" style="flex:2;min-width:220px"/>
+              <input id="bUrl" type="url" placeholder="Track B URL" style="flex:2;min-width:240px"/>
+            </div>
+            <div class="row">
+              <label>Focus <input id="focus" type="number" min="0" max="10" step="1" value="5" style="width:80px"/></label>
+              <label>Lightness <input id="light" type="number" min="0" max="10" step="1" value="5" style="width:80px"/></label>
+              <input id="pairTags" type="text" placeholder="#tags" style="flex:1;min-width:180px"/>
+            </div>
+            <textarea id="pairNotes" placeholder="Notes (optional)"></textarea>
+            <div class="row" style="justify-content:flex-end">
+              <a id="logPair" class="btn ghost" href="#" target="_blank" rel="noopener">Log to Jar</a>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="row" style="justify-content:space-between; align-items:center">
+              <div class="muted">History</div>
+              <div class="controls">
+                <label class="btn" for="importPairs" style="cursor:pointer">Import</label>
+                <input id="importPairs" type="file" accept="application/json" hidden/>
+                <button id="exportPairs" class="btn">Export</button>
+                <button id="clearPairs" class="btn">Clear</button>
+              </div>
+            </div>
+            <div id="pairsList" class="stack"></div>
+            <div id="pairsEmpty" class="muted">No pairs saved yet.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card stack">
+        <h2 style="margin:0;font-size:16px">About Data</h2>
+        <p class="muted">Data is stored locally in your browser under a namespaced key. Export regularly if you need backups or to merge with other devices.</p>
+      </section>
+    </main>
   </div>
 
-  <!-- ===== Hero / Controls ===== -->
-  <section class="hero">
-    <h1><span class="accent">Daily Tunes</span> · Illumina Rituals</h1>
-    <div class="modes">
-      <button id="neon" class="mode" data-on="1" aria-pressed="true">Neon</button>
-      <button id="honey" class="mode" aria-pressed="false">Honey</button>
-      <select id="playerPref" title="Player">
-        <option value="links">Links only</option>
-        <option value="youtube">YouTube embeds</option>
-        <option value="apple">Apple embeds</option>
-      </select>
-    </div>
-  </section>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-  <main class="container">
-    <!-- ===== Playlists ===== -->
-    <section class="card">
-      <div class="row" style="justify-content:space-between">
-        <h2 style="margin:0">Playlists</h2>
-        <span class="hint">Tip: set your default player above. Mode + player are saved on this device.</span>
-      </div>
+  <script defer>
+    (function(){
+      "use strict";
 
-      <div id="playlists" class="grid" aria-live="polite"></div>
-    </section>
+      const $ = (s, r=document) => r.querySelector(s);
+      const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-    <!-- ===== Illumina 1 · auto-wired from your files ===== -->
-    <section class="card" id="illumina1-block">
-      <div class="row" style="justify-content:space-between;align-items:center">
-        <h2 style="margin:0">Illumina 1 · Launch Cycle</h2>
-        <div class="row">
-          <a class="pill" href="https://www.youtube.com/playlist?list=PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3" target="_blank" rel="noopener">Open YouTube Playlist</a>
-          <a class="pill" href="https://music.apple.com/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y" target="_blank" rel="noopener">Open Apple Playlist</a>
-          <button id="toggleIllumina1Embeds">Toggle Embeds</button>
-        </div>
-      </div>
-      <p class="hint" style="margin:8px 0 12px">
-        Full track list with direct YouTube + Apple links. “Toggle Embeds” shows inline players (heavier).
-      </p>
-      <div id="illumina1-list" class="grid"></div>
-    </section>
+      const els = {
+        brand: $("#brand"),
+        openJar: $("#openJar"),
+        tagFilter: $("#tagFilter"),
+        textFilter: $("#textFilter"),
+        summary: $("#summary"),
+        importAll: $("#importAll"),
+        exportAll: $("#exportAll"),
+        clearAll: $("#clearAll"),
+        toggleAdd: $("#toggleAdd"),
+        addForm: $("#addForm"),
+        plTitle: $("#plTitle"),
+        plType: $("#plType"),
+        plCover: $("#plCover"),
+        plUrl: $("#plUrl"),
+        plTracks: $("#plTracks"),
+        plTags: $("#plTags"),
+        plDesc: $("#plDesc"),
+        playlistGrid: $("#playlistGrid"),
+        playlistEmpty: $("#playlistEmpty"),
+        swapPair: $("#swapPair"),
+        clearPair: $("#clearPair"),
+        savePair: $("#savePair"),
+        aTitle: $("#aTitle"),
+        aUrl: $("#aUrl"),
+        bTitle: $("#bTitle"),
+        bUrl: $("#bUrl"),
+        focus: $("#focus"),
+        light: $("#light"),
+        pairTags: $("#pairTags"),
+        pairNotes: $("#pairNotes"),
+        logPair: $("#logPair"),
+        importPairs: $("#importPairs"),
+        exportPairs: $("#exportPairs"),
+        clearPairs: $("#clearPairs"),
+        pairsList: $("#pairsList"),
+        pairsEmpty: $("#pairsEmpty"),
+        toast: $("#toast")
+      };
 
-    <!-- ===== Mapping Videos (placeholders you can edit) ===== -->
-    <section class="card">
-      <div class="row" style="justify-content:space-between">
-        <h2 style="margin:0">Mapping Videos</h2>
-        <span class="hint">Short clips that introduce each archetype or weekly theme.</span>
-      </div>
-      <div id="videos" class="grid"></div>
-    </section>
+      const cfg = (window.APP_CONFIG && typeof window.APP_CONFIG === "object") ? window.APP_CONFIG : {};
+      const ns = cfg.namespace || cfg.appId || "plnt";
+      const DBKEY = `tunes.v1.${ns}`;
+      const PREFKEY = `tunes.v1.${ns}.prefs`;
 
-    <!-- ===== Anchor Tester CTA ===== -->
-    <section class="card">
-      <div class="row" style="justify-content:space-between">
-        <h2 style="margin:0">Anchor Tests</h2>
-        <a class="link" href="/pairs/">Open Pairs & Tester</a>
-      </div>
-      <p class="hint">Try <strong>Eminem — “Lose Yourself” → Taylor Swift — “Shake It Off”</strong> and log your results in /pairs.</p>
-    </section>
-
-    <!-- ===== Visual Stage (optional hero art) ===== -->
-    <section class="card">
-      <div class="stage" id="stage">Mode preview (Neon / Honey)</div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="foot">
-      <div>PLNT · Tunes — Neon/Honey modes • pepper-black theme</div>
-      <div class="hint">Illumina-1 data sourced from your uploaded files for Apple & YouTube IDs.</div>
-    </div>
-  </footer>
-
-<script>
-/* =========================
-   Playlists (top tiles)
-   ========================= */
-/* Illumina 1 playlist links come from your uploads:
-   - Apple Music playlist id: pl.u-NpXmzemC4Y1N49y:contentReference[oaicite:2]{index=2}
-   - YouTube playlist id: PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3:contentReference[oaicite:3]{index=3} */
-var playlists = [
-  {
-    title: "Illumina 1 · Launch Cycle",
-    desc: "Mantra + Honey ignition",
-    youtube: "https://www.youtube.com/playlist?list=PL2H7n7qLAdf5NQd7hZyh_mWnYPKErpVk3",
-    apple: "https://music.apple.com/playlist/illumina-1/pl.u-NpXmzemC4Y1N49y",
-    cover: "🌕"
-  },
-  {
-    title: "Taste / Sabrina Lens",
-    desc: "Sweet magnet archetype",
-    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_sabrina",
-    apple: "https://music.apple.com/us/playlist/example-sabrina/pl.u-XXXX",
-    cover: "🍯"
-  },
-  {
-    title: "Cosmic Teacher / Janet",
-    desc: "Curiosity & STEAM",
-    youtube: "https://www.youtube.com/playlist?list=PLXXXXXXXX_janet",
-    apple: "https://music.apple.com/us/playlist/example-janet/pl.u-XXXX",
-    cover: "🌙"
-  }
-];
-
-/* =========================
-   Illumina 1 full track list (from uploads)
-   Apple serviceId values and YouTube IDs are from:
-   - JSON (Apple):contentReference[oaicite:4]{index=4}, TXT (YouTube):contentReference[oaicite:5]{index=5}
-   ========================= */
-const ILLUMINA1 = [
-  {t:"White America",a:"Eminem",           yt:"RZIzD0ZfTFg", am:"1440903544"},
-  {t:"HOT TO GO!", a:"Chappell Roan",      yt:"xaPNR-_Cfn0", am:"1698723221"},
-  {t:"Honey", a:"Robyn",                   yt:"Mru9GG3ur9U", am:"1436781347"},
-  {t:"Strawberry Swing", a:"Coldplay",     yt:"h3pJZSTQqIg", am:"1122773712"},
-  {t:"Honey", a:"Mariah Carey",            yt:"w3KOowB4k_k", am:"192812332"},
-  {t:"HUMBLE.", a:"Kendrick Lamar",        yt:"tvTRZJ-4EyI", am:"1440881684"},
-  {t:"Sweet Disposition", a:"The Temper Trap", yt:"jxKjOOR9sPU", am:"1771693670"},
-  {t:"Taste (feat. Offset)", a:"Tyga",     yt:"LjxulQ1bEWg", am:"1384304787"},
-  {t:"Froot", a:"Marina and The Diamonds", yt:"WZzcY7ASQno", am:"936941149"},
-  {t:"Do It", a:"Chloe x Halle",           yt:"a9HIaGcBocc", am:"1512284179"},
-  {t:"Good as Hell", a:"Lizzo",            yt:"SmbmeOgWsqE", am:"1150159755"},
-  {t:"Truth Hurts", a:"Lizzo",             yt:"P00HMxdsVZI", am:"1494981961"},
-  {t:"Take a Bow", a:"Madonna",            yt:"XDeiovnCv1o", am:"80814995"},
-  {t:"Bitter Sweet Symphony", a:"The Verve", yt:"1lyu1KKwC74", am:"1443258189"},
-  {t:"Work It", a:"Missy Elliott",         yt:"cjIvu7e6Wq8", am:"254167909"},
-  {t:"Juice", a:"Lizzo",                   yt:"XaCrQL_8eMY", am:"1452319283"},
-  {t:"Controversy (Single Version)", a:"Prince", yt:"4gazNwzC4H0", am:"1545712802"},
-  {t:"Cinnamon Girl", a:"Lana Del Rey",    yt:"DCYmJDO2_IE", am:"1474669074"},
-  {t:"Dog Days Are Over", a:"Florence + the Machine", yt:"iWOyfLBYtuU", am:"1440729744"},
-  {t:"Don't Start Now", a:"Dua Lipa",      yt:"oygrmJFKYZY", am:"1484636829"},
-  {t:"Sunflower", a:"Post Malone & Swae Lee", yt:"ApXoWvfEYVU", am:"1445949267"},
-  {t:"Formation", a:"Beyoncé",             yt:"WDZJPJV__bQ", am:"1460430757"},
-  {t:"Illuminated", a:"Hurts",             yt:"6CvuyaKmLnw", am:"387681168"},
-  {t:"HONEY (ARE U COMING?)", a:"Måneskin", yt:"HZnNt9nnEhw", am:"1701785550"},
-  {t:"Express Yourself", a:"Madonna",      yt:"GsVcUzP_O_8", am:"329043302"},
-  {t:"Savage Remix (feat. Beyoncé)", a:"Megan Thee Stallion", yt:"lEIqjoO0-Bs", am:"1510814146"},
-  {t:"Paper Planes", a:"M.I.A.",           yt:"ewRjZoRtu0Y", am:"296393515"},
-  {t:"Viva La Vida", a:"Coldplay",         yt:"dvgZkm1xWPE", am:"1122773680"},
-  {t:"Lose Yourself", a:"Eminem",          yt:"xFYQQPAOz7Y", am:"1444221569"},
-  {t:"Shake It Off", a:"Taylor Swift",     yt:"nfWlot6h_JM", am:"1440936016"},
-  {t:"Levitating", a:"Dua Lipa",           yt:"TUVcZfQe-Kw", am:"1538003843"},
-  {t:"ENERGY (feat. BEAM)", a:"Beyoncé",   yt:"O9rk6ldyFkA", am:"1630005852"},
-  {t:"Dreams", a:"Fleetwood Mac",          yt:"5oWyMakvQew", am:"202272624"},
-  {t:"Edge of Seventeen", a:"Stevie Nicks", yt:"UmPgMc3R8zg", am:"219393906"},
-  {t:"Born This Way", a:"Lady Gaga",       yt:"wV1FrqwZyKw", am:"1440857424"},
-  {t:"Fix You", a:"Coldplay",              yt:"k4V3Mo61fJM", am:"1123076826"},
-  {t:"Alright", a:"Kendrick Lamar",        yt:"Z-48u_uWMHY", am:"1440829463"},
-  {t:"thank u, next", a:"Ariana Grande",   yt:"gl1aHhXnN1k", am:"1450330686"},
-  {t:"Back to Black", a:"Amy Winehouse",   yt:"TJAfLE39ZZ8", am:"1422677785"},
-  {t:"XO", a:"Beyoncé",                    yt:"3xUfCUFPL-8", am:"780519977"},
-  {t:"Nights", a:"Frank Ocean",            yt:"r4l9bFqgMaQ", am:"1146195720"},
-  {t:"Closing Time", a:"Semisonic",        yt:"xGytDsqkQY8", am:"1443912092"}
-];
-
-/* Mapping videos — fill in YouTube watch links; empty strings render as editable placeholders */
-var mappingVideos = [
-  { title:"Eminem · Victory Song", url:"https://www.youtube.com/watch?v=_Yhyp-_hX2s" },
-  { title:"Taylor · Release Loop", url:"https://www.youtube.com/watch?v=nfWlot6h_JM" },
-  { title:"Sabrina · Taste Spark", url:"" },
-  { title:"Janet · Cosmic Teacher", url:"" },
-  { title:"Emma · Identity Flare", url:"" },
-  { title:"Doechii · Trickster", url:"" },
-  { title:"Hot To Go! · Swarm", url:"" }
-];
-
-/* =========================
-   Preferences
-   ========================= */
-var body = document.body;
-var neonBtn = document.getElementById("neon");
-var honeyBtn = document.getElementById("honey");
-var playerPref = document.getElementById("playerPref");
-
-(function initPrefs(){
-  var mode = localStorage.getItem("plnt_tunes_mode") || "neon";
-  applyMode(mode);
-  playerPref.value = localStorage.getItem("plnt_tunes_player") || "links";
-
-  neonBtn.addEventListener("click", function(){ applyMode("neon"); saveMode("neon"); });
-  honeyBtn.addEventListener("click", function(){ applyMode("honey"); saveMode("honey"); });
-  playerPref.addEventListener("change", function(){ localStorage.setItem("plnt_tunes_player", this.value); renderPlaylists(); });
-
-  function saveMode(m){ localStorage.setItem("plnt_tunes_mode", m); }
-  function applyMode(m){
-    body.setAttribute("data-mode", m);
-    neonBtn.dataset.on = m==="neon" ? "1" : "";
-    neonBtn.setAttribute("aria-pressed", m==="neon");
-    honeyBtn.dataset.on = m==="honey" ? "1" : "";
-    honeyBtn.setAttribute("aria-pressed", m==="honey");
-    document.getElementById("stage").textContent = m==="neon" ? "Neon mode active" : "Honey mode active";
-  }
-})();
-
-/* =========================
-   Playlists renderer
-   ========================= */
-function renderPlaylists(){
-  var wrap = document.getElementById("playlists");
-  var pref = playerPref.value;
-  var frag = document.createDocumentFragment();
-
-  playlists.forEach(function(p){
-    var card = document.createElement("article");
-    card.className = "tile";
-
-    var h = document.createElement("h3");
-    h.textContent = (p.cover ? p.cover + " " : "") + p.title;
-    card.appendChild(h);
-
-    var d = document.createElement("p");
-    d.className = "hint";
-    d.textContent = p.desc || "";
-    card.appendChild(d);
-
-    var row = document.createElement("div");
-    row.className = "row";
-
-    if(p.youtube){
-      var yt = document.createElement("a");
-      yt.className = "pill"; yt.href = p.youtube; yt.textContent = "YouTube";
-      yt.target = "_blank"; yt.rel = "noopener";
-      row.appendChild(yt);
-    }
-
-    if(p.apple){
-      var am = document.createElement("a");
-      am.className = "pill"; am.href = p.apple; am.textContent = "Apple Music";
-      am.target = "_blank"; am.rel = "noopener";
-      row.appendChild(am);
-    }
-
-    card.appendChild(row);
-
-    if(pref === "youtube" && p.youtube){
-      var id = extractYTListId(p.youtube);
-      if(id){
-        var iframe = document.createElement("iframe");
-        iframe.loading = "lazy";
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
-        iframe.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + id;
-        card.appendChild(iframe);
+      const accent = (cfg.theme && cfg.theme.accent) ? String(cfg.theme.accent) : null;
+      if (accent) document.documentElement.style.setProperty("--accent", accent);
+      if (cfg.brand || cfg.title){
+        const label = `${cfg.brand || cfg.title}`.replace(/\s+—.*$/,"");
+        els.brand.textContent = label || "Tunes";
+        document.title = label || "Tunes";
       }
-    }
-    if(pref === "apple" && p.apple){
-      /* Apple playlist embeds require a full Apple Music embed URL; link above covers it. */
-    }
 
-    frag.appendChild(card);
-  });
+      const memory = { db:null, prefs:null };
 
-  wrap.innerHTML = "";
-  wrap.appendChild(frag);
-}
-
-function extractYTListId(url){
-  try{
-    var u = new URL(url);
-    return u.searchParams.get("list") || "";
-  }catch(e){ return ""; }
-}
-
-/* =========================
-   Illumina 1 renderer
-   ========================= */
-(function renderIllumina1(){
-  const wrap = document.getElementById("illumina1-list");
-  const frag = document.createDocumentFragment();
-  const embedsOn = localStorage.getItem("ill1_embeds") === "1";
-
-  ILLUMINA1.forEach((s, idx) => {
-    const card = document.createElement("article");
-    card.className = "tile";
-
-    const h = document.createElement("h3");
-    h.textContent = (idx+1)+". "+s.t+" — "+s.a;
-    card.appendChild(h);
-
-    const row = document.createElement("div");
-    row.className = "row";
-
-    const y = document.createElement("a");
-    y.className = "pill";
-    y.href = "https://www.youtube.com/watch?v=" + s.yt;
-    y.target = "_blank"; y.rel = "noopener";
-    y.textContent = "YouTube";
-    row.appendChild(y);
-
-    const am = document.createElement("a");
-    am.className = "pill";
-    am.href = "https://music.apple.com/us/album/" + s.am;
-    am.target = "_blank"; am.rel = "noopener";
-    am.textContent = "Apple Music";
-    row.appendChild(am);
-
-    card.appendChild(row);
-
-    if (embedsOn) {
-      const iframe = document.createElement("iframe");
-      iframe.loading = "lazy";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.referrerPolicy = "strict-origin-when-cross-origin";
-      iframe.src = "https://www.youtube-nocookie.com/embed/" + s.yt;
-      card.appendChild(iframe);
-    }
-
-    frag.appendChild(card);
-  });
-
-  wrap.innerHTML = "";
-  wrap.appendChild(frag);
-})();
-
-document.getElementById("toggleIllumina1Embeds").addEventListener("click", function(){
-  const key = "ill1_embeds";
-  const next = localStorage.getItem(key) === "1" ? "0" : "1";
-  localStorage.setItem(key, next);
-
-  const wrap = document.getElementById("illumina1-list");
-  wrap.innerHTML = "";
-  const embedsOn = next === "1";
-  const frag = document.createDocumentFragment();
-
-  ILLUMINA1.forEach((s, idx) => {
-    const card=document.createElement("article"); card.className="tile";
-    const h=document.createElement("h3"); h.textContent=(idx+1)+". "+s.t+" — "+s.a; card.appendChild(h);
-    const row=document.createElement("div"); row.className="row";
-    const y=document.createElement("a"); y.className="pill"; y.href="https://www.youtube.com/watch?v="+s.yt; y.target="_blank"; y.rel="noopener"; y.textContent="YouTube"; row.appendChild(y);
-    const am=document.createElement("a"); am.className="pill"; am.href="https://music.apple.com/us/album/"+s.am; am.target="_blank"; am.rel="noopener"; am.textContent="Apple Music"; row.appendChild(am);
-    card.appendChild(row);
-    if(embedsOn){ const iframe=document.createElement("iframe"); iframe.loading="lazy"; iframe.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"; iframe.referrerPolicy="strict-origin-when-cross-origin"; iframe.src="https://www.youtube-nocookie.com/embed/"+s.yt; card.appendChild(iframe); }
-    frag.appendChild(card);
-  });
-  wrap.appendChild(frag);
-});
-
-/* =========================
-   Mapping videos
-   ========================= */
-function renderVideos(){
-  var wrap = document.getElementById("videos");
-  var frag = document.createDocumentFragment();
-
-  mappingVideos.forEach(function(v, i){
-    var card = document.createElement("article");
-    card.className = "tile";
-
-    var h = document.createElement("h3");
-    h.textContent = v.title || ("Video " + (i+1));
-    card.appendChild(h);
-
-    var inputWrap = document.createElement("div");
-    inputWrap.className = "row";
-    var urlInput = document.createElement("input");
-    urlInput.type = "url";
-    urlInput.placeholder = "https://www.youtube.com/watch?v=...";
-    urlInput.value = v.url || "";
-    urlInput.style.cssText = "flex:1;min-width:160px;border:1px solid var(--line);border-radius:10px;padding:10px;background:transparent;color:var(--ink)";
-    inputWrap.appendChild(urlInput);
-
-    var saveBtn = document.createElement("button");
-    saveBtn.textContent = "Save";
-    inputWrap.appendChild(saveBtn);
-
-    card.appendChild(inputWrap);
-
-    var embedBox = document.createElement("div");
-    if(v.url){
-      var vid = extractYTVideoId(v.url);
-      if(vid){
-        var iframe = document.createElement("iframe");
-        iframe.loading = "lazy";
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
-        iframe.src = "https://www.youtube-nocookie.com/embed/" + vid;
-        embedBox.appendChild(iframe);
-      }else{
-        var p = document.createElement("p");
-        p.className = "hint";
-        p.textContent = "Enter a valid YouTube URL to preview here.";
-        embedBox.appendChild(p);
+      function readDB(){
+        if (memory.db) return JSON.parse(JSON.stringify(memory.db));
+        try{
+          const raw = localStorage.getItem(DBKEY);
+          if (!raw) return {playlists:[], pairs:[]};
+          const obj = JSON.parse(raw);
+          memory.db = {playlists: obj.playlists||[], pairs: obj.pairs||[]};
+          return JSON.parse(JSON.stringify(memory.db));
+        }catch(_){ return {playlists:[], pairs:[]}; }
       }
-    }else{
-      var p2 = document.createElement("p");
-      p2.className = "hint";
-      p2.textContent = "Paste a YouTube link and Save to store locally.";
-      embedBox.appendChild(p2);
-    }
-    card.appendChild(embedBox);
+      function writeDB(obj){
+        const safe = {playlists: obj.playlists||[], pairs: obj.pairs||[]};
+        try{ localStorage.setItem(DBKEY, JSON.stringify(safe)); memory.db = JSON.parse(JSON.stringify(safe)); }
+        catch(_){ memory.db = JSON.parse(JSON.stringify(safe)); }
+      }
+      function readPrefs(){
+        if (memory.prefs) return Object.assign({}, memory.prefs);
+        try{
+          const raw = localStorage.getItem(PREFKEY);
+          if (!raw) return {};
+          const obj = JSON.parse(raw);
+          memory.prefs = Object.assign({}, obj);
+          return Object.assign({}, memory.prefs);
+        }catch(_){ return {}; }
+      }
+      function writePrefs(prefs){
+        const safe = Object.assign({}, prefs);
+        try{ localStorage.setItem(PREFKEY, JSON.stringify(safe)); memory.prefs = Object.assign({}, safe); }
+        catch(_){ memory.prefs = Object.assign({}, safe); }
+      }
 
-    saveBtn.addEventListener("click", function(){
-      mappingVideos[i].url = urlInput.value.trim();
-      localStorage.setItem("plnt_tunes_videos", JSON.stringify(mappingVideos));
-      renderVideos();
-    });
+      function humanDate(iso){
+        const [y,m,d] = iso.split("-").map(Number);
+        const dt = new Date(y, m-1, d);
+        return dt.toLocaleDateString(undefined, {weekday:"short", year:"numeric", month:"short", day:"numeric"});
+      }
+      function todayISO(){
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      }
+      function parseTags(raw){
+        if (!raw) return [];
+        return raw.split(/[\s,]+/).map(s=>s.trim().replace(/^#/, "")).filter(Boolean).slice(0, 16);
+      }
+      function slug(s){
+        return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g,"").slice(0,40) || "item";
+      }
 
-    frag.appendChild(card);
-  });
+      function jarBase(){
+        if (cfg.basePathJar){
+          if (/^https?:\/\//i.test(cfg.basePathJar)) return cfg.basePathJar.replace(/\/?$/, "/");
+          return cfg.basePathJar.replace(/\/?$/, "/");
+        }
+        const h = location.host;
+        if (h.startsWith("tunes.")) return `${location.protocol}//jar.${h.slice(6)}/`;
+        return "/jar/";
+      }
+      function jarLink({date, type, tags, text}){
+        const d = date || new Date();
+        const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+        const qp = new URLSearchParams();
+        qp.set("date", iso);
+        if (type) qp.set("type", type);
+        if (tags && tags.length) qp.set("tags", tags.map(t=> t.startsWith("#")? t : "#"+t).join(" "));
+        if (text) qp.set("text", text);
+        return jarBase() + "day/?" + qp.toString();
+      }
 
-  wrap.innerHTML = "";
-  wrap.appendChild(frag);
-}
+      function showToast(msg){
+        els.toast.textContent = msg;
+        els.toast.classList.add("show");
+        setTimeout(()=> els.toast.classList.remove("show"), 1400);
+      }
 
-function extractYTVideoId(url){
-  try{
-    var u = new URL(url);
-    if(u.hostname.includes("youtube.com")){
-      return u.searchParams.get("v") || "";
-    }
-    if(u.hostname.includes("youtu.be")){
-      return (u.pathname || "").replace("/","").trim();
-    }
-    return "";
-  }catch(e){ return ""; }
-}
+      function ytPlaylistEmbed(url){
+        if (!url) return null;
+        const u = new URL(url, location.origin);
+        const list = u.searchParams.get("list");
+        if (list) return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(list)}`;
+        const id = (u.pathname.includes("/watch")) ? u.searchParams.get("v") : u.pathname.split("/").filter(Boolean).pop();
+        if (id) return `https://www.youtube.com/embed/${encodeURIComponent(id)}`;
+        return null;
+      }
+      function appleEmbed(url){
+        if (!url) return null;
+        try{
+          const u = new URL(url, location.origin);
+          const path = u.pathname.replace(/^\/+/, "");
+          const base = "https://embed.music.apple.com";
+          const locale = (path.split("/")[0] || "us");
+          return `${base}/${locale}/${path.substring(locale.length+1)}`;
+        }catch(_){ return null; }
+      }
 
-/* =========================
-   Boot
-   ========================= */
-(function boot(){
-  try{
-    var savedVideos = JSON.parse(localStorage.getItem("plnt_tunes_videos") || "null");
-    if(Array.isArray(savedVideos) && savedVideos.length === mappingVideos.length){
-      mappingVideos = savedVideos;
-    }
-  }catch(e){}
-  renderPlaylists();
-  renderVideos();
-})();
-</script>
+      function parseTracksText(txt){
+        const lines = String(txt||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+        return lines.map(line=>{
+          const parts = line.split(/\s*\|\s*|\s+—\s+| — /);
+          if (parts.length >= 2) return {title: parts[0].trim(), url: parts[1].trim()};
+          if (/^https?:\/\//i.test(line)) return {title: line, url: line};
+          return {title: line, url: ""};
+        }).slice(0, 200);
+      }
+
+      function playlistCard(pl, mode){
+        const wrap = document.createElement("div");
+        wrap.className = "pl-card";
+
+        const head = document.createElement("div");
+        head.className = "pl-head";
+        const left = document.createElement("div");
+        left.style.display = "flex";
+        left.style.alignItems = "center";
+        left.style.gap = "10px";
+        const cover = document.createElement("div");
+        cover.className = "cover";
+        cover.textContent = pl.cover || "🎵";
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = pl.title || "Untitled";
+        left.appendChild(cover);
+        left.appendChild(title);
+
+        const right = document.createElement("div");
+        right.className = "controls";
+        const open = document.createElement("a");
+        open.className = "btn mini";
+        open.target = "_blank";
+        open.rel = "noopener";
+        open.href = pl.url || "#";
+        open.textContent = "Open";
+        right.appendChild(open);
+
+        const log = document.createElement("a");
+        log.className = "btn mini ghost";
+        log.target = "_blank";
+        log.rel = "noopener";
+        log.href = jarLink({
+          type: "Spark",
+          tags: ["tunes","playlist", slug(pl.title)],
+          text: `Playlist: ${pl.title||""}`
+        });
+        log.textContent = "Log to Jar";
+        right.appendChild(log);
+
+        head.appendChild(left);
+        head.appendChild(right);
+
+        const meta = document.createElement("div");
+        meta.className = "row";
+        if (pl.tags && pl.tags.length){
+          pl.tags.forEach(t=>{
+            const chip = document.createElement("span");
+            chip.className = "tag";
+            chip.textContent = `#${t}`;
+            meta.appendChild(chip);
+          });
+        } else {
+          const none = document.createElement("span");
+          none.className = "muted";
+          none.textContent = "No tags";
+          meta.appendChild(none);
+        }
+
+        const desc = document.createElement("div");
+        desc.className = "muted";
+        desc.textContent = pl.desc || "";
+
+        wrap.appendChild(head);
+        wrap.appendChild(meta);
+        if (pl.desc) wrap.appendChild(desc);
+
+        if (pl.type === "links" || mode === "links"){
+          const list = document.createElement("div");
+          list.className = "list";
+          (pl.tracks||[]).forEach(tr=>{
+            const row = document.createElement("div");
+            row.className = "track";
+            const a = document.createElement("a");
+            a.className = "link";
+            a.href = tr.url || "#";
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.textContent = tr.title || tr.url || "Track";
+            const ops = document.createElement("div");
+            ops.className = "controls";
+            const btn = document.createElement("a");
+            btn.className = "btn mini ghost";
+            btn.target = "_blank";
+            btn.rel = "noopener";
+            btn.href = jarLink({
+              type: "Honey",
+              tags: ["tunes","track", slug(pl.title)],
+              text: `🎧 ${tr.title || tr.url || ""}`
+            });
+            btn.textContent = "Log to Jar";
+            ops.appendChild(btn);
+            row.appendChild(a);
+            row.appendChild(ops);
+            list.appendChild(row);
+          });
+          if (!(pl.tracks||[]).length){
+            const p = document.createElement("div");
+            p.className = "muted";
+            p.textContent = "No tracks yet.";
+            list.appendChild(p);
+          }
+          wrap.appendChild(list);
+        } else if (pl.type === "youtube" && mode === "youtube"){
+          const src = ytPlaylistEmbed(pl.url);
+          if (src){
+            const frame = document.createElement("iframe");
+            frame.height = "360";
+            frame.loading = "lazy";
+            frame.referrerPolicy = "strict-origin-when-cross-origin";
+            frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+            frame.src = src;
+            wrap.appendChild(frame);
+          }
+        } else if (pl.type === "apple" && mode === "apple"){
+          const src = appleEmbed(pl.url);
+          if (src){
+            const frame = document.createElement("iframe");
+            frame.height = "450";
+            frame.loading = "lazy";
+            frame.referrerPolicy = "strict-origin-when-cross-origin";
+            frame.allow = "autoplay *; encrypted-media *; fullscreen *; clipboard-write";
+            frame.src = src;
+            wrap.appendChild(frame);
+          }
+        }
+
+        return wrap;
+      }
+
+      function renderSummary(db, filters){
+        const n = db.playlists.length;
+        const m = db.pairs.length;
+        const on = filters.mode;
+        const tf = filters.tagTokens.length ? ` • tags: ${filters.tagTokens.join(", ")}` : "";
+        const qf = filters.textQuery ? ` • search: “${filters.textQuery}”` : "";
+        els.summary.textContent = `${n} playlist${n===1?"":"s"} • ${m} pair${m===1?"":"s"} • mode: ${on}${tf}${qf}`;
+      }
+
+      function filtersFromUI(){
+        const prefs = readPrefs();
+        const mode = prefs.playerMode || "links";
+        const tagTokens = parseTags(els.tagFilter.value);
+        const textQuery = String(els.textFilter.value||"").trim().toLowerCase();
+        return {mode, tagTokens, textQuery};
+      }
+
+      function filterPlaylist(pl, f){
+        if (f.textQuery){
+          const hay = [pl.title||"", pl.desc||"", (pl.tags||[]).join(" "), pl.url||""].join(" ").toLowerCase();
+          if (!hay.includes(f.textQuery)) return false;
+        }
+        if (f.tagTokens.length){
+          const tags = new Set((pl.tags||[]).map(String));
+          if (!f.tagTokens.some(t=> tags.has(t))) return false;
+        }
+        return true;
+      }
+
+      function renderPlaylists(){
+        const db = readDB();
+        const f = filtersFromUI();
+        els.playlistGrid.innerHTML = "";
+        const list = db.playlists.filter(pl => filterPlaylist(pl, f));
+        if (!list.length){
+          els.playlistEmpty.style.display = "block";
+        } else {
+          els.playlistEmpty.style.display = "none";
+          const frag = document.createDocumentFragment();
+          list.forEach(pl => frag.appendChild(playlistCard(pl, f.mode)));
+          els.playlistGrid.appendChild(frag);
+        }
+        renderSummary(db, f);
+      }
+
+      function renderPairs(){
+        const db = readDB();
+        els.pairsList.innerHTML = "";
+        const list = db.pairs.slice().sort((a,b)=> a.createdAt > b.createdAt ? -1 : 1);
+        if (!list.length){
+          els.pairsEmpty.style.display = "block";
+          return;
+        }
+        els.pairsEmpty.style.display = "none";
+        const frag = document.createDocumentFragment();
+        list.forEach(p=>{
+          const card = document.createElement("div");
+          card.className = "pl-card";
+          const head = document.createElement("div");
+          head.className = "pl-head";
+          const left = document.createElement("div");
+          left.style.display = "flex";
+          left.style.alignItems = "center";
+          left.style.gap = "10px";
+          const icon = document.createElement("div");
+          icon.className = "cover";
+          icon.textContent = "⚡";
+          const title = document.createElement("div");
+          title.className = "title";
+          title.textContent = `${p.aTitle||"A"} → ${p.bTitle||"B"}`;
+          left.appendChild(icon); left.appendChild(title);
+          const right = document.createElement("div");
+          right.className = "controls";
+          const openA = document.createElement("a");
+          openA.className = "btn mini"; openA.href = p.aUrl||"#"; openA.textContent = "A"; openA.target="_blank"; openA.rel="noopener";
+          const openB = document.createElement("a");
+          openB.className = "btn mini"; openB.href = p.bUrl||"#"; openB.textContent = "B"; openB.target="_blank"; openB.rel="noopener";
+          const log = document.createElement("a");
+          log.className = "btn mini ghost"; log.target="_blank"; log.rel="noopener";
+          log.href = jarLink({
+            type:"Honey",
+            tags:["tunes","pair"],
+            text:`${p.aTitle||"A"} → ${p.bTitle||"B"} • F${p.focus}/L${p.light}`
+          });
+          log.textContent = "Log to Jar";
+          const del = document.createElement("button");
+          del.className = "btn mini"; del.textContent = "Delete";
+          del.addEventListener("click", ()=>{
+            const next = db.pairs.filter(x => x.id !== p.id);
+            writeDB({playlists: db.playlists, pairs: next});
+            renderPairs();
+            showToast("Pair deleted");
+          });
+          right.appendChild(openA);
+          right.appendChild(openB);
+          right.appendChild(log);
+          right.appendChild(del);
+          head.appendChild(left); head.appendChild(right);
+
+          const meta = document.createElement("div");
+          meta.className = "row";
+          meta.appendChild(pill(null, humanDate(p.createdAt.slice(0,10))));
+          meta.appendChild(pill(null, `F${p.focus}`));
+          meta.appendChild(pill(null, `L${p.light}`));
+          if (p.tags && p.tags.length){
+            p.tags.forEach(t=> meta.appendChild(tag(`#${t}`)));
+          } else {
+            meta.appendChild(muted("No tags"));
+          }
+
+          const notes = document.createElement("div");
+          notes.className = "muted";
+          notes.textContent = p.notes || "";
+
+          card.appendChild(head);
+          card.appendChild(meta);
+          if (p.notes) card.appendChild(notes);
+          frag.appendChild(card);
+        });
+        els.pairsList.appendChild(frag);
+      }
+
+      function pill(type, text){
+        const n = document.createElement("div");
+        n.className = "pill";
+        if (type) n.dataset.type = type;
+        n.textContent = text;
+        return n;
+      }
+      function tag(text){
+        const n = document.createElement("span");
+        n.className = "tag";
+        n.textContent = text;
+        return n;
+      }
+      function muted(text){
+        const n = document.createElement("span");
+        n.className = "muted";
+        n.textContent = text;
+        return n;
+      }
+
+      function updateHeaderLinks(){
+        els.openJar.href = jarBase() + "index.html";
+      }
+
+      function setMode(mode){
+        const prefs = readPrefs();
+        writePrefs(Object.assign({}, prefs, {playerMode: mode}));
+        const radio = $(`input[name="playerMode"][value="${mode}"]`);
+        if (radio) radio.checked = true;
+        renderPlaylists();
+      }
+
+      function initMode(){
+        const prefs = readPrefs();
+        const mode = prefs.playerMode || "links";
+        const radio = $(`input[name="playerMode"][value="${mode}"]`);
+        if (radio) radio.checked = true;
+        $$('input[name="playerMode"]').forEach(r=>{
+          r.addEventListener("change", ()=> setMode(r.value));
+        });
+      }
+
+      function onSavePlaylist(e){
+        e.preventDefault();
+        const db = readDB();
+        const title = String(els.plTitle.value||"").trim();
+        if (!title) return;
+        const type = els.plType.value;
+        const cover = String(els.plCover.value||"").trim();
+        const url = String(els.plUrl.value||"").trim();
+        const tags = parseTags(els.plTags.value);
+        const desc = String(els.plDesc.value||"").trim();
+        const tracks = type==="links" ? parseTracksText(els.plTracks.value) : [];
+        const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        const pl = {id, type, title, cover, url, tags, desc, tracks};
+        db.playlists.push(pl);
+        writeDB(db);
+        els.addForm.reset();
+        els.addForm.hidden = true;
+        renderPlaylists();
+        showToast("Playlist saved");
+      }
+
+      function onExportAll(){
+        const db = readDB();
+        const blob = new Blob([JSON.stringify(db, null, 2)], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "tunes-all.json";
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      }
+      function onImportAll(file){
+        if (!file) return;
+        const fr = new FileReader();
+        fr.onload = () => {
+          let data;
+          try{ data = JSON.parse(fr.result); }catch(_){ showToast("Invalid JSON"); return; }
+          const db = readDB();
+          const next = {
+            playlists: (db.playlists||[]).concat(data.playlists||[]),
+            pairs: (db.pairs||[]).concat(data.pairs||[])
+          };
+          writeDB(next);
+          renderPlaylists();
+          renderPairs();
+          showToast("Imported");
+        };
+        fr.readAsText(file);
+      }
+
+      function onExportPairs(){
+        const db = readDB();
+        const blob = new Blob([JSON.stringify({pairs: db.pairs||[]}, null, 2)], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "tunes-pairs.json";
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      }
+      function onImportPairs(file){
+        if (!file) return;
+        const fr = new FileReader();
+        fr.onload = () => {
+          let data;
+          try{ data = JSON.parse(fr.result); }catch(_){ showToast("Invalid JSON"); return; }
+          const db = readDB();
+          const next = {
+            playlists: db.playlists||[],
+            pairs: (db.pairs||[]).concat(data.pairs||data||[])
+          };
+          writeDB(next);
+          renderPairs();
+          showToast("Imported pairs");
+        };
+        fr.readAsText(file);
+      }
+
+      function onClearAll(){
+        if (!confirm("Clear all Tunes data?")) return;
+        writeDB({playlists:[], pairs:[]});
+        renderPlaylists();
+        renderPairs();
+        showToast("All data cleared");
+      }
+
+      function onSavePair(){
+        const aTitle = String(els.aTitle.value||"").trim();
+        const aUrl = String(els.aUrl.value||"").trim();
+        const bTitle = String(els.bTitle.value||"").trim();
+        const bUrl = String(els.bUrl.value||"").trim();
+        const focus = Number(els.focus.value||0);
+        const light = Number(els.light.value||0);
+        const tags = parseTags(els.pairTags.value);
+        const notes = String(els.pairNotes.value||"").trim();
+        const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        const p = {id, aTitle, aUrl, bTitle, bUrl, focus, light, tags, notes, createdAt: new Date().toISOString()};
+        const db = readDB();
+        db.pairs.push(p);
+        writeDB(db);
+        renderPairs();
+        showToast("Pair saved");
+      }
+
+      function onSwapPair(){
+        const aT = els.aTitle.value, aU = els.aUrl.value;
+        els.aTitle.value = els.bTitle.value; els.aUrl.value = els.bUrl.value;
+        els.bTitle.value = aT; els.bUrl.value = aU;
+      }
+      function onClearPair(){
+        els.aTitle.value = "";
+        els.aUrl.value = "";
+        els.bTitle.value = "";
+        els.bUrl.value = "";
+        els.focus.value = "5";
+        els.light.value = "5";
+        els.pairTags.value = "";
+        els.pairNotes.value = "";
+      }
+
+      function updateLogPairLink(){
+        const txt = `${String(els.aTitle.value||"A").trim()} → ${String(els.bTitle.value||"B").trim()} • F${els.focus.value}/L${els.light.value}`;
+        const href = jarLink({type:"Honey", tags:["tunes","pair"], text:txt, date: new Date()});
+        els.logPair.href = href;
+      }
+
+      els.toggleAdd.addEventListener("click", ()=> {
+        els.addForm.hidden = !els.addForm.hidden;
+      });
+      els.addForm.addEventListener("submit", onSavePlaylist);
+      els.importAll.addEventListener("change", e => onImportAll(e.target.files && e.target.files[0]));
+      els.exportAll.addEventListener("click", onExportAll);
+      els.clearAll.addEventListener("click", onClearAll);
+
+      els.swapPair.addEventListener("click", onSwapPair);
+      els.clearPair.addEventListener("click", onClearPair);
+      els.savePair.addEventListener("click", onSavePair);
+      ["aTitle","bTitle","focus","light"].forEach(id=>{
+        els[id].addEventListener("input", updateLogPairLink);
+      });
+
+      els.importPairs.addEventListener("change", e => onImportPairs(e.target.files && e.target.files[0]));
+      els.exportPairs.addEventListener("click", onExportPairs);
+      els.clearPairs.addEventListener("click", ()=>{
+        if (!confirm("Clear all saved pairs?")) return;
+        const db = readDB();
+        writeDB({playlists: db.playlists||[], pairs: []});
+        renderPairs();
+        showToast("Pairs cleared");
+      });
+
+      els.tagFilter.addEventListener("input", renderPlaylists);
+      els.textFilter.addEventListener("input", renderPlaylists);
+
+      function init(){
+        initMode();
+        updateHeaderLinks();
+        renderPlaylists();
+        renderPairs();
+        updateLogPairLink();
+      }
+
+      init();
+    })();
+  </script>
 </body>
 </html>
