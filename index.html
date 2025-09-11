@@ -6,9 +6,9 @@
   <title>tunes.plnt.earth — Illumina 1</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0b0c'/><circle cx='50' cy='50' r='40' fill='%23e9e9ef'/><circle cx='42' cy='50' r='34' fill='%230b0b0c'/></svg>">
   <style>
-    :root { --bg:#0b0b0c; --card:#141417; --text:#e9e9ef; --muted:#9a9aab; --accent:#b2f5ea; --ring:#2a2a33; }
-    [data-theme="neon"] { --accent:#00e5ff; --card:#11131a; }
-    [data-theme="honey"] { --accent:#ffd166; --card:#1a1511; }
+    :root { --bg:#0b0b0c; --card:#141417; --text:#e9e9ef; --muted:#9a9aab; --accent:#b2f5ea; --ring:#2a2a33; --chip:#23232a; }
+    [data-theme="neon"] { --accent:#00e5ff; --card:#11131a; --chip:#151823; }
+    [data-theme="honey"] { --accent:#ffd166; --card:#1a1511; --chip:#221a13; }
     *{box-sizing:border-box}
     body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
     header{background:var(--card);border-bottom:1px solid var(--ring);position:sticky;top:0;z-index:10}
@@ -26,13 +26,14 @@
     .meta{color:var(--muted);margin-bottom:12px}
     input[type="search"], select{background:#0e0e11;color:var(--text);border:1px solid var(--ring);border-radius:10px;padding:8px 10px;width:100%}
     .list{display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
-    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--ring);border-radius:12px;padding:10px 12px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--ring);border-radius:12px;padding:10px 12px;background:var(--chip)}
     .row .day{font-weight:700;min-width:36px;text-align:center}
     .row .fig{color:var(--muted);font-size:12px}
-    .row .open{white-space:nowrap}
+    .row .open{white-space:nowrap;display:flex;gap:8px}
     iframe{width:100%;aspect-ratio:16/9;border:1px solid var(--ring);border-radius:12px;background:#000}
     footer{color:var(--muted);text-align:center;padding:20px 0;font-size:13px}
     .controls{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+    .now{margin-top:8px;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
@@ -58,6 +59,7 @@
     <div class="grid">
       <div class="card">
         <div id="player"></div>
+        <div id="now" class="now"></div>
       </div>
       <div class="card">
         <div class="controls">
@@ -75,6 +77,7 @@
     const DATA_URL = "/data/illumina1.json"; // place the JSON in this repo under /data/
     const PLAYLIST = "https://www.youtube.com/embed/videoseries?list=PL2H7n7qLAdf7VTOrmFlY9G-PaE94VrHAY";
     const JAR = "https://jar.plnt.earth";
+    const THEME_KEY = "tunes:theme";
 
     function ytid(url){
       try{
@@ -83,7 +86,6 @@
         if(u.hostname.includes("youtube.com")){
           const v = u.searchParams.get("v");
           if(v) return v;
-          // playlist-only URL; return null to use playlist embed
           return null;
         }
         if(u.hostname.includes("youtu.be")){
@@ -94,14 +96,15 @@
       return null;
     }
 
-    function embedPlayer(videoId){
+    function embedPlayer(videoId, label){
       const wrap = document.getElementById("player");
       const iframe = document.createElement("iframe");
       iframe.setAttribute("allowfullscreen","");
       iframe.setAttribute("title","YouTube player");
-      iframe.src = videoId ? `https://www.youtube.com/embed/${videoId}` : PLAYLIST;
+      iframe.src = videoId ? ("https://www.youtube.com/embed/" + videoId) : PLAYLIST;
       wrap.innerHTML = "";
       wrap.appendChild(iframe);
+      document.getElementById("now").textContent = label || (videoId ? "" : "Playing: Playlist");
     }
 
     function populateFigures(data){
@@ -118,40 +121,49 @@
       const fig = document.getElementById("fig").value;
       const box = document.getElementById("list");
       const filtered = data.filter(d=>{
-        const hay = `${d.Track} ${d.Figure}`.toLowerCase();
-        const okQ = !q || hay.includes(q);
+        const hay = (String(d.Track) + " " + String(d.Figure)).toLowerCase();
+        const okQ = !q || hay.indexOf(q) !== -1;
         const okF = !fig || d.Figure===fig;
         return okQ && okF;
       }).sort((a,b)=>a.Day-b.Day);
       box.innerHTML = "";
       filtered.forEach(d=>{
         const row = document.createElement("div"); row.className="row";
-        row.innerHTML = `<div class="day">${d.Day}</div>
-          <div>
-            <div>${d.Track}</div>
-            <div class="fig">${d.Figure||""}</div>
-          </div>
-          <div class="open">
-            <a class="btn" href="#" data-day="${d.Day}">Play</a>
-            <a class="btn" href="${JAR}/day/?n=${d.Day}" target="_blank">Open Day ↗</a>
-          </div>`;
+        row.innerHTML = '<div class="day">'+d.Day+'</div>' +
+          '<div><div>'+d.Track+'</div><div class="fig">'+(d.Figure||"")+'</div></div>' +
+          '<div class="open">' +
+            '<a class="btn" href="#" data-day="'+d.Day+'">Play</a>' +
+            '<a class="btn" href="'+JAR+'/day/?n='+d.Day+'" target="_blank">Open Day ↗</a>' +
+          '</div>';
         row.querySelector('a[data-day]').addEventListener('click', (ev)=>{
           ev.preventDefault();
           const id = ytid(d.URL);
-          embedPlayer(id);
+          embedPlayer(id, "Playing: Day "+d.Day+" — "+d.Track);
+          history.replaceState(null, "", "?n="+d.Day);
         });
         box.appendChild(row);
       });
     }
 
-    async function boot(){
-      // Theme
+    function applyTheme(theme){
       const root = document.documentElement;
+      if(theme && theme !== "classic"){
+        root.setAttribute("data-theme", theme);
+      }else{
+        root.removeAttribute("data-theme");
+        theme = "classic";
+      }
+      try{ localStorage.setItem(THEME_KEY, theme); }catch(e){}
+    }
+
+    async function boot(){
+      // Theme: restore + buttons
+      try{
+        const saved = localStorage.getItem(THEME_KEY);
+        if(saved) applyTheme(saved);
+      }catch(e){}
       document.querySelectorAll("[data-set-theme]").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          const v = btn.getAttribute("data-set-theme");
-          root.setAttribute("data-theme", v==="classic" ? "" : v);
-        });
+        btn.addEventListener("click", ()=>applyTheme(btn.getAttribute("data-set-theme")));
       });
 
       // Load data
@@ -160,9 +172,23 @@
         const data = await res.json();
         populateFigures(data);
         renderList(data);
-        // Initial player: playlist embed
-        embedPlayer(null);
-
+        // Deep-link support
+        const qp = new URLSearchParams(location.search);
+        const v = qp.get("v");
+        const n = parseInt(qp.get("n")||"", 10);
+        const fig = qp.get("fig");
+        const q = qp.get("q");
+        if(fig){ document.getElementById("fig").value = fig; }
+        if(q){ document.getElementById("q").value = q; }
+        if(v){
+          embedPlayer(v, "Playing: custom video");
+        }else if(!isNaN(n)){
+          const entry = data.find(d => +d.Day === n);
+          const id = entry ? ytid(entry.URL) : null;
+          embedPlayer(id, entry ? ("Playing: Day "+entry.Day+" — "+entry.Track) : null);
+        }else{
+          embedPlayer(null);
+        }
         document.getElementById("q").addEventListener("input", ()=>renderList(data));
         document.getElementById("fig").addEventListener("change", ()=>renderList(data));
       }catch(e){
