@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tunes · Illumina 1 (Public)</title>
 <meta name="theme-color" content="#0B0F19">
-<meta name="description" content="Illumina 1 playlist. YouTube canonical; Apple Music and Spotify shown when available.">
+<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify shown when available. Includes moon phases, figure, and seed rituals.">
 <style>
   :root{
     --bg:#0B0F19;--ink:#E5E7EB;--muted:#9CA3AF;--line:rgba(229,231,235,.15);
@@ -37,16 +37,39 @@
   .tag{font-size:12px;color:#cfd3db;border:1px dashed var(--line);border-radius:8px;padding:2px 8px}
   .title{font-size:17px;font-weight:700;line-height:1.25}
   .artist{opacity:.9}
-  .meta{display:grid;gap:8px;margin-top:8px}
+  .meta{display:grid;gap:6px;margin-top:8px}
   .platforms{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
   .play{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:rgba(255,255,255,.03)}
   .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
   .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
   footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
   .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
+  .share{margin-left:auto}
+  /* Sticky player */
+  .playerbar{position:sticky;top:0;z-index:5;background:rgba(11,15,25,.9);backdrop-filter:saturate(120%) blur(8px);border-bottom:1px solid var(--line)}
+  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 0}
+  .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px) 10px}
+  @media (min-width:860px){.player-row{grid-template-columns:320px 1fr}}
+  .now{font-size:13px;color:var(--muted)}
+  .now strong{color:#e9ecf3}
+  .frame{position:relative;padding-top:56.25%;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
+  .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 </style>
 </head>
 <body>
+<div class="playerbar" aria-label="Player">
+  <div class="playerwrap">
+    <div class="player-row">
+      <div>
+        <div class="now">Now Playing</div>
+        <div id="nowTitle" class="mono" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+        <div id="nowMeta" class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+      </div>
+      <div class="frame"><iframe id="yt" title="Illumina Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <header>
     <h1>Illumina 1 — Public Tunes</h1>
@@ -65,7 +88,7 @@
       <button id="reload" class="btn" type="button">Reload</button>
       <span id="stat" class="pill">—</span>
     </div>
-    <p class="muted">YouTube is canonical. Apple Music / Spotify shown when available.</p>
+    <p class="muted">YouTube plays inline. Apple Music / Spotify shown when available.</p>
   </header>
 
   <section id="cards" class="grid cards" aria-live="polite"></section>
@@ -82,6 +105,8 @@
   var src = q.get('src') || '/Illumina1_Playlist_MASTER_3in1.json';
   var data = null, filtered = false, term = '';
   var curLane = q.get('lane') || 'Explainer';
+  var startDay = parseInt(q.get('day')||'',10);
+
   var elCards = document.getElementById('cards');
   var elCycle = document.getElementById('cycle');
   var elStat = document.getElementById('stat');
@@ -92,12 +117,53 @@
   var elLaneSel = document.getElementById('lane');
   var elLaneLabel = document.getElementById('laneLabel');
   var elSrcLabel = document.getElementById('srcLabel');
+  var elNowTitle = document.getElementById('nowTitle');
+  var elNowMeta = document.getElementById('nowMeta');
+  var iframe = document.getElementById('yt');
+
   elSrcLabel.textContent = src;
   elLaneSel.value = curLane;
   elLaneLabel.textContent = curLane;
 
   function setStat(t){ elStat.textContent = t; }
   function safe(v){ return v==null ? "" : String(v); }
+
+  // --- Fix common UTF-8 mojibake (display only)
+  function fixMojibake(s){
+    if(!s) return s;
+    var map = {
+      "BeyoncÃ©":"Beyoncé","MÃ¥neskin":"Måneskin","ChloÃ«":"Chloë","ZoÃ«":"Zoë",
+      "Ã©":"é","Ã¨":"è","Ãª":"ê","Ãë":"ë","Ã¡":"á","Ãà":"à","Ã�":"í","Ã­":"í","Ã³":"ó","Ãº":"ú","Ã±":"ñ","Ãœ":"Ü","Ã¼":"ü","Ã¶":"ö","Ã„":"Ä","Ã¤":"ä","Ã…":"Å","Ã¥":"å",
+      "â€“":"–","â€”":"—","â€˜":"‘","â€™":"’","â€œ":"“","â€":"”","â€¢":"•","â€¦":"…"
+    };
+    var out = s;
+    for(var k in map){ out = out.split(k).join(map[k]); }
+    return out;
+  }
+
+  function fixRowTitle(s){ return fixMojibake(s); }
+  function fixRowArtist(s){ return fixMojibake(s); }
+
+  // Moon phase emoji (approx.)
+  function moonEmoji(dateStr){
+    var d = new Date(dateStr+'T00:00:00Z');
+    var syn = 29.53058867; // synodic month
+    var base = Date.UTC(2025,0,29); // rough new moon anchor
+    var days = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - base)/86400000;
+    var phase = ((days % syn) + syn) % syn;
+    var idx = Math.floor((phase/syn)*8+0.5)%8;
+    return ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][idx];
+  }
+
+  function extractYouTubeID(u){
+    if(!u) return "";
+    try{
+      var s = String(u);
+      var m = s.match(/[?&]v=([^&]+)/) || s.match(/youtu\.be\/([^?&]+)/) || s.match(/embed\/([^?&]+)/);
+      return m ? m[1] : "";
+    }catch(_){ return ""; }
+  }
+
   function hasYouTube(pl){ return !!(pl && pl.Platforms && pl.Platforms.YouTube && pl.Platforms.YouTube.url); }
   function validYT(u){
     if(!u) return false;
@@ -109,38 +175,60 @@
   function appleHref(platforms, title, artist){
     var p = platforms && platforms.AppleMusic;
     if(p && p.id){ return 'https://music.apple.com/us/album/'+encodeURIComponent(p.id); }
-    // fallback search
-    var q = encodeURIComponent((title||'') + ' ' + (artist||''));
-    return 'https://music.apple.com/us/search?term='+q;
+    var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
+    return 'https://music.apple.com/us/search?term='+qq;
   }
   function spotifyHref(platforms, title, artist){
     var p = platforms && platforms.Spotify;
     if(p && p.id){ return 'https://open.spotify.com/track/'+encodeURIComponent(p.id); }
-    // fallback search
-    var q = encodeURIComponent((title||'') + ' ' + (artist||''));
-    return 'https://open.spotify.com/search/'+q;
+    var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
+    return 'https://open.spotify.com/search/'+qq;
   }
-  function matchRow(row){
+  function matchRow(row, fig, seed){
     if(!term) return true;
     var t = term.toLowerCase();
     return (
-      (row.title||'').toLowerCase().indexOf(t)>-1 ||
-      (row.artist||'').toLowerCase().indexOf(t)>-1
+      (safe(row.title).toLowerCase().indexOf(t)>-1) ||
+      (safe(row.artist).toLowerCase().indexOf(t)>-1) ||
+      (safe(fig).toLowerCase().indexOf(t)>-1) ||
+      (safe(seed).toLowerCase().indexOf(t)>-1)
     );
   }
+  function shareUrl(day){
+    var u = new URL(location.href);
+    u.searchParams.set('lane', curLane);
+    u.searchParams.set('day', day);
+    return u.toString();
+  }
+  function copy(text){ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text); } }
+
+  function play(day, laneRow, dateStr){
+    var pf = laneRow.Platforms || {};
+    var yt = safe(pf.YouTube && pf.YouTube.url);
+    var id = extractYouTubeID(yt);
+    if(!id) return;
+    iframe.src = 'https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1';
+    elNowTitle.textContent = fixRowTitle(safe(laneRow.title));
+    elNowMeta.textContent  = fixRowArtist(safe(laneRow.artist)) + ' · Day '+day+' · '+dateStr+' · '+moonEmoji(dateStr);
+  }
+
   function render(){
     if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
     var list = data.PerDay.slice();
     var total = list.length;
     var missing = 0, warn = 0, ok = 0;
-
     var rows = [];
-    for(var i=0;i<list.length;i++){
-      var day = list[i].Day, date = list[i].Date;
-      var lane = list[i][curLane] || {};
-      if(!matchRow(lane)) continue;
 
-      var title = safe(lane.title), artist = safe(lane.artist);
+    for(var i=0;i<list.length;i++){
+      var base = list[i];
+      var lane = base[curLane] || {};
+      var fig = safe(base.Figure);
+      var seed = safe(base.SeedRitual);
+      if(!matchRow(lane, fig, seed)) continue;
+
+      var day = base.Day, date = base.Date;
+      var title = fixRowTitle(safe(lane.title));
+      var artist = fixRowArtist(safe(lane.artist));
       var pf = lane.Platforms || {};
       var yt = safe(pf.YouTube && pf.YouTube.url);
       var ytOk = validYT(yt);
@@ -149,12 +237,21 @@
 
       rows.push(
         '<article class="card" id="day-'+day+'">'+
-          '<div class="row"><span class="tag">Day '+day+'</span><span class="tag mono">'+date+'</span><span class="tag">'+curLane+'</span></div>'+
+          '<div class="row">'+
+            '<span class="tag">Day '+day+'</span>'+
+            '<span class="tag mono">'+date+'</span>'+
+            '<span class="tag">'+curLane+'</span>'+
+            '<span class="tag">'+moonEmoji(date)+'</span>'+
+            '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
+            '<button class="btn share" type="button" data-share="'+day+'">Share</button>'+
+          '</div>'+
           '<div class="meta">'+
             '<div class="title">'+title+'</div>'+
             '<div class="artist">'+artist+'</div>'+
+            (fig?'<div class="muted">Figure: '+fixMojibake(fig)+'</div>':'')+
+            (seed?'<div class="muted">Seed: '+fixMojibake(seed)+'</div>':'')+
             '<div class="platforms">'+
-              (yt ? '<a class="play" href="'+yt+'" target="_blank" rel="noopener">▶︎ Play on YouTube</a>' :
+              (yt ? '<span class="badge ok">YouTube ready</span>' :
                     '<span class="badge err">YouTube link missing</span>')+
               '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music'+((pf.AppleMusic&&pf.AppleMusic.status==='exists')?'':' (search)')+'</a>'+
               '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify'+((pf.Spotify&&pf.Spotify.id)?'':' (search)')+'</a>'+
@@ -169,7 +266,36 @@
     var end = data.Cycle && data.Cycle.End ? data.Cycle.End : '—';
     elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+total;
     setStat('OK: '+ok+' · Missing: '+missing+' · Check: '+warn);
+
+    // Wire play + share
+    elCards.querySelectorAll('button[data-play]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = +this.getAttribute('data-play');
+        var row = (data.PerDay[d-1]||{})[curLane] || {};
+        play(d, row, (data.PerDay[d-1]||{}).Date || '');
+        // focus player for accessibility:
+        iframe.focus({preventScroll:true});
+      });
+    });
+    elCards.querySelectorAll('button[data-share]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = this.getAttribute('data-share');
+        copy(shareUrl(d));
+        this.textContent = 'Copied!';
+        var self = this;
+        setTimeout(function(){ self.textContent='Share'; }, 1000);
+      });
+    });
+
+    // auto-jump & auto-play if requested
+    if(startDay && document.getElementById('day-'+startDay)){
+      var row = (data.PerDay[startDay-1]||{})[curLane] || {};
+      play(startDay, row, (data.PerDay[startDay-1]||{}).Date || '');
+      document.getElementById('day-'+startDay).scrollIntoView({behavior:'smooth',block:'start'});
+      startDay = null;
+    }
   }
+
   function buildDayJump(){
     if(!data || !data.PerDay) return;
     var opts = ['<option value="">Jump to day…</option>'];
@@ -179,11 +305,13 @@
     }
     elDayJump.innerHTML = opts.join('');
   }
+
   function jumpTo(day){
     var el = document.getElementById('day-'+day);
     if(!el) return;
     el.scrollIntoView({behavior:'smooth', block:'start'});
   }
+
   function load(){
     setStat('Loading…');
     fetch(src, {cache:'no-store'}).then(function(r){
@@ -209,9 +337,7 @@
   });
   elReload.addEventListener('click', load);
   elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
-  elLaneSel.addEventListener('change', function(){
-    curLane = this.value; elLaneLabel.textContent = curLane; render();
-  });
+  elLaneSel.addEventListener('change', function(){ curLane = this.value; elLaneLabel.textContent = curLane; render(); });
 
   load();
 })();
