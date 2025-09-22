@@ -70,7 +70,7 @@
         <option>AnchorBuilt</option>
       </select>
       <span class="pill" id="stat">No file loaded</span>
-      <span class="right notice">Tip: Edit per-lane fields inline and Export.</span>
+      <span class="right notice">Tip: Edit per-lane fields + Figure/Seed, then Export.</span>
     </div>
   </header>
 
@@ -109,6 +109,9 @@
             <th>YouTube URL</th>
             <th>Apple ID</th>
             <th>Spotify ID</th>
+            <th>Figure</th>
+            <th>Seed Ritual</th>
+            <th>Share</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -141,17 +144,34 @@
     return validYouTube(u) ? '<span class="status okc">OK</span>' : '<span class="status warnc">Check URL</span>';
   }
 
+  function ensurePlatforms(obj){
+    obj.Platforms = obj.Platforms || {};
+    obj.Platforms.YouTube = obj.Platforms.YouTube || {url:""};
+    obj.Platforms.AppleMusic = obj.Platforms.AppleMusic || {id:null,status:"coming_soon"};
+    obj.Platforms.Spotify = obj.Platforms.Spotify || {id:null,status:"coming_soon"};
+  }
+  function ensureDayGlobals(d){
+    if(typeof d.Figure==='undefined') d.Figure="";
+    if(typeof d.SeedRitual==='undefined') d.SeedRitual="";
+  }
+
+  function shareUrl(day){
+    var u = new URL(location.origin + location.pathname.replace(/\/admin\/?$/,'') + '/index.html');
+    u.searchParams.set('lane', lane);
+    u.searchParams.set('day', day);
+    return u.toString();
+  }
+
   function render(){
     if(!data || !data.PerDay){ tbody.innerHTML=""; setSummary("—"); return; }
     var rows=[], miss=0, warn=0, ok=0;
     for(var i=0;i<data.PerDay.length;i++){
-      var d = data.PerDay[i];
-      var laneRow = d[lane] || {};
-      var pf = laneRow.Platforms || {};
-      var yt = safe(pf.YouTube && pf.YouTube.url);
-      if(filtered && yt) continue;
-
-      if(!yt) miss++; else if(validYouTube(yt)) ok++; else warn++;
+      var d = data.PerDay[i]; ensureDayGlobals(d);
+      var laneRow = d[lane] || (d[lane]={});
+      ensurePlatforms(laneRow);
+      var u = laneRow.Platforms.YouTube.url || "";
+      if(filtered && u) continue;
+      if(!u) miss++; else if(validYouTube(u)) ok++; else warn++;
 
       rows.push(
         '<tr>'+
@@ -159,43 +179,49 @@
           '<td>'+safe(d.Date)+'</td>'+
           '<td><input data-i="'+i+'" data-k="title" type="text" value="'+safe(laneRow.title)+'" aria-label="Title"></td>'+
           '<td><input data-i="'+i+'" data-k="artist" type="text" value="'+safe(laneRow.artist)+'" aria-label="Artist"></td>'+
-          '<td><input class="mono" data-i="'+i+'" data-k="yt" type="text" placeholder="https://..." value="'+yt+'" aria-label="YouTube URL"></td>'+
-          '<td><input class="mono" data-i="'+i+'" data-k="apple" type="text" placeholder="Apple ID" value="'+safe(pf.AppleMusic && pf.AppleMusic.id)+'" aria-label="Apple ID"></td>'+
-          '<td><input class="mono" data-i="'+i+'" data-k="spotify" type="text" placeholder="Spotify ID" value="'+safe(pf.Spotify && pf.Spotify.id)+'" aria-label="Spotify ID"></td>'+
-          '<td>'+rowStatus(yt)+'</td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="yt" type="text" placeholder="https://..." value="'+safe(u)+'" aria-label="YouTube URL"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="apple" type="text" placeholder="Apple ID" value="'+safe(laneRow.Platforms.AppleMusic.id)+'" aria-label="Apple ID"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="spotify" type="text" placeholder="Spotify ID" value="'+safe(laneRow.Platforms.Spotify.id)+'" aria-label="Spotify ID"></td>'+
+          '<td><input data-i="'+i+'" data-k="figure" type="text" value="'+safe(d.Figure)+'" aria-label="Figure"></td>'+
+          '<td><input data-i="'+i+'" data-k="seed" type="text" value="'+safe(d.SeedRitual)+'" aria-label="Seed Ritual"></td>'+
+          '<td><button class="btn" type="button" data-share="'+d.Day+'">Copy</button></td>'+
+          '<td>'+rowStatus(u)+'</td>'+
         '</tr>'
       );
     }
     tbody.innerHTML = rows.join('');
     setSummary('Rows: '+data.PerDay.length+' · Missing YouTube: '+miss+' · Check: '+warn+' · OK: '+ok);
-    laneLabel.textContent = lane;
     var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
     var end   = data.Cycle && data.Cycle.End   ? data.Cycle.End   : '—';
     setRange('Cycle '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—'));
-  }
 
-  function ensurePlatforms(obj){
-    obj.Platforms = obj.Platforms || {};
-    obj.Platforms.YouTube = obj.Platforms.YouTube || {url:""};
-    obj.Platforms.AppleMusic = obj.Platforms.AppleMusic || {id:null,status:"coming_soon"};
-    obj.Platforms.Spotify = obj.Platforms.Spotify || {id:null,status:"coming_soon"};
+    // wire share copy buttons
+    tbody.querySelectorAll('button[data-share]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = this.getAttribute('data-share');
+        var link = shareUrl(d);
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(link); }
+        this.textContent = 'Copied!';
+        var self=this; setTimeout(function(){ self.textContent='Copy'; }, 900);
+      });
+    });
   }
 
   function onEdit(e){
     var t = e.target; if(!t || !t.getAttribute) return;
-    var i = t.getAttribute('data-i'); var k = t.getAttribute('data-k');
-    if(i==null || !k) return;
-    var row = data.PerDay[+i][lane] || (data.PerDay[+i][lane] = {});
-    ensurePlatforms(row);
-    var v = t.value;
+    var i = +t.getAttribute('data-i'); var k = t.getAttribute('data-k');
+    if(Number.isNaN(i) || !k) return;
 
-    if(k==='title'){ row.title = v; }
-    else if(k==='artist'){ row.artist = v; }
-    else if(k==='yt'){ row.Platforms.YouTube.url = v; }
-    else if(k==='apple'){ row.Platforms.AppleMusic.id = v || null; row.Platforms.AppleMusic.status = v ? 'exists' : 'coming_soon'; }
-    else if(k==='spotify'){ row.Platforms.Spotify.id = v || null; row.Platforms.Spotify.status = v ? 'exists' : 'coming_soon'; }
+    var d = data.PerDay[i]; var laneRow = d[lane] || (d[lane]={}); ensurePlatforms(laneRow);
+    if(k==='title'){ laneRow.title = t.value; }
+    else if(k==='artist'){ laneRow.artist = t.value; }
+    else if(k==='yt'){ laneRow.Platforms.YouTube.url = t.value; }
+    else if(k==='apple'){ laneRow.Platforms.AppleMusic.id = t.value || null; laneRow.Platforms.AppleMusic.status = t.value ? 'exists':'coming_soon'; }
+    else if(k==='spotify'){ laneRow.Platforms.Spotify.id = t.value || null; laneRow.Platforms.Spotify.status = t.value ? 'exists':'coming_soon'; }
+    else if(k==='figure'){ d.Figure = t.value; }
+    else if(k==='seed'){ d.SeedRitual = t.value; }
 
-    render(); // refresh statuses
+    render();
   }
 
   function download(filename, text){
@@ -216,6 +242,7 @@
     filtered=false; setStat("Loaded"); render();
   }
 
+  // Wire UI
   $('loadFileBtn').addEventListener('click', function(){ $('filePicker').click(); });
   $('filePicker').addEventListener('change', function(ev){
     var f = ev.target.files && ev.target.files[0]; if(!f) return;
@@ -235,8 +262,7 @@
     if(!data){ setStat("Load a JSON first"); return; }
     var miss=0,warn=0,ok=0;
     for(var i=0;i<(data.PerDay||[]).length;i++){
-      var laneRow = data.PerDay[i][lane] || {};
-      var u = (laneRow.Platforms && laneRow.Platforms.YouTube && laneRow.Platforms.YouTube.url) || "";
+      var lr=(data.PerDay[i][lane]||{}); var u=(lr.Platforms&&lr.Platforms.YouTube&&lr.Platforms.YouTube.url)||"";
       if(!u) miss++; else if(validYouTube(u)) ok++; else warn++;
     }
     setStat("OK: "+ok+" · Missing: "+miss+" · Check: "+warn);
@@ -263,8 +289,7 @@
     setStat("Missing list copied");
   });
 
-  laneSel.addEventListener('change', function(){ lane=this.value; render(); });
-
+  laneSel.addEventListener('change', function(){ lane=this.value; laneLabel.textContent=lane; render(); });
   tbody.addEventListener('input', onEdit);
 })();
 </script>
