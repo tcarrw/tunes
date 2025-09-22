@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tunes · Illumina 1 (Public)</title>
+<title>Illumina Admin · Tunes (3-lane Editor)</title>
 <meta name="theme-color" content="#0B0F19">
-<meta name="description" content="Illumina 1 playlist. YouTube canonical; Apple Music and Spotify shown when available.">
 <style>
   :root{
     --bg:#0B0F19;--ink:#E5E7EB;--muted:#9CA3AF;--line:rgba(229,231,235,.15);
     --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
-    --r:14px;--pad:18px;--maxw:1100px;
+    --r:14px;--pad:18px;--maxw:1200px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -18,202 +17,280 @@
   a{color:var(--gold);text-decoration:none}
   a:hover{text-decoration:underline}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
-  header{display:grid;gap:8px;margin:6px 0 18px}
-  h1{margin:0;font-size:clamp(22px,4.5vw,34px);line-height:1.2}
-  .muted{color:var(--muted)}
-  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
-  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
-  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,209,66,.15),rgba(245,158,11,.12))}
-  input[type="text"], select{
-    padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit;
-  }
-  .grid{display:grid;gap:12px}
-  .cards{grid-template-columns:1fr}
-  @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
+  h1{margin:.2em 0 .4em;font-size:clamp(22px,4vw,32px);line-height:1.2}
+  .row{display:flex;flex-wrap:wrap;gap:10px}
   .card{border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:rgba(255,255,255,.02);color:var(--ink)}
+  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,209,66,.15),rgba(245,158,11,.12))}
+  .btn.ok{border-color:rgba(52,211,153,.35)}
+  .btn.warn{border-color:rgba(251,191,36,.35)}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
+  .grid{display:grid;gap:12px}
+  .two{grid-template-columns:1fr}
+  @media (min-width:980px){.two{grid-template-columns:1fr 1fr}}
+  .field{display:grid;gap:6px}
+  label{font-size:13px;color:var(--muted)}
+  input[type="text"], textarea, select{
+    width:100%;padding:10px 12px;border:1px solid var(--line);
+    border-radius:10px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit
+  }
+  textarea{min-height:120px}
+  table{width:100%;border-collapse:separate;border-spacing:0 8px}
+  th, td{padding:8px 8px;vertical-align:top}
+  th{font-weight:600;color:#cfd3db;text-align:left}
+  tbody tr{background:rgba(255,255,255,.02);border:1px solid var(--line)}
+  tbody tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+  tbody tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-  .tag{font-size:12px;color:#cfd3db;border:1px dashed var(--line);border-radius:8px;padding:2px 8px}
-  .title{font-size:17px;font-weight:700;line-height:1.25}
-  .artist{opacity:.9}
-  .meta{display:grid;gap:8px;margin-top:8px}
-  .platforms{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-  .play{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:rgba(255,255,255,.03)}
-  .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
-  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
-  footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
+  .muted{color:var(--muted)}
+  .status{font-size:12px}
+  .okc{color:var(--ok)} .warnc{color:var(--warn)} .errc{color:var(--err)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+  .right{margin-left:auto}
+  .notice{font-size:13px;color:var(--muted)}
   .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>Illumina 1 — Public Tunes</h1>
-    <div class="bar">
-      <span id="cycle" class="pill">Loading…</span>
+  <header class="card">
+    <h1>Illumina Admin <span class="muted">· Tunes 3-lane Editor</span></h1>
+    <div class="controls">
+      <button class="btn primary" id="loadFileBtn" type="button" aria-label="Load JSON from file">Load JSON (file)</button>
+      <input id="filePicker" type="file" accept=".json,application/json" style="display:none">
+      <button class="btn" id="pasteBtn" type="button">Paste JSON</button>
+      <button class="btn ok" id="validateBtn" type="button">Validate</button>
+      <button class="btn warn" id="missingBtn" type="button">Show Only Missing YouTube</button>
+      <button class="btn" id="resetFilterBtn" type="button">Show All</button>
       <label class="pill" for="lane">Lane</label>
-      <select id="lane" aria-label="Choose playlist lane">
-        <option value="Explainer">Explainer</option>
-        <option value="AnchorPublic">AnchorPublic</option>
-        <option value="AnchorBuilt">AnchorBuilt</option>
+      <select id="lane">
+        <option>Explainer</option>
+        <option>AnchorPublic</option>
+        <option>AnchorBuilt</option>
       </select>
-      <label class="pill" for="search">Search</label>
-      <input id="search" type="text" placeholder="Title, artist, figure, seed…">
-      <select id="dayJump" aria-label="Jump to day"><option value="">Jump to day…</option></select>
-      <button id="toggleMissing" class="btn" type="button">Show only missing YouTube</button>
-      <button id="reload" class="btn" type="button">Reload</button>
-      <span id="stat" class="pill">—</span>
+      <span class="pill" id="stat">No file loaded</span>
+      <span class="right notice">Tip: Edit per-lane fields + Figure/Seed, then Export.</span>
     </div>
-    <p class="muted">YouTube is canonical. Apple Music / Spotify shown when available.</p>
   </header>
 
-  <section id="cards" class="grid cards" aria-live="polite"></section>
+  <section class="card grid two" style="margin-top:12px">
+    <div class="field">
+      <label for="pasteArea">Paste JSON (optional)</label>
+      <textarea id="pasteArea" placeholder='Paste your Illumina1_Playlist_MASTER_3in1.json here, then "Load from Paste".'></textarea>
+      <div class="row" style="gap:8px;margin-top:6px">
+        <button class="btn" id="loadPasteBtn" type="button">Load from Paste</button>
+        <button class="btn" id="clearPasteBtn" type="button">Clear</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Export / Utilities</label>
+      <div class="row" style="gap:8px">
+        <button class="btn primary" id="exportBtn" type="button">Export JSON</button>
+        <button class="btn" id="copyMissingBtn" type="button">Copy Missing Links Checklist</button>
+      </div>
+      <p class="notice" id="summary">—</p>
+    </div>
+  </section>
 
-  <footer>
-    <p>PLNT Earth · Illumina — Tunes</p>
-    <p class="muted">Source JSON: <span class="mono" id="srcLabel">/Illumina1_Playlist_MASTER_3in1.json</span> · Lane: <span id="laneLabel" class="lane">Explainer</span></p>
-  </footer>
+  <section class="card" style="margin-top:12px">
+    <div class="toolbar">
+      <strong id="range">—</strong>
+      <span class="lane" id="laneLabel">Explainer</span>
+    </div>
+    <div style="overflow:auto">
+      <table aria-label="Playlist table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>YouTube URL</th>
+            <th>Apple ID</th>
+            <th>Spotify ID</th>
+            <th>Figure</th>
+            <th>Seed Ritual</th>
+            <th>Share</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
 </div>
 
 <script>
 (function(){
-  var q = new URLSearchParams(location.search);
-  var src = q.get('src') || '/Illumina1_Playlist_MASTER_3in1.json';
-  var data = null, filtered = false, term = '';
-  var curLane = q.get('lane') || 'Explainer';
-  var elCards = document.getElementById('cards');
-  var elCycle = document.getElementById('cycle');
-  var elStat = document.getElementById('stat');
-  var elSearch = document.getElementById('search');
-  var elMissing = document.getElementById('toggleMissing');
-  var elReload = document.getElementById('reload');
-  var elDayJump = document.getElementById('dayJump');
-  var elLaneSel = document.getElementById('lane');
-  var elLaneLabel = document.getElementById('laneLabel');
-  var elSrcLabel = document.getElementById('srcLabel');
-  elSrcLabel.textContent = src;
-  elLaneSel.value = curLane;
-  elLaneLabel.textContent = curLane;
+  var data = null, filtered = false, lane = 'Explainer';
+  function $(id){ return document.getElementById(id); }
+  var stat=$('stat'), summary=$('summary'), range=$('range'), tbody=$('tbody'), laneSel=$('lane'), laneLabel=$('laneLabel');
 
-  function setStat(t){ elStat.textContent = t; }
+  function setStat(m){ stat.textContent = m; }
+  function setSummary(m){ summary.textContent = m; }
+  function setRange(t){ range.textContent = t; }
   function safe(v){ return v==null ? "" : String(v); }
-  function hasYouTube(pl){ return !!(pl && pl.Platforms && pl.Platforms.YouTube && pl.Platforms.YouTube.url); }
-  function validYT(u){
+
+  function validYouTube(u){
     if(!u) return false;
-    var s = String(u).trim();
+    var s = u.trim();
     if(!/^https?:\/\//i.test(s)) return false;
     if(!/youtube\.com|youtu\.be/i.test(s)) return false;
     return true;
   }
-  function appleHref(platforms, title, artist){
-    var p = platforms && platforms.AppleMusic;
-    if(p && p.id){ return 'https://music.apple.com/us/album/'+encodeURIComponent(p.id); }
-    // fallback search
-    var q = encodeURIComponent((title||'') + ' ' + (artist||''));
-    return 'https://music.apple.com/us/search?term='+q;
+  function rowStatus(u){
+    if(!u) return '<span class="status errc">Missing URL</span>';
+    return validYouTube(u) ? '<span class="status okc">OK</span>' : '<span class="status warnc">Check URL</span>';
   }
-  function spotifyHref(platforms, title, artist){
-    var p = platforms && platforms.Spotify;
-    if(p && p.id){ return 'https://open.spotify.com/track/'+encodeURIComponent(p.id); }
-    // fallback search
-    var q = encodeURIComponent((title||'') + ' ' + (artist||''));
-    return 'https://open.spotify.com/search/'+q;
+
+  function ensurePlatforms(obj){
+    obj.Platforms = obj.Platforms || {};
+    obj.Platforms.YouTube = obj.Platforms.YouTube || {url:""};
+    obj.Platforms.AppleMusic = obj.Platforms.AppleMusic || {id:null,status:"coming_soon"};
+    obj.Platforms.Spotify = obj.Platforms.Spotify || {id:null,status:"coming_soon"};
   }
-  function matchRow(row){
-    if(!term) return true;
-    var t = term.toLowerCase();
-    return (
-      (row.title||'').toLowerCase().indexOf(t)>-1 ||
-      (row.artist||'').toLowerCase().indexOf(t)>-1
-    );
+  function ensureDayGlobals(d){
+    if(typeof d.Figure==='undefined') d.Figure="";
+    if(typeof d.SeedRitual==='undefined') d.SeedRitual="";
   }
+
+  function shareUrl(day){
+    var u = new URL(location.origin + location.pathname.replace(/\/admin\/?$/,'') + '/index.html');
+    u.searchParams.set('lane', lane);
+    u.searchParams.set('day', day);
+    return u.toString();
+  }
+
   function render(){
-    if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
-    var list = data.PerDay.slice();
-    var total = list.length;
-    var missing = 0, warn = 0, ok = 0;
-
-    var rows = [];
-    for(var i=0;i<list.length;i++){
-      var day = list[i].Day, date = list[i].Date;
-      var lane = list[i][curLane] || {};
-      if(!matchRow(lane)) continue;
-
-      var title = safe(lane.title), artist = safe(lane.artist);
-      var pf = lane.Platforms || {};
-      var yt = safe(pf.YouTube && pf.YouTube.url);
-      var ytOk = validYT(yt);
-      if(filtered && yt) continue;
-      if(!yt) missing++; else if(ytOk) ok++; else warn++;
+    if(!data || !data.PerDay){ tbody.innerHTML=""; setSummary("—"); return; }
+    var rows=[], miss=0, warn=0, ok=0;
+    for(var i=0;i<data.PerDay.length;i++){
+      var d = data.PerDay[i]; ensureDayGlobals(d);
+      var laneRow = d[lane] || (d[lane]={});
+      ensurePlatforms(laneRow);
+      var u = laneRow.Platforms.YouTube.url || "";
+      if(filtered && u) continue;
+      if(!u) miss++; else if(validYouTube(u)) ok++; else warn++;
 
       rows.push(
-        '<article class="card" id="day-'+day+'">'+
-          '<div class="row"><span class="tag">Day '+day+'</span><span class="tag mono">'+date+'</span><span class="tag">'+curLane+'</span></div>'+
-          '<div class="meta">'+
-            '<div class="title">'+title+'</div>'+
-            '<div class="artist">'+artist+'</div>'+
-            '<div class="platforms">'+
-              (yt ? '<a class="play" href="'+yt+'" target="_blank" rel="noopener">▶︎ Play on YouTube</a>' :
-                    '<span class="badge err">YouTube link missing</span>')+
-              '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music'+((pf.AppleMusic&&pf.AppleMusic.status==='exists')?'':' (search)')+'</a>'+
-              '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify'+((pf.Spotify&&pf.Spotify.id)?'':' (search)')+'</a>'+
-            '</div>'+
-            (yt && !ytOk ? '<div class="warn">Please check this YouTube URL.</div>' : '')+
-          '</div>'+
-        '</article>'
+        '<tr>'+
+          '<td>'+d.Day+'</td>'+
+          '<td>'+safe(d.Date)+'</td>'+
+          '<td><input data-i="'+i+'" data-k="title" type="text" value="'+safe(laneRow.title)+'" aria-label="Title"></td>'+
+          '<td><input data-i="'+i+'" data-k="artist" type="text" value="'+safe(laneRow.artist)+'" aria-label="Artist"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="yt" type="text" placeholder="https://..." value="'+safe(u)+'" aria-label="YouTube URL"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="apple" type="text" placeholder="Apple ID" value="'+safe(laneRow.Platforms.AppleMusic.id)+'" aria-label="Apple ID"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="spotify" type="text" placeholder="Spotify ID" value="'+safe(laneRow.Platforms.Spotify.id)+'" aria-label="Spotify ID"></td>'+
+          '<td><input data-i="'+i+'" data-k="figure" type="text" value="'+safe(d.Figure)+'" aria-label="Figure"></td>'+
+          '<td><input data-i="'+i+'" data-k="seed" type="text" value="'+safe(d.SeedRitual)+'" aria-label="Seed Ritual"></td>'+
+          '<td><button class="btn" type="button" data-share="'+d.Day+'">Copy</button></td>'+
+          '<td>'+rowStatus(u)+'</td>'+
+        '</tr>'
       );
     }
-    elCards.innerHTML = rows.join('');
+    tbody.innerHTML = rows.join('');
+    setSummary('Rows: '+data.PerDay.length+' · Missing YouTube: '+miss+' · Check: '+warn+' · OK: '+ok);
     var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
-    var end = data.Cycle && data.Cycle.End ? data.Cycle.End : '—';
-    elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+total;
-    setStat('OK: '+ok+' · Missing: '+missing+' · Check: '+warn);
-  }
-  function buildDayJump(){
-    if(!data || !data.PerDay) return;
-    var opts = ['<option value="">Jump to day…</option>'];
-    for(var i=0;i<data.PerDay.length;i++){
-      var d = data.PerDay[i].Day || (i+1);
-      opts.push('<option value="'+d+'">Day '+d+'</option>');
-    }
-    elDayJump.innerHTML = opts.join('');
-  }
-  function jumpTo(day){
-    var el = document.getElementById('day-'+day);
-    if(!el) return;
-    el.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-  function load(){
-    setStat('Loading…');
-    fetch(src, {cache:'no-store'}).then(function(r){
-      if(!r.ok) throw new Error('Load failed');
-      return r.json();
-    }).then(function(json){
-      data = json;
-      buildDayJump();
-      render();
-      setStat('Loaded');
-    }).catch(function(){
-      setStat('Could not load JSON');
-      elCards.innerHTML = '';
-      elCycle.textContent = 'Load error';
+    var end   = data.Cycle && data.Cycle.End   ? data.Cycle.End   : '—';
+    setRange('Cycle '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—'));
+
+    // wire share copy buttons
+    tbody.querySelectorAll('button[data-share]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = this.getAttribute('data-share');
+        var link = shareUrl(d);
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(link); }
+        this.textContent = 'Copied!';
+        var self=this; setTimeout(function(){ self.textContent='Copy'; }, 900);
+      });
     });
   }
 
-  elSearch.addEventListener('input', function(){ term = this.value.trim(); render(); });
-  elMissing.addEventListener('click', function(){
-    filtered = !filtered;
-    this.textContent = filtered ? 'Show all' : 'Show only missing YouTube';
+  function onEdit(e){
+    var t = e.target; if(!t || !t.getAttribute) return;
+    var i = +t.getAttribute('data-i'); var k = t.getAttribute('data-k');
+    if(Number.isNaN(i) || !k) return;
+
+    var d = data.PerDay[i]; var laneRow = d[lane] || (d[lane]={}); ensurePlatforms(laneRow);
+    if(k==='title'){ laneRow.title = t.value; }
+    else if(k==='artist'){ laneRow.artist = t.value; }
+    else if(k==='yt'){ laneRow.Platforms.YouTube.url = t.value; }
+    else if(k==='apple'){ laneRow.Platforms.AppleMusic.id = t.value || null; laneRow.Platforms.AppleMusic.status = t.value ? 'exists':'coming_soon'; }
+    else if(k==='spotify'){ laneRow.Platforms.Spotify.id = t.value || null; laneRow.Platforms.Spotify.status = t.value ? 'exists':'coming_soon'; }
+    else if(k==='figure'){ d.Figure = t.value; }
+    else if(k==='seed'){ d.SeedRitual = t.value; }
+
     render();
-  });
-  elReload.addEventListener('click', load);
-  elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
-  elLaneSel.addEventListener('change', function(){
-    curLane = this.value; elLaneLabel.textContent = curLane; render();
+  }
+
+  function download(filename, text){
+    var a = document.createElement('a');
+    a.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
+    a.setAttribute('download', filename);
+    document.body.appendChild(a);
+    a.click(); a.remove();
+  }
+
+  function copy(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text); }
+  }
+
+  function loadFromObject(obj){
+    data = obj;
+    if(!data.PerDay){ data=null; setStat("Invalid JSON (no PerDay)"); tbody.innerHTML=""; return; }
+    filtered=false; setStat("Loaded"); render();
+  }
+
+  // Wire UI
+  $('loadFileBtn').addEventListener('click', function(){ $('filePicker').click(); });
+  $('filePicker').addEventListener('change', function(ev){
+    var f = ev.target.files && ev.target.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){ try{ loadFromObject(JSON.parse(r.result)); }catch(e){ setStat("Invalid JSON"); } };
+    r.readAsText(f);
   });
 
-  load();
+  $('pasteBtn').addEventListener('click', function(){ $('pasteArea').focus(); });
+  $('loadPasteBtn').addEventListener('click', function(){
+    var txt = $('pasteArea').value.trim(); if(!txt){ setStat("Nothing to load"); return; }
+    try{ loadFromObject(JSON.parse(txt)); }catch(e){ setStat("Invalid JSON"); }
+  });
+  $('clearPasteBtn').addEventListener('click', function(){ $('pasteArea').value=''; });
+
+  $('validateBtn').addEventListener('click', function(){
+    if(!data){ setStat("Load a JSON first"); return; }
+    var miss=0,warn=0,ok=0;
+    for(var i=0;i<(data.PerDay||[]).length;i++){
+      var lr=(data.PerDay[i][lane]||{}); var u=(lr.Platforms&&lr.Platforms.YouTube&&lr.Platforms.YouTube.url)||"";
+      if(!u) miss++; else if(validYouTube(u)) ok++; else warn++;
+    }
+    setStat("OK: "+ok+" · Missing: "+miss+" · Check: "+warn);
+    render();
+  });
+
+  $('missingBtn').addEventListener('click', function(){ filtered=true; render(); setStat("Showing rows missing YouTube"); });
+  $('resetFilterBtn').addEventListener('click', function(){ filtered=false; render(); setStat("Showing all rows"); });
+
+  $('exportBtn').addEventListener('click', function(){
+    if(!data){ setStat("Load a JSON first"); return; }
+    download('Illumina1_Playlist_MASTER_3in1.updated.json', JSON.stringify(data,null,2));
+    setStat("Exported");
+  });
+
+  $('copyMissingBtn').addEventListener('click', function(){
+    if(!data){ setStat("Load a JSON first"); return; }
+    var lines=[], list=data.PerDay||[];
+    for(var i=0;i<list.length;i++){
+      var d=list[i], lr=d[lane]||{}, u=(lr.Platforms&&lr.Platforms.YouTube&&lr.Platforms.YouTube.url)||"";
+      if(!u){ lines.push("Day "+(d.Day)+": "+(lr.title||"TBD")+" — "+(lr.artist||"TBD")); }
+    }
+    copy(lines.join("\n"));
+    setStat("Missing list copied");
+  });
+
+  laneSel.addEventListener('change', function(){ lane=this.value; laneLabel.textContent=lane; render(); });
+  tbody.addEventListener('input', onEdit);
 })();
 </script>
 </body>
