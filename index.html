@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tunes · Illumina 1 (Public)</title>
 <meta name="theme-color" content="#0B0F19">
-<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify shown when available. Includes moon phases, figure, and seed rituals.">
+<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify shown when available. Includes moon phases, figure, seed rituals, Jar day links, and auto-next playback.">
 <style>
   :root{
     --bg:#0B0F19;--ink:#E5E7EB;--muted:#9CA3AF;--line:rgba(229,231,235,.15);
@@ -45,8 +45,9 @@
   footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
   .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
   .share{margin-left:auto}
-  /* Sticky player */
-  .playerbar{position:sticky;top:0;z-index:5;background:rgba(11,15,25,.9);backdrop-filter:saturate(120%) blur(8px);border-bottom:1px solid var(--line)}
+
+  /* Sticky player bar */
+  .playerbar{position:sticky;top:0;z-index:5;background:rgba(11,15,25,.94);backdrop-filter:saturate(120%) blur(8px);border-bottom:1px solid var(--line)}
   .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 0}
   .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px) 10px}
   @media (min-width:860px){.player-row{grid-template-columns:320px 1fr}}
@@ -57,6 +58,7 @@
 </style>
 </head>
 <body>
+<!-- Sticky player -->
 <div class="playerbar" aria-label="Player">
   <div class="playerwrap">
     <div class="player-row">
@@ -65,7 +67,7 @@
         <div id="nowTitle" class="mono" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
         <div id="nowMeta" class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
       </div>
-      <div class="frame"><iframe id="yt" title="Illumina Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+      <div class="frame"><div id="yt"></div></div>
     </div>
   </div>
 </div>
@@ -99,14 +101,24 @@
   </footer>
 </div>
 
+<!-- YouTube Iframe API -->
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 (function(){
+  /* === Config === */
+  var JAR_DAY_BASE = 'https://jar.plnt.earth/day/?date='; // adjust if your Jar day URL differs
+
+  /* === State === */
   var q = new URLSearchParams(location.search);
   var src = q.get('src') || '/Illumina1_Playlist_MASTER_3in1.json';
   var data = null, filtered = false, term = '';
   var curLane = q.get('lane') || 'Explainer';
   var startDay = parseInt(q.get('day')||'',10);
+  var playOrder = []; // list of day numbers (with YouTube) in current view
+  var currentIndex = -1; // index in playOrder
+  var player, playerReady = false;
 
+  /* === Elements === */
   var elCards = document.getElementById('cards');
   var elCycle = document.getElementById('cycle');
   var elStat = document.getElementById('stat');
@@ -119,7 +131,6 @@
   var elSrcLabel = document.getElementById('srcLabel');
   var elNowTitle = document.getElementById('nowTitle');
   var elNowMeta = document.getElementById('nowMeta');
-  var iframe = document.getElementById('yt');
 
   elSrcLabel.textContent = src;
   elLaneSel.value = curLane;
@@ -128,12 +139,13 @@
   function setStat(t){ elStat.textContent = t; }
   function safe(v){ return v==null ? "" : String(v); }
 
-  // --- Fix common UTF-8 mojibake (display only)
+  // Fix common UTF-8 mojibake for display
   function fixMojibake(s){
     if(!s) return s;
     var map = {
       "BeyoncÃ©":"Beyoncé","MÃ¥neskin":"Måneskin","ChloÃ«":"Chloë","ZoÃ«":"Zoë",
-      "Ã©":"é","Ã¨":"è","Ãª":"ê","Ãë":"ë","Ã¡":"á","Ãà":"à","Ã�":"í","Ã­":"í","Ã³":"ó","Ãº":"ú","Ã±":"ñ","Ãœ":"Ü","Ã¼":"ü","Ã¶":"ö","Ã„":"Ä","Ã¤":"ä","Ã…":"Å","Ã¥":"å",
+      "Ã©":"é","Ãè":"è","Ãª":"ê","Ã«":"ë","Ã¡":"á","Ãà":"à","Ã­":"í","Ã³":"ó","Ãº":"ú","Ã±":"ñ",
+      "Ãœ":"Ü","Ã¼":"ü","Ã¶":"ö","Ã„":"Ä","Ã¤":"ä","Ã…":"Å","Ã¥":"å",
       "â€“":"–","â€”":"—","â€˜":"‘","â€™":"’","â€œ":"“","â€":"”","â€¢":"•","â€¦":"…"
     };
     var out = s;
@@ -141,14 +153,10 @@
     return out;
   }
 
-  function fixRowTitle(s){ return fixMojibake(s); }
-  function fixRowArtist(s){ return fixMojibake(s); }
-
-  // Moon phase emoji (approx.)
   function moonEmoji(dateStr){
     var d = new Date(dateStr+'T00:00:00Z');
-    var syn = 29.53058867; // synodic month
-    var base = Date.UTC(2025,0,29); // rough new moon anchor
+    var syn = 29.53058867;
+    var base = Date.UTC(2025,0,29);
     var days = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - base)/86400000;
     var phase = ((days % syn) + syn) % syn;
     var idx = Math.floor((phase/syn)*8+0.5)%8;
@@ -157,33 +165,31 @@
 
   function extractYouTubeID(u){
     if(!u) return "";
-    try{
-      var s = String(u);
-      var m = s.match(/[?&]v=([^&]+)/) || s.match(/youtu\.be\/([^?&]+)/) || s.match(/embed\/([^?&]+)/);
-      return m ? m[1] : "";
-    }catch(_){ return ""; }
+    var s = String(u);
+    var m = s.match(/[?&]v=([^&]+)/) || s.match(/youtu\.be\/([^?&]+)/) || s.match(/embed\/([^?&]+)/);
+    return m ? m[1] : "";
   }
 
-  function hasYouTube(pl){ return !!(pl && pl.Platforms && pl.Platforms.YouTube && pl.Platforms.YouTube.url); }
   function validYT(u){
     if(!u) return false;
     var s = String(u).trim();
-    if(!/^https?:\/\//i.test(s)) return false;
-    if(!/youtube\.com|youtu\.be/i.test(s)) return false;
-    return true;
+    return /^https?:\/\//i.test(s) && /youtube\.com|youtu\.be/i.test(s);
   }
+
   function appleHref(platforms, title, artist){
     var p = platforms && platforms.AppleMusic;
     if(p && p.id){ return 'https://music.apple.com/us/album/'+encodeURIComponent(p.id); }
     var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
     return 'https://music.apple.com/us/search?term='+qq;
   }
+
   function spotifyHref(platforms, title, artist){
     var p = platforms && platforms.Spotify;
     if(p && p.id){ return 'https://open.spotify.com/track/'+encodeURIComponent(p.id); }
     var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
     return 'https://open.spotify.com/search/'+qq;
   }
+
   function matchRow(row, fig, seed){
     if(!term) return true;
     var t = term.toLowerCase();
@@ -194,24 +200,69 @@
       (safe(seed).toLowerCase().indexOf(t)>-1)
     );
   }
+
   function shareUrl(day){
     var u = new URL(location.href);
     u.searchParams.set('lane', curLane);
     u.searchParams.set('day', day);
     return u.toString();
   }
-  function copy(text){ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text); } }
 
-  function play(day, laneRow, dateStr){
+  function playByDay(day){
+    if(!data || !data.PerDay) return;
+    var base = data.PerDay[day-1] || {};
+    var laneRow = base[curLane] || {};
     var pf = laneRow.Platforms || {};
     var yt = safe(pf.YouTube && pf.YouTube.url);
     var id = extractYouTubeID(yt);
     if(!id) return;
-    iframe.src = 'https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1';
-    elNowTitle.textContent = fixRowTitle(safe(laneRow.title));
-    elNowMeta.textContent  = fixRowArtist(safe(laneRow.artist)) + ' · Day '+day+' · '+dateStr+' · '+moonEmoji(dateStr);
+
+    // Update "now playing"
+    var title = fixMojibake(safe(laneRow.title));
+    var artist = fixMojibake(safe(laneRow.artist));
+    elNowTitle.textContent = title;
+    elNowMeta.textContent  = artist + ' · Day '+day+' · '+(base.Date||'')+' · '+moonEmoji(base.Date||'');
+
+    // Load and play
+    if(playerReady){
+      player.loadVideoById(id);
+    } else {
+      // queue for when onYouTubeIframeAPIReady fires
+      queuedId = id;
+    }
+
+    // update currentIndex
+    currentIndex = playOrder.indexOf(day);
   }
 
+  function buildOrder(){
+    playOrder = [];
+    if(!data || !data.PerDay) return;
+    for(var i=0;i<data.PerDay.length;i++){
+      var base = data.PerDay[i];
+      var laneRow = base[curLane] || {};
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      if(!yt) continue;
+      if(filtered && yt) continue; // if filtered to "missing only", skip; else include
+      if(matchRow(laneRow, base.Figure, base.SeedRitual)){
+        playOrder.push(base.Day);
+      }
+    }
+  }
+
+  function playNext(){
+    if(playOrder.length===0) return;
+    if(currentIndex < 0){ currentIndex = 0; }
+    else { currentIndex = (currentIndex + 1) % playOrder.length; }
+    var nextDay = playOrder[currentIndex];
+    playByDay(nextDay);
+    // scroll that card into view (nice touch)
+    var el = document.getElementById('day-'+nextDay);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
+
+  // Public render
   function render(){
     if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
     var list = data.PerDay.slice();
@@ -221,19 +272,21 @@
 
     for(var i=0;i<list.length;i++){
       var base = list[i];
-      var lane = base[curLane] || {};
+      var laneRow = base[curLane] || {};
       var fig = safe(base.Figure);
       var seed = safe(base.SeedRitual);
-      if(!matchRow(lane, fig, seed)) continue;
+      if(!matchRow(laneRow, fig, seed)) continue;
 
       var day = base.Day, date = base.Date;
-      var title = fixRowTitle(safe(lane.title));
-      var artist = fixRowArtist(safe(lane.artist));
-      var pf = lane.Platforms || {};
+      var title = fixMojibake(safe(laneRow.title));
+      var artist = fixMojibake(safe(laneRow.artist));
+      var pf = laneRow.Platforms || {};
       var yt = safe(pf.YouTube && pf.YouTube.url);
       var ytOk = validYT(yt);
       if(filtered && yt) continue;
       if(!yt) missing++; else if(ytOk) ok++; else warn++;
+
+      var jarHref = JAR_DAY_BASE + encodeURIComponent(date || '');
 
       rows.push(
         '<article class="card" id="day-'+day+'">'+
@@ -243,6 +296,7 @@
             '<span class="tag">'+curLane+'</span>'+
             '<span class="tag">'+moonEmoji(date)+'</span>'+
             '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
+            (curLane==='Explainer' ? '<a class="btn" href="'+jarHref+'" target="_blank" rel="noopener">Jar Day</a>' : '')+
             '<button class="btn share" type="button" data-share="'+day+'">Share</button>'+
           '</div>'+
           '<div class="meta">'+
@@ -267,30 +321,31 @@
     elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+total;
     setStat('OK: '+ok+' · Missing: '+missing+' · Check: '+warn);
 
-    // Wire play + share
+    // Build play order after DOM paint
+    buildOrder();
+
+    // wire buttons
     elCards.querySelectorAll('button[data-play]').forEach(function(b){
       b.addEventListener('click', function(){
         var d = +this.getAttribute('data-play');
-        var row = (data.PerDay[d-1]||{})[curLane] || {};
-        play(d, row, (data.PerDay[d-1]||{}).Date || '');
-        // focus player for accessibility:
-        iframe.focus({preventScroll:true});
+        playByDay(d);
       });
     });
     elCards.querySelectorAll('button[data-share]').forEach(function(b){
       b.addEventListener('click', function(){
         var d = this.getAttribute('data-share');
-        copy(shareUrl(d));
+        var u = new URL(location.href);
+        u.searchParams.set('lane', curLane);
+        u.searchParams.set('day', d);
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(u.toString()); }
         this.textContent = 'Copied!';
-        var self = this;
-        setTimeout(function(){ self.textContent='Share'; }, 1000);
+        var self = this; setTimeout(function(){ self.textContent='Share'; }, 1000);
       });
     });
 
-    // auto-jump & auto-play if requested
+    // auto-start if deep-linked
     if(startDay && document.getElementById('day-'+startDay)){
-      var row = (data.PerDay[startDay-1]||{})[curLane] || {};
-      play(startDay, row, (data.PerDay[startDay-1]||{}).Date || '');
+      playByDay(startDay);
       document.getElementById('day-'+startDay).scrollIntoView({behavior:'smooth',block:'start'});
       startDay = null;
     }
@@ -329,6 +384,7 @@
     });
   }
 
+  // UI bindings
   elSearch.addEventListener('input', function(){ term = this.value.trim(); render(); });
   elMissing.addEventListener('click', function(){
     filtered = !filtered;
@@ -338,6 +394,23 @@
   elReload.addEventListener('click', load);
   elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
   elLaneSel.addEventListener('change', function(){ curLane = this.value; elLaneLabel.textContent = curLane; render(); });
+
+  // === YouTube Iframe API hooks ===
+  var queuedId = null;
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('yt', {
+      width: '100%', height: '100%',
+      videoId: queuedId || null,
+      playerVars: { rel:0, modestbranding:1, playsinline:1 },
+      events: {
+        'onReady': function(){ playerReady = true; if(queuedId){ player.loadVideoById(queuedId); queuedId=null; } },
+        'onStateChange': function(e){
+          // 0 = ended → play next
+          if(e.data === YT.PlayerState.ENDED){ playNext(); }
+        }
+      }
+    });
+  };
 
   load();
 })();
