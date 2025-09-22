@@ -69,8 +69,9 @@
         <option>AnchorPublic</option>
         <option>AnchorBuilt</option>
       </select>
+      <button class="btn" id="cleanBtn" type="button" title="Fix mojibake (BeyoncÃ© → Beyoncé, etc.)">Clean Mojibake & Export</button>
       <span class="pill" id="stat">No file loaded</span>
-      <span class="right notice">Tip: Edit per-lane fields + Figure/Seed, then Export.</span>
+      <span class="right notice">Tip: Edit per-lane fields + Figure/Seed, then Export or Clean.</span>
     </div>
   </header>
 
@@ -291,6 +292,47 @@
 
   laneSel.addEventListener('change', function(){ lane=this.value; laneLabel.textContent=lane; render(); });
   tbody.addEventListener('input', onEdit);
+
+  // ======== NEW: Mojibake Cleaner =========
+  function cleanMojibakeString(s){
+    if(!s) return s;
+    var map = {
+      "BeyoncÃ©":"Beyoncé","MÃ¥neskin":"Måneskin","ChloÃ«":"Chloë","ZoÃ«":"Zoë",
+      "Ã©":"é","Ãè":"è","Ãª":"ê","Ã«":"ë","Ã¡":"á","Ãà":"à","Ã¡":"á","Ã­":"í","Ã³":"ó","Ãº":"ú","Ã±":"ñ",
+      "Ãœ":"Ü","Ã¼":"ü","Ã¶":"ö","Ã„":"Ä","Ã¤":"ä","Ã…":"Å","Ã¥":"å",
+      "â€“":"–","â€”":"—","â€˜":"‘","â€™":"’","â€œ":"“","â€":"”","â€¢":"•","â€¦":"…"
+    };
+    var out = String(s);
+    for(var k in map){ out = out.split(k).join(map[k]); }
+    // normalize common whitespace issues
+    out = out.replace(/\s+/g,' ').trim();
+    // fix accidental " ,", " .", " :"
+    out = out.replace(/\s+([,.:;!?])/g,'$1');
+    return out;
+  }
+
+  function cleanLaneRow(row){
+    if(!row) return;
+    if(typeof row.title !== 'undefined') row.title = cleanMojibakeString(row.title);
+    if(typeof row.artist !== 'undefined') row.artist = cleanMojibakeString(row.artist);
+  }
+
+  function cleanDay(d){
+    d.Figure = cleanMojibakeString(d.Figure||"");
+    d.SeedRitual = cleanMojibakeString(d.SeedRitual||"");
+    cleanLaneRow(d.Explainer);
+    cleanLaneRow(d.AnchorPublic);
+    cleanLaneRow(d.AnchorBuilt);
+  }
+
+  $('cleanBtn').addEventListener('click', function(){
+    if(!data || !data.PerDay){ setStat("Load a JSON first"); return; }
+    for(var i=0;i<data.PerDay.length;i++){ cleanDay(data.PerDay[i]); }
+    setStat("Cleaned text — exporting…");
+    download('Illumina1_Playlist_MASTER_3in1.cleaned.json', JSON.stringify(data,null,2));
+  });
+  // ======== /Mojibake Cleaner =========
+
 })();
 </script>
 </body>
