@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Illumina Admin Helper · Playlist Editor</title>
+<title>Illumina Admin · Tunes (3-lane Editor)</title>
 <meta name="theme-color" content="#0B0F19">
 <style>
   :root{
     --bg:#0B0F19;--ink:#E5E7EB;--muted:#9CA3AF;--line:rgba(229,231,235,.15);
     --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
-    --r:14px;--pad:18px;--maxw:1100px;
+    --r:14px;--pad:18px;--maxw:1200px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -25,11 +25,10 @@
   .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,209,66,.15),rgba(245,158,11,.12))}
   .btn.ok{border-color:rgba(52,211,153,.35)}
   .btn.warn{border-color:rgba(251,191,36,.35)}
-  .btn.err{border-color:rgba(248,113,113,.35)}
   .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
   .grid{display:grid;gap:12px}
   .two{grid-template-columns:1fr}
-  @media (min-width:880px){.two{grid-template-columns:1fr 1fr}}
+  @media (min-width:980px){.two{grid-template-columns:1fr 1fr}}
   .field{display:grid;gap:6px}
   label{font-size:13px;color:var(--muted)}
   input[type="text"], textarea, select{
@@ -38,7 +37,7 @@
   }
   textarea{min-height:120px}
   table{width:100%;border-collapse:separate;border-spacing:0 8px}
-  th, td{padding:10px 10px;vertical-align:top}
+  th, td{padding:8px 8px;vertical-align:top}
   th{font-weight:600;color:#cfd3db;text-align:left}
   tbody tr{background:rgba(255,255,255,.02);border:1px solid var(--line)}
   tbody tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
@@ -50,12 +49,13 @@
   .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
   .right{margin-left:auto}
   .notice{font-size:13px;color:var(--muted)}
+  .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="card">
-    <h1>Illumina Admin Helper <span class="muted">· Playlist Editor</span></h1>
+    <h1>Illumina Admin <span class="muted">· Tunes 3-lane Editor</span></h1>
     <div class="controls">
       <button class="btn primary" id="loadFileBtn" type="button" aria-label="Load JSON from file">Load JSON (file)</button>
       <input id="filePicker" type="file" accept=".json,application/json" style="display:none">
@@ -63,15 +63,21 @@
       <button class="btn ok" id="validateBtn" type="button">Validate</button>
       <button class="btn warn" id="missingBtn" type="button">Show Only Missing YouTube</button>
       <button class="btn" id="resetFilterBtn" type="button">Show All</button>
+      <label class="pill" for="lane">Lane</label>
+      <select id="lane">
+        <option>Explainer</option>
+        <option>AnchorPublic</option>
+        <option>AnchorBuilt</option>
+      </select>
       <span class="pill" id="stat">No file loaded</span>
-      <span class="right notice">Tip: Edit YouTube URLs inline and click <em>Export</em>.</span>
+      <span class="right notice">Tip: Edit per-lane fields inline and Export.</span>
     </div>
   </header>
 
   <section class="card grid two" style="margin-top:12px">
     <div class="field">
       <label for="pasteArea">Paste JSON (optional)</label>
-      <textarea id="pasteArea" placeholder='Paste your Illumina1_Playlist_YT_Apple_Spotify.json here, then click "Load from Paste".'></textarea>
+      <textarea id="pasteArea" placeholder='Paste your Illumina1_Playlist_MASTER_3in1.json here, then "Load from Paste".'></textarea>
       <div class="row" style="gap:8px;margin-top:6px">
         <button class="btn" id="loadPasteBtn" type="button">Load from Paste</button>
         <button class="btn" id="clearPasteBtn" type="button">Clear</button>
@@ -89,23 +95,21 @@
 
   <section class="card" style="margin-top:12px">
     <div class="toolbar">
-      <strong>Playlist (42 days)</strong>
-      <span class="pill mono" id="range"></span>
+      <strong id="range">—</strong>
+      <span class="lane" id="laneLabel">Explainer</span>
     </div>
     <div style="overflow:auto">
       <table aria-label="Playlist table">
         <thead>
           <tr>
-            <th style="min-width:60px">Day</th>
-            <th style="min-width:120px">Date</th>
-            <th style="min-width:220px">Title</th>
-            <th style="min-width:180px">Artist</th>
-            <th style="min-width:180px">Figure</th>
-            <th style="min-width:220px">Seed Ritual</th>
-            <th style="min-width:260px">YouTube URL</th>
-            <th style="min-width:120px">Apple</th>
-            <th style="min-width:120px">Spotify</th>
-            <th style="min-width:120px">Status</th>
+            <th>Day</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>YouTube URL</th>
+            <th>Apple ID</th>
+            <th>Spotify ID</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -116,16 +120,13 @@
 
 <script>
 (function(){
-  var data = null;
-  var filtered = false;
-
+  var data = null, filtered = false, lane = 'Explainer';
   function $(id){ return document.getElementById(id); }
-  var stat = $('stat'), summary = $('summary'), range = $('range'), tbody = $('tbody');
+  var stat=$('stat'), summary=$('summary'), range=$('range'), tbody=$('tbody'), laneSel=$('lane'), laneLabel=$('laneLabel');
 
-  function setStat(msg){ stat.textContent = msg; }
-  function setSummary(msg){ summary.textContent = msg; }
-  function setRange(start, end, days){ range.textContent = start + " → " + end + " · " + days + " days"; }
-
+  function setStat(m){ stat.textContent = m; }
+  function setSummary(m){ summary.textContent = m; }
+  function setRange(t){ range.textContent = t; }
   function safe(v){ return v==null ? "" : String(v); }
 
   function validYouTube(u){
@@ -135,93 +136,66 @@
     if(!/youtube\.com|youtu\.be/i.test(s)) return false;
     return true;
   }
-
   function rowStatus(u){
     if(!u) return '<span class="status errc">Missing URL</span>';
     return validYouTube(u) ? '<span class="status okc">OK</span>' : '<span class="status warnc">Check URL</span>';
   }
 
   function render(){
-    if(!data || !data.Playlist){ tbody.innerHTML = ""; setSummary("—"); return; }
-    var rows = [];
-    var missing = 0, warn = 0;
-    var list = data.Playlist;
+    if(!data || !data.PerDay){ tbody.innerHTML=""; setSummary("—"); return; }
+    var rows=[], miss=0, warn=0, ok=0;
+    for(var i=0;i<data.PerDay.length;i++){
+      var d = data.PerDay[i];
+      var laneRow = d[lane] || {};
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      if(filtered && yt) continue;
 
-    for(var i=0;i<list.length;i++){
-      var it = list[i];
-      var yt = safe(it.Platforms && it.Platforms.YouTube && it.Platforms.YouTube.url);
-      if(filtered && yt) continue; // show only missing
-      if(!yt) missing++; else if(!validYouTube(yt)) warn++;
+      if(!yt) miss++; else if(validYouTube(yt)) ok++; else warn++;
 
       rows.push(
         '<tr>'+
-          '<td><input data-k="Day" data-i="'+i+'" type="text" value="'+safe(it.Day)+'" aria-label="Day"></td>'+
-          '<td><input data-k="Date" data-i="'+i+'" type="text" value="'+safe(it.Date)+'" aria-label="Date"></td>'+
-          '<td><input data-k="Track.title" data-i="'+i+'" type="text" value="'+safe(it.Track&&it.Track.title)+'" aria-label="Title"></td>'+
-          '<td><input data-k="Track.artist" data-i="'+i+'" type="text" value="'+safe(it.Track&&it.Track.artist)+'" aria-label="Artist"></td>'+
-          '<td><input data-k="Figure" data-i="'+i+'" type="text" value="'+safe(it.Figure)+'" aria-label="Figure"></td>'+
-          '<td><input data-k="SeedRitual" data-i="'+i+'" type="text" value="'+safe(it.SeedRitual)+'" aria-label="Seed Ritual"></td>'+
-          '<td><input class="mono" data-k="Platforms.YouTube.url" data-i="'+i+'" type="text" placeholder="https://..." value="'+yt+'" aria-label="YouTube URL"></td>'+
-          '<td><input class="mono" data-k="Platforms.AppleMusic.id" data-i="'+i+'" type="text" placeholder="coming_soon" value="'+safe(it.Platforms&&it.Platforms.AppleMusic&&it.Platforms.AppleMusic.id)+'" aria-label="Apple Music ID"></td>'+
-          '<td><input class="mono" data-k="Platforms.Spotify.id" data-i="'+i+'" type="text" placeholder="coming_soon" value="'+safe(it.Platforms&&it.Platforms.Spotify&&it.Platforms.Spotify.id)+'" aria-label="Spotify ID"></td>'+
+          '<td>'+d.Day+'</td>'+
+          '<td>'+safe(d.Date)+'</td>'+
+          '<td><input data-i="'+i+'" data-k="title" type="text" value="'+safe(laneRow.title)+'" aria-label="Title"></td>'+
+          '<td><input data-i="'+i+'" data-k="artist" type="text" value="'+safe(laneRow.artist)+'" aria-label="Artist"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="yt" type="text" placeholder="https://..." value="'+yt+'" aria-label="YouTube URL"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="apple" type="text" placeholder="Apple ID" value="'+safe(pf.AppleMusic && pf.AppleMusic.id)+'" aria-label="Apple ID"></td>'+
+          '<td><input class="mono" data-i="'+i+'" data-k="spotify" type="text" placeholder="Spotify ID" value="'+safe(pf.Spotify && pf.Spotify.id)+'" aria-label="Spotify ID"></td>'+
           '<td>'+rowStatus(yt)+'</td>'+
         '</tr>'
       );
     }
     tbody.innerHTML = rows.join('');
-    var msg = [];
-    msg.push("Rows: " + list.length);
-    msg.push("Missing YouTube: " + missing);
-    msg.push("Warnings: " + warn);
-    setSummary(msg.join(" · "));
+    setSummary('Rows: '+data.PerDay.length+' · Missing YouTube: '+miss+' · Check: '+warn+' · OK: '+ok);
+    laneLabel.textContent = lane;
+    var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
+    var end   = data.Cycle && data.Cycle.End   ? data.Cycle.End   : '—';
+    setRange('Cycle '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—'));
   }
 
-  function setDeep(obj, path, value){
-    var parts = path.split('.');
-    var cur = obj;
-    for(var i=0;i<parts.length-1;i++){
-      var p = parts[i];
-      if(cur[p]==null){ cur[p] = {}; }
-      cur = cur[p];
-    }
-    cur[parts[parts.length-1]] = value;
+  function ensurePlatforms(obj){
+    obj.Platforms = obj.Platforms || {};
+    obj.Platforms.YouTube = obj.Platforms.YouTube || {url:""};
+    obj.Platforms.AppleMusic = obj.Platforms.AppleMusic || {id:null,status:"coming_soon"};
+    obj.Platforms.Spotify = obj.Platforms.Spotify || {id:null,status:"coming_soon"};
   }
 
   function onEdit(e){
-    var t = e.target;
-    if(!t || !t.getAttribute) return;
-    var k = t.getAttribute('data-k');
-    var i = t.getAttribute('data-i');
-    if(k==null || i==null) return;
+    var t = e.target; if(!t || !t.getAttribute) return;
+    var i = t.getAttribute('data-i'); var k = t.getAttribute('data-k');
+    if(i==null || !k) return;
+    var row = data.PerDay[+i][lane] || (data.PerDay[+i][lane] = {});
+    ensurePlatforms(row);
     var v = t.value;
-    var item = data.Playlist[+i];
 
-    if(k.indexOf('.')>-1){
-      setDeep(item, k, v);
-    }else{
-      item[k] = v;
-    }
+    if(k==='title'){ row.title = v; }
+    else if(k==='artist'){ row.artist = v; }
+    else if(k==='yt'){ row.Platforms.YouTube.url = v; }
+    else if(k==='apple'){ row.Platforms.AppleMusic.id = v || null; row.Platforms.AppleMusic.status = v ? 'exists' : 'coming_soon'; }
+    else if(k==='spotify'){ row.Platforms.Spotify.id = v || null; row.Platforms.Spotify.status = v ? 'exists' : 'coming_soon'; }
 
-    // Update status cell when URL changed
-    if(k === "Platforms.YouTube.url"){
-      var cell = t.parentElement.nextElementSibling && t.parentElement.nextElementSibling.nextElementSibling
-        ? t.parentElement.nextElementSibling.nextElementSibling.nextElementSibling
-        : null;
-      // just re-render row status by re-rendering all (keeps it simple, no console logs)
-      render();
-    }
-  }
-
-  function loadFromObject(obj){
-    data = obj;
-    if(!data.Playlist){ data = null; setStat("Invalid JSON (no Playlist)"); tbody.innerHTML=""; return; }
-    var st = (data.Cycle && data.Cycle.Start) ? data.Cycle.Start : "—";
-    var en = (data.Cycle && data.Cycle.End) ? data.Cycle.End : "—";
-    var days = (data.Cycle && data.Cycle.Days) ? data.Cycle.Days : (data.Playlist ? data.Playlist.length : "—");
-    setRange(st, en, days);
-    setStat("Loaded");
-    filtered = false;
-    render();
+    render(); // refresh statuses
   }
 
   function download(filename, text){
@@ -229,79 +203,69 @@
     a.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
     a.setAttribute('download', filename);
     document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.click(); a.remove();
   }
 
-  function copyToClipboard(text){
+  function copy(text){
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text); }
   }
 
-  // Wire UI
+  function loadFromObject(obj){
+    data = obj;
+    if(!data.PerDay){ data=null; setStat("Invalid JSON (no PerDay)"); tbody.innerHTML=""; return; }
+    filtered=false; setStat("Loaded"); render();
+  }
+
   $('loadFileBtn').addEventListener('click', function(){ $('filePicker').click(); });
   $('filePicker').addEventListener('change', function(ev){
-    var f = ev.target.files && ev.target.files[0];
-    if(!f) return;
+    var f = ev.target.files && ev.target.files[0]; if(!f) return;
     var r = new FileReader();
     r.onload = function(){ try{ loadFromObject(JSON.parse(r.result)); }catch(e){ setStat("Invalid JSON"); } };
     r.readAsText(f);
   });
 
-  $('pasteBtn').addEventListener('click', function(){
-    $('pasteArea').focus();
-  });
+  $('pasteBtn').addEventListener('click', function(){ $('pasteArea').focus(); });
   $('loadPasteBtn').addEventListener('click', function(){
-    var txt = $('pasteArea').value.trim();
-    if(!txt){ setStat("Nothing to load"); return; }
+    var txt = $('pasteArea').value.trim(); if(!txt){ setStat("Nothing to load"); return; }
     try{ loadFromObject(JSON.parse(txt)); }catch(e){ setStat("Invalid JSON"); }
   });
-  $('clearPasteBtn').addEventListener('click', function(){ $('pasteArea').value=""; });
+  $('clearPasteBtn').addEventListener('click', function(){ $('pasteArea').value=''; });
 
   $('validateBtn').addEventListener('click', function(){
     if(!data){ setStat("Load a JSON first"); return; }
-    var list = data.Playlist || [];
     var miss=0,warn=0,ok=0;
-    for(var i=0;i<list.length;i++){
-      var u = (list[i].Platforms && list[i].Platforms.YouTube && list[i].Platforms.YouTube.url) || "";
-      if(!u) miss++;
-      else if(validYouTube(u)) ok++;
-      else warn++;
+    for(var i=0;i<(data.PerDay||[]).length;i++){
+      var laneRow = data.PerDay[i][lane] || {};
+      var u = (laneRow.Platforms && laneRow.Platforms.YouTube && laneRow.Platforms.YouTube.url) || "";
+      if(!u) miss++; else if(validYouTube(u)) ok++; else warn++;
     }
     setStat("OK: "+ok+" · Missing: "+miss+" · Check: "+warn);
     render();
   });
 
-  $('missingBtn').addEventListener('click', function(){
-    filtered = true; render(); setStat("Showing rows missing YouTube");
-  });
-  $('resetFilterBtn').addEventListener('click', function(){
-    filtered = false; render(); setStat("Showing all rows");
-  });
+  $('missingBtn').addEventListener('click', function(){ filtered=true; render(); setStat("Showing rows missing YouTube"); });
+  $('resetFilterBtn').addEventListener('click', function(){ filtered=false; render(); setStat("Showing all rows"); });
 
   $('exportBtn').addEventListener('click', function(){
     if(!data){ setStat("Load a JSON first"); return; }
-    var s = JSON.stringify(data, null, 2);
-    download('Illumina1_Playlist_YT_Apple_Spotify.updated.json', s);
+    download('Illumina1_Playlist_MASTER_3in1.updated.json', JSON.stringify(data,null,2));
     setStat("Exported");
   });
 
   $('copyMissingBtn').addEventListener('click', function(){
     if(!data){ setStat("Load a JSON first"); return; }
-    var list = data.Playlist || [];
-    var lines = [];
+    var lines=[], list=data.PerDay||[];
     for(var i=0;i<list.length;i++){
-      var it = list[i], u = (it.Platforms&&it.Platforms.YouTube&&it.Platforms.YouTube.url)||"";
-      if(!u){
-        lines.push("Day "+(it.Day||i+1)+": "+(it.Track&&it.Track.title||"TBD")+" — "+(it.Track&&it.Track.artist||"TBD"));
-      }
+      var d=list[i], lr=d[lane]||{}, u=(lr.Platforms&&lr.Platforms.YouTube&&lr.Platforms.YouTube.url)||"";
+      if(!u){ lines.push("Day "+(d.Day)+": "+(lr.title||"TBD")+" — "+(lr.artist||"TBD")); }
     }
-    copyToClipboard(lines.join("\n"));
+    copy(lines.join("\n"));
     setStat("Missing list copied");
   });
 
-  // Edit handler (event delegation)
-  tbody.addEventListener('input', onEdit);
+  laneSel.addEventListener('change', function(){ lane=this.value; render(); });
 
+  tbody.addEventListener('input', onEdit);
 })();
 </script>
 </body>
