@@ -14,7 +14,9 @@
   }
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+        /* reserve space for the fixed header (updates on resize via JS too) */
+        padding-top: 260px;}
   a{color:var(--gold);text-decoration:none}
   a:hover{text-decoration:underline}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
@@ -23,7 +25,7 @@
   .muted{color:var(--muted)}
   .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
-  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
+  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
   .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,209,66,.15),rgba(245,158,11,.12))}
   input[type="text"], select{
     padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit;
@@ -46,19 +48,20 @@
   .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
   .share{margin-left:auto}
 
-  /* Sticky player bar */
-  .playerbar{position:sticky;top:0;z-index:5;background:rgba(11,15,25,.94);backdrop-filter:saturate(120%) blur(8px);border-bottom:1px solid var(--line)}
-  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 0}
-  .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px) 10px}
-  @media (min-width:860px){.player-row{grid-template-columns:320px 1fr}}
+  /* Fixed player header */
+  .playerbar{position:fixed;left:0;right:0;top:0;z-index:9999;background:rgba(11,15,25,.96);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid var(--line)}
+  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 8px}
+  .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
+  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 170px}}
   .now{font-size:13px;color:var(--muted)}
   .now strong{color:#e9ecf3}
-  .frame{position:relative;padding-top:56.25%;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
-  .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .frame{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
+  .frame #yt{position:absolute;inset:0}
+  .controls{display:flex;gap:8px;justify-content:flex-end;align-items:center}
 </style>
 </head>
 <body>
-<!-- Sticky player -->
+<!-- Fixed player -->
 <div class="playerbar" aria-label="Player">
   <div class="playerwrap">
     <div class="player-row">
@@ -68,6 +71,10 @@
         <div id="nowMeta" class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
       </div>
       <div class="frame"><div id="yt"></div></div>
+      <div class="controls">
+        <button class="btn" id="prevBtn" type="button">⟨ Prev</button>
+        <button class="btn" id="nextBtn" type="button">Next ⟩</button>
+      </div>
     </div>
   </div>
 </div>
@@ -101,12 +108,21 @@
   </footer>
 </div>
 
-<!-- YouTube Iframe API -->
-<script src="https://www.youtube.com/iframe_api"></script>
+<!-- Safe YouTube Iframe API loader -->
+<script>
+  (function loadYT(){
+    if (window.YT && YT.Player) return;
+    var s = document.createElement('script');
+    s.src = "https://www.youtube.com/iframe_api";
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+</script>
+
 <script>
 (function(){
   /* === Config === */
-  var JAR_DAY_BASE = 'https://jar.plnt.earth/day/?date='; // adjust if your Jar day URL differs
+  var JAR_DAY_BASE = 'https://jar.plnt.earth/day/?date=';
 
   /* === State === */
   var q = new URLSearchParams(location.search);
@@ -114,9 +130,9 @@
   var data = null, filtered = false, term = '';
   var curLane = q.get('lane') || 'Explainer';
   var startDay = parseInt(q.get('day')||'',10);
-  var playOrder = []; // list of day numbers (with YouTube) in current view
-  var currentIndex = -1; // index in playOrder
-  var player, playerReady = false;
+  var playOrder = [];    // array of Day numbers in order (filtered to playable)
+  var currentIndex = -1; // index within playOrder
+  var player, playerReady = false, queuedId = null;
 
   /* === Elements === */
   var elCards = document.getElementById('cards');
@@ -131,15 +147,28 @@
   var elSrcLabel = document.getElementById('srcLabel');
   var elNowTitle = document.getElementById('nowTitle');
   var elNowMeta = document.getElementById('nowMeta');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
 
   elSrcLabel.textContent = src;
   elLaneSel.value = curLane;
   elLaneLabel.textContent = curLane;
 
+  // Adjust body padding to fixed header height (for iOS)
+  function syncHeaderHeight(){
+    var bar = document.querySelector('.playerbar');
+    if(!bar) return;
+    var h = bar.getBoundingClientRect().height;
+    document.body.style.paddingTop = Math.ceil(h+8) + 'px';
+  }
+  window.addEventListener('resize', syncHeaderHeight, {passive:true});
+  window.addEventListener('orientationchange', syncHeaderHeight, {passive:true});
+  setTimeout(syncHeaderHeight, 50);
+
   function setStat(t){ elStat.textContent = t; }
   function safe(v){ return v==null ? "" : String(v); }
 
-  // Fix common UTF-8 mojibake for display
+  // Fix common UTF-8 mojibake for display only
   function fixMojibake(s){
     if(!s) return s;
     var map = {
@@ -208,6 +237,27 @@
     return u.toString();
   }
 
+  function buildOrder(){
+    playOrder = [];
+    if(!data || !data.PerDay) return;
+    for (var i=0;i<data.PerDay.length;i++){
+      var base = data.PerDay[i];
+      var laneRow = base[curLane] || {};
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      if(!yt) continue;
+      if(filtered && yt) continue; // when showing only missing, don't queue
+      if(matchRow(laneRow, base.Figure, base.SeedRitual)){
+        playOrder.push(base.Day);
+      }
+    }
+  }
+
+  function updateNow(day, laneRow, dateStr){
+    elNowTitle.textContent = fixMojibake(safe(laneRow.title));
+    elNowMeta.textContent  = fixMojibake(safe(laneRow.artist)) + ' · Day '+day+' · '+(dateStr||'')+' · '+moonEmoji(dateStr||'');
+  }
+
   function playByDay(day){
     if(!data || !data.PerDay) return;
     var base = data.PerDay[day-1] || {};
@@ -217,49 +267,31 @@
     var id = extractYouTubeID(yt);
     if(!id) return;
 
-    // Update "now playing"
-    var title = fixMojibake(safe(laneRow.title));
-    var artist = fixMojibake(safe(laneRow.artist));
-    elNowTitle.textContent = title;
-    elNowMeta.textContent  = artist + ' · Day '+day+' · '+(base.Date||'')+' · '+moonEmoji(base.Date||'');
+    updateNow(day, laneRow, base.Date || '');
+    currentIndex = playOrder.indexOf(day);
 
-    // Load and play
-    if(playerReady){
+    if (player && playerReady){
       player.loadVideoById(id);
     } else {
-      // queue for when onYouTubeIframeAPIReady fires
-      queuedId = id;
+      queuedId = id; // wait for API ready
     }
 
-    // update currentIndex
-    currentIndex = playOrder.indexOf(day);
-  }
-
-  function buildOrder(){
-    playOrder = [];
-    if(!data || !data.PerDay) return;
-    for(var i=0;i<data.PerDay.length;i++){
-      var base = data.PerDay[i];
-      var laneRow = base[curLane] || {};
-      var pf = laneRow.Platforms || {};
-      var yt = safe(pf.YouTube && pf.YouTube.url);
-      if(!yt) continue;
-      if(filtered && yt) continue; // if filtered to "missing only", skip; else include
-      if(matchRow(laneRow, base.Figure, base.SeedRitual)){
-        playOrder.push(base.Day);
-      }
-    }
+    // bring card into view
+    var el = document.getElementById('day-'+day);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
   }
 
   function playNext(){
     if(playOrder.length===0) return;
     if(currentIndex < 0){ currentIndex = 0; }
-    else { currentIndex = (currentIndex + 1) % playOrder.length; }
-    var nextDay = playOrder[currentIndex];
-    playByDay(nextDay);
-    // scroll that card into view (nice touch)
-    var el = document.getElementById('day-'+nextDay);
-    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    else { currentIndex = Math.min(currentIndex + 1, playOrder.length - 1); }
+    playByDay(playOrder[currentIndex]);
+  }
+  function playPrev(){
+    if(playOrder.length===0) return;
+    if(currentIndex <= 0){ currentIndex = 0; }
+    else { currentIndex = currentIndex - 1; }
+    playByDay(playOrder[currentIndex]);
   }
 
   // Public render
@@ -294,7 +326,7 @@
             '<span class="tag">Day '+day+'</span>'+
             '<span class="tag mono">'+date+'</span>'+
             '<span class="tag">'+curLane+'</span>'+
-            '<span class="tag">'+moonEmoji(date)+'</span>'+
+            '<span class="tag">'+(date?moonEmoji(date):"")+'</span>'+
             '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
             (curLane==='Explainer' ? '<a class="btn" href="'+jarHref+'" target="_blank" rel="noopener">Jar Day</a>' : '')+
             '<button class="btn share" type="button" data-share="'+day+'">Share</button>'+
@@ -310,7 +342,7 @@
               '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music'+((pf.AppleMusic&&pf.AppleMusic.status==='exists')?'':' (search)')+'</a>'+
               '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify'+((pf.Spotify&&pf.Spotify.id)?'':' (search)')+'</a>'+
             '</div>'+
-            (yt && !ytOk ? '<div class="warn">Please check this YouTube URL.</div>' : '')+
+            (yt && !ytOk ? '<div class="warn">Please check this YouTube URL.</div>':'')+
           '</div>'+
         '</article>'
       );
@@ -321,7 +353,6 @@
     elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+total;
     setStat('OK: '+ok+' · Missing: '+missing+' · Check: '+warn);
 
-    // Build play order after DOM paint
     buildOrder();
 
     // wire buttons
@@ -346,7 +377,6 @@
     // auto-start if deep-linked
     if(startDay && document.getElementById('day-'+startDay)){
       playByDay(startDay);
-      document.getElementById('day-'+startDay).scrollIntoView({behavior:'smooth',block:'start'});
       startDay = null;
     }
   }
@@ -394,18 +424,20 @@
   elReload.addEventListener('click', load);
   elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
   elLaneSel.addEventListener('change', function(){ curLane = this.value; elLaneLabel.textContent = curLane; render(); });
+  prevBtn.addEventListener('click', playPrev);
+  nextBtn.addEventListener('click', playNext);
 
-  // === YouTube Iframe API hooks ===
-  var queuedId = null;
+  // YouTube API hookup (global callback)
   window.onYouTubeIframeAPIReady = function(){
     player = new YT.Player('yt', {
       width: '100%', height: '100%',
-      videoId: queuedId || null,
       playerVars: { rel:0, modestbranding:1, playsinline:1 },
       events: {
-        'onReady': function(){ playerReady = true; if(queuedId){ player.loadVideoById(queuedId); queuedId=null; } },
-        'onStateChange': function(e){
-          // 0 = ended → play next
+        onReady: function(){
+          playerReady = true;
+          if(queuedId){ player.loadVideoById(queuedId); queuedId = null; }
+        },
+        onStateChange: function(e){
           if(e.data === YT.PlayerState.ENDED){ playNext(); }
         }
       }
