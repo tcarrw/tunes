@@ -12,40 +12,15 @@
     --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
     --r:14px;--pad:18px;--maxw:1100px;
   }
-  /* Honey theme (warm, journal) */
-  body.theme-honey{
-    --bg:#0C0A09;
-    --ink:#F8FAFC;
-    --muted:#D6D3D1;
-    --line:rgba(245, 158, 11, .18);
-    --gold:#F5D142; --amber:#F59E0B;
-  }
-  /* Neon theme (playful, club) */
-  body.theme-neon{
-    --bg:#080A12;
-    --ink:#EAF2FF;
-    --muted:#9CA3AF;
-    --line:rgba(58,199,255,.25);
-    --gold:#39FF14; --amber:#FF00EA;
-  }
-  /* Jupiter theme (beacon/astral) */
-  body.theme-jupiter{
-    --bg:#0B0F19;
-    --ink:#EAECEF;
-    --muted:#AAB2C0;
-    --line:rgba(236,120,56,.22);
-    --gold:#EC7838; --amber:#F2A359; /* banded orange tones */
-  }
+  /* Themes */
+  body.theme-honey{--bg:#0C0A09;--ink:#F8FAFC;--muted:#D6D3D1;--line:rgba(245, 158, 11, .18);--gold:#F5D142; --amber:#F59E0B}
+  body.theme-neon{--bg:#080A12;--ink:#EAF2FF;--muted:#9CA3AF;--line:rgba(58,199,255,.25);--gold:#39FF14; --amber:#FF00EA}
+  body.theme-jupiter{--bg:#0B0F19;--ink:#EAECEF;--muted:#AAB2C0;--line:rgba(236,120,56,.22);--gold:#EC7838; --amber:#F2A359}
 
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-    padding-top:260px;
-  }
-  a{color:var(--gold);text-decoration:none}
-  a:hover{text-decoration:underline}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;padding-top:260px}
+  a{color:var(--gold);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
   header{display:grid;gap:8px;margin:6px 0 18px}
   h1{margin:0;font-size:clamp(22px,4.5vw,34px);line-height:1.2}
@@ -54,12 +29,9 @@
   .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
   .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
   .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
-  input[type="text"], select{
-    padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit;
-  }
+  input[type="text"], select{padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit}
   .grid{display:grid;gap:12px}
-  .cards{grid-template-columns:1fr}
-  @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
+  .cards{grid-template-columns:1fr} @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
   .card{border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
@@ -79,8 +51,7 @@
   .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 8px}
   .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
   @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 240px}}
-  .now{font-size:13px;color:var(--muted)}
-  .now strong{color:#e9ecf3}
+  .now{font-size:13px;color:var(--muted)} .now strong{color:#e9ecf3}
   .frame{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
   .frame #yt{position:absolute;inset:0}
   .controls{display:flex;gap:10px;justify-content:flex-end;align-items:center}
@@ -127,6 +98,7 @@
     <div class="bar">
       <span id="cycle" class="pill">Loading…</span>
       <a class="btn" href="/beacon/index.html">Beacon</a>
+      <a class="btn" href="https://jar.plnt.earth/interludes/">Interludes</a>
       <label class="pill" for="themeSel">Theme</label>
       <select id="themeSel" aria-label="Choose theme">
         <option value="">Default</option>
@@ -144,7 +116,7 @@
       <input id="search" type="text" placeholder="Title, artist, figure, seed…">
       <select id="dayJump" aria-label="Jump to day"><option value="">Jump to day…</option></select>
     </div>
-    <p class="muted">YouTube plays inline. Apple Music / Spotify shown when available.</p>
+    <p class="muted">YouTube plays inline. Apple Music / Spotify are linked when available.</p>
   </header>
 
   <section id="cards" class="grid cards" aria-live="polite"></section>
@@ -194,15 +166,9 @@
     if(name==='honey') document.body.classList.add('theme-honey');
     else if(name==='neon') document.body.classList.add('theme-neon');
     else if(name==='jupiter') document.body.classList.add('theme-jupiter');
-    try{ localStorage.setItem('tunes.theme', name||''); }catch(e){}
-  }
-  (function(){
-    try{
-      var saved = localStorage.getItem('tunes.theme')||'';
-      themeSel.value = saved;
-      applyTheme(saved);
-    }catch(e){}
-  })();
+    try{ localStorage.setItem('tunes.theme', name||''); }catch(e){} }
+
+  (function(){ try{ var saved = localStorage.getItem('tunes.theme')||''; themeSel.value = saved; applyTheme(saved);}catch(e){} })();
   themeSel.addEventListener('change', function(){ applyTheme(this.value); });
 
   function syncHeaderHeight(){
@@ -310,33 +276,19 @@
     updateNow(day, laneRow, base.Date || '');
     currentIndex = playOrder.indexOf(day);
 
-    if (player && playerReady){
-      player.loadVideoById(id);
-    } else {
-      queuedId = id;
-    }
+    if (player && playerReady){ player.loadVideoById(id); }
+    else { queuedId = id; }
 
     var el = document.getElementById('day-'+day);
     if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
   }
 
-  function playNext(){
-    if(playOrder.length===0) return;
-    if(currentIndex < 0){ currentIndex = 0; }
-    else { currentIndex = Math.min(currentIndex + 1, playOrder.length - 1); }
-    playByDay(playOrder[currentIndex]);
-  }
-  function playPrev(){
-    if(playOrder.length===0) return;
-    if(currentIndex <= 0){ currentIndex = 0; }
-    else { currentIndex = currentIndex - 1; }
-    playByDay(playOrder[currentIndex]);
-  }
+  function playNext(){ if(playOrder.length===0) return; currentIndex = (currentIndex<0?0:Math.min(currentIndex+1, playOrder.length-1)); playByDay(playOrder[currentIndex]); }
+  function playPrev(){ if(playOrder.length===0) return; currentIndex = (currentIndex<=0?0:currentIndex-1); playByDay(playOrder[currentIndex]); }
 
   function render(){
     if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
-    var list = data.PerDay.slice();
-    var rows = [];
+    var list = data.PerDay.slice(); var rows = [];
 
     for(var i=0;i<list.length;i++){
       var base = list[i];
@@ -371,8 +323,7 @@
             (fig?'<div class="muted">Figure: '+fixMojibake(fig)+'</div>':'')+
             (seed?'<div class="muted">Seed: '+fixMojibake(seed)+'</div>':'')+
             '<div class="platforms">'+
-              (yt ? '<span class="badge ok">YouTube ready</span>' :
-                    '<span class="badge err">YouTube link missing</span>')+
+              (yt ? '<span class="badge ok">YouTube ready</span>' : '<span class="badge err">YouTube link missing</span>')+
               '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music'+((pf.AppleMusic&&pf.AppleMusic.status==='exists')?'':' (search)')+'</a>'+
               '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify'+((pf.Spotify&&pf.Spotify.id)?'':' (search)')+'</a>'+
             '</div>'+
@@ -382,6 +333,7 @@
       );
     }
     elCards.innerHTML = rows.join('');
+
     var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
     var end = data.Cycle && data.Cycle.End ? data.Cycle.End : '—';
     elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—');
@@ -389,10 +341,7 @@
     buildOrder();
 
     elCards.querySelectorAll('button[data-play]').forEach(function(b){
-      b.addEventListener('click', function(){
-        var d = +this.getAttribute('data-play');
-        playByDay(d);
-      });
+      b.addEventListener('click', function(){ var d = +this.getAttribute('data-play'); playByDay(d); });
     });
     elCards.querySelectorAll('button[data-share]').forEach(function(b){
       b.addEventListener('click', function(){
@@ -406,19 +355,13 @@
       });
     });
 
-    if(startDay && document.getElementById('day-'+startDay)){
-      playByDay(startDay);
-      startDay = null;
-    }
+    if(startDay && document.getElementById('day-'+startDay)){ playByDay(startDay); startDay = null; }
   }
 
   function buildDayJump(){
     if(!data || !data.PerDay) return;
     var opts = ['<option value="">Jump to day…</option>'];
-    for(var i=0;i<data.PerDay.length;i++){
-      var d = data.PerDay[i].Day || (i+1);
-      opts.push('<option value="'+d+'">Day '+d+'</option>');
-    }
+    for(var i=0;i<data.PerDay.length;i++){ var d = data.PerDay[i].Day || (i+1); opts.push('<option value="'+d+'">Day '+d+'</option>'); }
     elDayJump.innerHTML = opts.join('');
   }
 
@@ -433,13 +376,8 @@
       if(!r.ok) throw new Error('Load failed');
       return r.json();
     }).then(function(json){
-      data = json;
-      buildDayJump();
-      render();
-    }).catch(function(){
-      elCards.innerHTML = '';
-      elCycle.textContent = 'Load error';
-    });
+      data = json; buildDayJump(); render();
+    }).catch(function(){ elCards.innerHTML = ''; elCycle.textContent = 'Load error'; });
   }
 
   elLaneSel.value = curLane;
@@ -454,13 +392,8 @@
       width: '100%', height: '100%',
       playerVars: { rel:0, modestbranding:1, playsinline:1 },
       events: {
-        onReady: function(){
-          playerReady = true;
-          if(queuedId){ player.loadVideoById(queuedId); queuedId = null; }
-        },
-        onStateChange: function(e){
-          if(e.data === YT.PlayerState.ENDED){ playNext(); }
-        }
+        onReady: function(){ playerReady = true; if(queuedId){ player.loadVideoById(queuedId); queuedId = null; } },
+        onStateChange: function(e){ if(e.data === YT.PlayerState.ENDED){ playNext(); } }
       }
     });
   };
