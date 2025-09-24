@@ -3,24 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tunes · Illumina 1 (Public)</title>
+<title>Tunes · Illumina 1</title>
 <meta name="theme-color" content="#0B0F19">
-<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify shown when available.">
+<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify links included. Fixed-size player, auto-next or loop current.">
 <style>
   :root{
-    --bg:#0B0F19;--ink:#E5E7EB;--muted:#9CA3AF;--line:rgba(229,231,235,.15);
+    --bg:#0B0F19;--ink:#EAECEF;--muted:#AAB2C0;--line:rgba(234,236,239,.16);
     --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
     --r:14px;--pad:18px;--maxw:1100px;
+    --playerH: clamp(220px, 28vw, 420px); /* << fixed visual height for the embed (prevents jank) */
   }
-  /* Themes */
-  body.theme-honey{--bg:#0C0A09;--ink:#F8FAFC;--muted:#D6D3D1;--line:rgba(245, 158, 11, .18);--gold:#F5D142; --amber:#F59E0B}
-  body.theme-neon{--bg:#080A12;--ink:#EAF2FF;--muted:#9CA3AF;--line:rgba(58,199,255,.25);--gold:#39FF14; --amber:#FF00EA}
-  body.theme-jupiter{--bg:#0B0F19;--ink:#EAECEF;--muted:#AAB2C0;--line:rgba(236,120,56,.22);--gold:#EC7838; --amber:#F2A359}
+  /* Honey theme */
+  body.theme-honey{ --bg:#0C0A09; --ink:#F8FAFC; --muted:#E7E5E4; --line:rgba(245,158,11,.22); --gold:#F5D142; --amber:#F59E0B; }
+  /* Neon theme */
+  body.theme-neon{ --bg:#080A12; --ink:#EAF2FF; --muted:#B8C0CC; --line:rgba(58,199,255,.25); --gold:#39FF14; --amber:#FF00EA; }
+  /* Jupiter theme */
+  body.theme-jupiter{ --bg:#0B0F19; --ink:#EAECEF; --muted:#AAB2C0; --line:rgba(236,120,56,.22); --gold:#EC7838; --amber:#F2A359; }
 
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;padding-top:260px}
-  a{color:var(--gold);text-decoration:none} a:hover{text-decoration:underline}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+       padding-top: calc(var(--playerH) + 110px); /* reserve space for the fixed header; updated at runtime too */}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{text-decoration:underline}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
   header{display:grid;gap:8px;margin:6px 0 18px}
   h1{margin:0;font-size:clamp(22px,4.5vw,34px);line-height:1.2}
@@ -29,9 +35,12 @@
   .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
   .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
   .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
-  input[type="text"], select{padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit}
+  input[type="text"], select{
+    padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit;
+  }
   .grid{display:grid;gap:12px}
-  .cards{grid-template-columns:1fr} @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
+  .cards{grid-template-columns:1fr}
+  @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
   .card{border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
@@ -46,21 +55,22 @@
   footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
   .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
 
-  /* Fixed player header */
+  /* Fixed player header (stabilized height) */
   .playerbar{position:fixed;left:0;right:0;top:0;z-index:9999;background:rgba(11,15,25,.96);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid var(--line)}
-  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 8px}
+  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0}
   .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
-  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 240px}}
-  .now{font-size:13px;color:var(--muted)} .now strong{color:#e9ecf3}
-  .frame{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
+  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 260px}}
+  .now{font-size:13px;color:var(--muted)}
+  .now strong{color:#e9ecf3}
+  .frame{position:relative;height:var(--playerH);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
   .frame #yt{position:absolute;inset:0}
-  .controls{display:flex;gap:10px;justify-content:flex-end;align-items:center}
-
-  /* Matched nav buttons (aligned arrows, high contrast) */
+  .controls{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
   .navbtn{display:inline-flex;align-items:center;gap:8px;line-height:1;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
   .navbtn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
   .navbtn .icon{display:inline-flex;width:16px;height:16px}
   .navbtn .icon svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted)}
+  .switch input{accent-color:#34D399}
 </style>
 </head>
 <body>
@@ -75,17 +85,16 @@
       </div>
       <div class="frame"><div id="yt"></div></div>
       <div class="controls">
+        <label class="switch" title="ON: loop current video · OFF: auto-next">
+          <input id="loopToggle" type="checkbox"> Loop
+        </label>
         <button class="navbtn" id="prevBtn" type="button" aria-label="Previous">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 20 20"><path d="M12.5 3.5L6 10l6.5 6.5"/></svg>
-          </span>
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M12.5 3.5L6 10l6.5 6.5"/></svg></span>
           <span class="label">Prev</span>
         </button>
         <button class="navbtn primary" id="nextBtn" type="button" aria-label="Next">
           <span class="label">Next</span>
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 20 20"><path d="M7.5 3.5L14 10l-6.5 6.5"/></svg>
-          </span>
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M7.5 3.5L14 10l-6.5 6.5"/></svg></span>
         </button>
       </div>
     </div>
@@ -94,11 +103,10 @@
 
 <div class="wrap">
   <header>
-    <h1>Illumina 1 — Public Tunes</h1>
+    <h1>Illumina 1 — Tunes</h1>
     <div class="bar">
       <span id="cycle" class="pill">Loading…</span>
       <a class="btn" href="/beacon/index.html">Beacon</a>
-      <a class="btn" href="https://jar.plnt.earth/interludes/">Interludes</a>
       <label class="pill" for="themeSel">Theme</label>
       <select id="themeSel" aria-label="Choose theme">
         <option value="">Default</option>
@@ -116,7 +124,7 @@
       <input id="search" type="text" placeholder="Title, artist, figure, seed…">
       <select id="dayJump" aria-label="Jump to day"><option value="">Jump to day…</option></select>
     </div>
-    <p class="muted">YouTube plays inline. Apple Music / Spotify are linked when available.</p>
+    <p class="muted">YouTube plays inline. Apple Music / Spotify shown when available.</p>
   </header>
 
   <section id="cards" class="grid cards" aria-live="polite"></section>
@@ -149,6 +157,7 @@
   var playOrder = [];
   var currentIndex = -1;
   var player, playerReady = false, queuedId = null;
+  var loopMode = false;
 
   var elCards = document.getElementById('cards');
   var elCycle = document.getElementById('cycle');
@@ -159,6 +168,7 @@
   var elNowMeta = document.getElementById('nowMeta');
   var prevBtn = document.getElementById('prevBtn');
   var nextBtn = document.getElementById('nextBtn');
+  var loopToggle = document.getElementById('loopToggle');
   var themeSel = document.getElementById('themeSel');
 
   function applyTheme(name){
@@ -166,11 +176,18 @@
     if(name==='honey') document.body.classList.add('theme-honey');
     else if(name==='neon') document.body.classList.add('theme-neon');
     else if(name==='jupiter') document.body.classList.add('theme-jupiter');
-    try{ localStorage.setItem('tunes.theme', name||''); }catch(e){} }
-
-  (function(){ try{ var saved = localStorage.getItem('tunes.theme')||''; themeSel.value = saved; applyTheme(saved);}catch(e){} })();
+    try{ localStorage.setItem('tunes.theme', name||''); }catch(e){}
+  }
+  (function(){
+    try{
+      var saved = localStorage.getItem('tunes.theme')||'';
+      themeSel.value = saved;
+      applyTheme(saved);
+    }catch(e){}
+  })();
   themeSel.addEventListener('change', function(){ applyTheme(this.value); });
 
+  // keep body padding equal to header height (stable)
   function syncHeaderHeight(){
     var bar = document.querySelector('.playerbar');
     if(!bar) return;
@@ -179,7 +196,7 @@
   }
   window.addEventListener('resize', syncHeaderHeight, {passive:true});
   window.addEventListener('orientationchange', syncHeaderHeight, {passive:true});
-  setTimeout(syncHeaderHeight, 50);
+  setTimeout(syncHeaderHeight, 60);
 
   function safe(v){ return v==null ? "" : String(v); }
 
@@ -276,19 +293,33 @@
     updateNow(day, laneRow, base.Date || '');
     currentIndex = playOrder.indexOf(day);
 
-    if (player && playerReady){ player.loadVideoById(id); }
-    else { queuedId = id; }
+    if (player && playerReady){
+      player.loadVideoById(id);
+    } else {
+      queuedId = id;
+    }
 
     var el = document.getElementById('day-'+day);
     if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
   }
 
-  function playNext(){ if(playOrder.length===0) return; currentIndex = (currentIndex<0?0:Math.min(currentIndex+1, playOrder.length-1)); playByDay(playOrder[currentIndex]); }
-  function playPrev(){ if(playOrder.length===0) return; currentIndex = (currentIndex<=0?0:currentIndex-1); playByDay(playOrder[currentIndex]); }
+  function playNext(){
+    if(playOrder.length===0) return;
+    if(currentIndex < 0){ currentIndex = 0; }
+    else { currentIndex = Math.min(currentIndex + 1, playOrder.length - 1); }
+    playByDay(playOrder[currentIndex]);
+  }
+  function playPrev(){
+    if(playOrder.length===0) return;
+    if(currentIndex <= 0){ currentIndex = 0; }
+    else { currentIndex = currentIndex - 1; }
+    playByDay(playOrder[currentIndex]);
+  }
 
   function render(){
     if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
-    var list = data.PerDay.slice(); var rows = [];
+    var list = data.PerDay.slice();
+    var rows = [];
 
     for(var i=0;i<list.length;i++){
       var base = list[i];
@@ -315,7 +346,7 @@
             '<span class="tag">'+(date?moonEmoji(date):"")+'</span>'+
             '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
             (curLane==='Explainer' ? '<a class="btn" href="'+jarHref+'" target="_blank" rel="noopener">Jar Day</a>' : '')+
-            '<button class="btn share" type="button" data-share="'+day+'">Share</button>'+
+            '<button class="btn" type="button" data-share="'+day+'">Share</button>'+
           '</div>'+
           '<div class="meta">'+
             '<div class="title">'+title+'</div>'+
@@ -323,7 +354,8 @@
             (fig?'<div class="muted">Figure: '+fixMojibake(fig)+'</div>':'')+
             (seed?'<div class="muted">Seed: '+fixMojibake(seed)+'</div>':'')+
             '<div class="platforms">'+
-              (yt ? '<span class="badge ok">YouTube ready</span>' : '<span class="badge err">YouTube link missing</span>')+
+              (yt ? '<span class="badge ok">YouTube ready</span>' :
+                    '<span class="badge err">YouTube link missing</span>')+
               '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music'+((pf.AppleMusic&&pf.AppleMusic.status==='exists')?'':' (search)')+'</a>'+
               '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify'+((pf.Spotify&&pf.Spotify.id)?'':' (search)')+'</a>'+
             '</div>'+
@@ -333,7 +365,6 @@
       );
     }
     elCards.innerHTML = rows.join('');
-
     var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
     var end = data.Cycle && data.Cycle.End ? data.Cycle.End : '—';
     elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—');
@@ -341,7 +372,10 @@
     buildOrder();
 
     elCards.querySelectorAll('button[data-play]').forEach(function(b){
-      b.addEventListener('click', function(){ var d = +this.getAttribute('data-play'); playByDay(d); });
+      b.addEventListener('click', function(){
+        var d = +this.getAttribute('data-play');
+        playByDay(d);
+      });
     });
     elCards.querySelectorAll('button[data-share]').forEach(function(b){
       b.addEventListener('click', function(){
@@ -355,13 +389,19 @@
       });
     });
 
-    if(startDay && document.getElementById('day-'+startDay)){ playByDay(startDay); startDay = null; }
+    if(startDay && document.getElementById('day-'+startDay)){
+      playByDay(startDay);
+      startDay = null;
+    }
   }
 
   function buildDayJump(){
     if(!data || !data.PerDay) return;
     var opts = ['<option value="">Jump to day…</option>'];
-    for(var i=0;i<data.PerDay.length;i++){ var d = data.PerDay[i].Day || (i+1); opts.push('<option value="'+d+'">Day '+d+'</option>'); }
+    for(var i=0;i<data.PerDay.length;i++){
+      var d = data.PerDay[i].Day || (i+1);
+      opts.push('<option value="'+d+'">Day '+d+'</option>');
+    }
     elDayJump.innerHTML = opts.join('');
   }
 
@@ -376,32 +416,60 @@
       if(!r.ok) throw new Error('Load failed');
       return r.json();
     }).then(function(json){
-      data = json; buildDayJump(); render();
-    }).catch(function(){ elCards.innerHTML = ''; elCycle.textContent = 'Load error'; });
+      data = json;
+      buildDayJump();
+      render();
+      syncHeaderHeight();
+    }).catch(function(){
+      elCards.innerHTML = '';
+      elCycle.textContent = 'Load error';
+    });
   }
 
+  // Loop mode (persist)
+  try{
+    loopMode = localStorage.getItem('tunes.loop') === '1';
+    loopToggle.checked = loopMode;
+  }catch(e){}
+  loopToggle.addEventListener('change', function(){
+    loopMode = !!this.checked;
+    try{ localStorage.setItem('tunes.loop', loopMode ? '1' : '0'); }catch(e){}
+  });
+
+  // YouTube API callback
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('yt', {
+      width: '100%', height: '100%',
+      playerVars: { rel:0, modestbranding:1, playsinline:1 },
+      events: {
+        onReady: function(){
+          playerReady = true;
+          if(queuedId){ player.loadVideoById(queuedId); queuedId = null; }
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.ENDED){
+            if(loopMode){
+              try{ player.seekTo(0, true); player.playVideo(); }catch(err){ /* fallback */ }
+            } else {
+              playNext();
+            }
+          }
+        }
+      }
+    });
+  };
+
+  // Controls
   elLaneSel.value = curLane;
   elSearch.addEventListener('input', function(){ term = this.value.trim(); render(); });
   elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
   elLaneSel.addEventListener('change', function(){ curLane = this.value; render(); });
   prevBtn.addEventListener('click', playPrev);
   nextBtn.addEventListener('click', playNext);
-
-  window.onYouTubeIframeAPIReady = function(){
-    player = new YT.Player('yt', {
-      width: '100%', height: '100%',
-      playerVars: { rel:0, modestbranding:1, playsinline:1 },
-      events: {
-        onReady: function(){ playerReady = true; if(queuedId){ player.loadVideoById(queuedId); queuedId = null; } },
-        onStateChange: function(e){ if(e.data === YT.PlayerState.ENDED){ playNext(); } }
-      }
-    });
-  };
-
-  setTimeout(function(){
-    var bar = document.querySelector('.playerbar');
-    if(bar){ document.body.style.paddingTop = Math.ceil(bar.getBoundingClientRect().height+8) + 'px'; }
-  }, 50);
+  window.addEventListener('keydown', function(e){
+    if(e.altKey && e.key === 'ArrowLeft'){ playPrev(); }
+    if(e.altKey && e.key === 'ArrowRight'){ playNext(); }
+  });
 
   load();
 })();
