@@ -1,5 +1,23 @@
 {
-  "Illumina": 1,
+  "meta": {
+    "illumina": 1,
+    "title": "Illumina 1",
+    "cycle": {
+      "start": "2025-11-05",
+      "end": "2025-12-16",
+      "days": 42
+    },
+    "playlists": {
+      "explainer": "",
+      "anchorPublic": "",
+      "anchorBuilt": ""
+    },
+    "tracks": [
+      "explainer",
+      "anchorPublic",
+      "anchorBuilt"
+    ]
+  },
   "Cycle": {
     "Start": "2025-11-05",
     "End": "2025-12-16",
@@ -14,7 +32,8 @@
         "artist": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg"
+            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+            "id": "RZIzD0ZfTFg"
           },
           "AppleMusic": {
             "id": "1440903544",
@@ -32,7 +51,8 @@
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=AbV-Q6tz4B8"
+            "url": "https://www.youtube.com/watch?v=AbV-Q6tz4B8",
+            "id": "AbV-Q6tz4B8"
           },
           "AppleMusic": {
             "id": null,
@@ -50,7 +70,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg"
+            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+            "id": "RZIzD0ZfTFg"
           },
           "AppleMusic": {
             "id": "1440903544",
@@ -62,7 +83,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Eminem"
     },
     {
       "Day": 2,
@@ -72,7 +95,8 @@
         "artist": "Chappell Roan",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=xaPNR-_Cfn0"
+            "url": "https://www.youtube.com/watch?v=xaPNR-_Cfn0",
+            "id": "xaPNR-_Cfn0"
           },
           "AppleMusic": {
             "id": "1698723221",
@@ -90,7 +114,8 @@
         "artist": "Sabrina Carpenter",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=kLbn61Z4LDI"
+            "url": "https://www.youtube.com/watch?v=kLbn61Z4LDI",
+            "id": "kLbn61Z4LDI"
           },
           "AppleMusic": {
             "id": null,
@@ -108,7 +133,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=_Yhyp-_hX2s"
+            "url": "https://www.youtube.com/watch?v=_Yhyp-_hX2s",
+            "id": "_Yhyp-_hX2s"
           },
           "AppleMusic": {
             "id": "1444221569",
@@ -120,7 +146,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Eminem"
     },
     {
       "Day": 3,
@@ -130,7 +158,8 @@
         "artist": "Robyn",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=Mru9GG3ur9U"
+            "url": "https://www.youtube.com/watch?v=Mru9GG3ur9U",
+            "id": "Mru9GG3ur9U"
           },
           "AppleMusic": {
             "id": "1436781347",
@@ -148,7 +177,8 @@
         "artist": "Rage Against the Machine",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=bWXazVhlyxQ"
+            "url": "https://www.youtube.com/watch?v=bWXazVhlyxQ",
+            "id": "bWXazVhlyxQ"
           },
           "AppleMusic": {
             "id": null,
@@ -166,7 +196,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=j5-yKhDd64s"
+            "url": "https://www.youtube.com/watch?v=j5-yKhDd64s",
+            "id": "j5-yKhDd64s"
           },
           "AppleMusic": {
             "id": null,
@@ -177,7 +208,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Eminem"
     },
     {
       "Day": 4,
@@ -187,7 +220,8 @@
         "artist": "Coldplay",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=h3pJZSTQqIg"
+            "url": "https://www.youtube.com/watch?v=h3pJZSTQqIg",
+            "id": "h3pJZSTQqIg"
           },
           "AppleMusic": {
             "id": "1122773712",
@@ -205,7 +239,8 @@
         "artist": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=phtcAd8j6Ro"
+            "url": "https://www.youtube.com/watch?v=phtcAd8j6Ro",
+            "id": "phtcAd8j6Ro"
           },
           "AppleMusic": {
             "id": null,
@@ -223,7 +258,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=Obim8BYGnOE"
+            "url": "https://www.youtube.com/watch?v=Obim8BYGnOE",
+            "id": "Obim8BYGnOE"
           },
           "AppleMusic": {
             "id": null,
@@ -234,7 +270,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
     },
     {
       "Day": 5,
@@ -244,7 +282,8 @@
         "artist": "Mariah Carey",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=w3KOowB4k_k"
+            "url": "https://www.youtube.com/watch?v=w3KOowB4k_k",
+            "id": "w3KOowB4k_k"
           },
           "AppleMusic": {
             "id": "192812332",
@@ -262,7 +301,8 @@
         "artist": "Greta Thunberg",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=FrEP4MHCKDc&list=PL2H7n7qLAdf7VTOrmFlY9G-PaE94VrHAY&index=5"
+            "url": "https://www.youtube.com/watch?v=FrEP4MHCKDc&list=PL2H7n7qLAdf7VTOrmFlY9G-PaE94VrHAY&index=5",
+            "id": "FrEP4MHCKDc"
           },
           "AppleMusic": {
             "id": null,
@@ -280,7 +320,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=KENQwm7l5nY"
+            "url": "https://www.youtube.com/watch?v=KENQwm7l5nY",
+            "id": "KENQwm7l5nY"
           },
           "AppleMusic": {
             "id": null,
@@ -291,7 +332,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
     },
     {
       "Day": 6,
@@ -301,7 +344,8 @@
         "artist": "Kendrick Lamar",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=tvTRZJ-4EyI"
+            "url": "https://www.youtube.com/watch?v=tvTRZJ-4EyI",
+            "id": "tvTRZJ-4EyI"
           },
           "AppleMusic": {
             "id": "1440881684",
@@ -315,11 +359,12 @@
         }
       },
       "AnchorPublic": {
-        "title": "Dang! (feat. Anderson .Paak)",
+        "title": "Dang! (feat. Anderson.Paak)",
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=LR3GQfryp9M"
+            "url": "https://www.youtube.com/watch?v=LR3GQfryp9M",
+            "id": "LR3GQfryp9M"
           },
           "AppleMusic": {
             "id": null,
@@ -337,7 +382,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY"
+            "url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY",
+            "id": "YVkUvmDQ3HY"
           },
           "AppleMusic": {
             "id": null,
@@ -348,17 +394,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
     },
     {
       "Day": 7,
       "Date": "2025-11-11",
       "Explainer": {
-        "title": "Sweet Disposition [Official Video]",
+        "title": "Sweet Disposition",
         "artist": "The Temper Trap",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=jxKjOOR9sPU"
+            "url": "https://www.youtube.com/watch?v=jxKjOOR9sPU",
+            "id": "jxKjOOR9sPU"
           },
           "AppleMusic": {
             "id": null,
@@ -375,7 +424,8 @@
         "artist": "Sufjan Stevens et al.",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=k92cL337BuM"
+            "url": "https://www.youtube.com/watch?v=k92cL337BuM",
+            "id": "k92cL337BuM"
           },
           "AppleMusic": {
             "id": null,
@@ -393,7 +443,8 @@
         "anchor": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=uelHwf8o7_U"
+            "url": "https://www.youtube.com/watch?v=uelHwf8o7_U",
+            "id": "uelHwf8o7_U"
           },
           "AppleMusic": {
             "id": null,
@@ -404,17 +455,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
     },
     {
       "Day": 8,
       "Date": "2025-11-12",
       "Explainer": {
-        "title": "Taste (Official Video) ft. Offset",
+        "title": "Taste ft. Offset",
         "artist": "Tyga",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=LjxulQ1bEWg"
+            "url": "https://www.youtube.com/watch?v=LjxulQ1bEWg",
+            "id": "LjxulQ1bEWg"
           },
           "AppleMusic": {
             "id": null,
@@ -431,7 +485,8 @@
         "artist": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=0aQ9Q0hRTwY"
+            "url": "https://www.youtube.com/watch?v=0aQ9Q0hRTwY",
+            "id": "0aQ9Q0hRTwY"
           },
           "AppleMusic": {
             "id": null,
@@ -449,7 +504,8 @@
         "anchor": "SWEETENING",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=btOfwhl7V44"
+            "url": "https://www.youtube.com/watch?v=btOfwhl7V44",
+            "id": "btOfwhl7V44"
           },
           "AppleMusic": {
             "id": "1436781347",
@@ -461,17 +517,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "SWEETENING"
     },
     {
       "Day": 9,
       "Date": "2025-11-13",
       "Explainer": {
-        "title": "Froot [Official Music Video]",
+        "title": "Froot",
         "artist": "MARINA AND THE DIAMONDS",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=WZzcY7ASQno"
+            "url": "https://www.youtube.com/watch?v=WZzcY7ASQno",
+            "id": "WZzcY7ASQno"
           },
           "AppleMusic": {
             "id": null,
@@ -488,7 +547,8 @@
         "artist": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE"
+            "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE",
+            "id": "cZAw8qxn0ZE"
           },
           "AppleMusic": {
             "id": null,
@@ -506,7 +566,8 @@
         "anchor": "Sabrina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=G2BD75m1HZ0"
+            "url": "https://www.youtube.com/watch?v=G2BD75m1HZ0",
+            "id": "G2BD75m1HZ0"
           },
           "AppleMusic": {
             "id": null,
@@ -517,7 +578,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Sabrina"
     },
     {
       "Day": 10,
@@ -527,7 +590,8 @@
         "artist": "Chloe x Halle",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=a9HIaGcBocc"
+            "url": "https://www.youtube.com/watch?v=a9HIaGcBocc",
+            "id": "a9HIaGcBocc"
           },
           "AppleMusic": {
             "id": "1512284179",
@@ -545,7 +609,8 @@
         "artist": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=eRhEcKHU5LY"
+            "url": "https://www.youtube.com/watch?v=eRhEcKHU5LY",
+            "id": "eRhEcKHU5LY"
           },
           "AppleMusic": {
             "id": "1444221569",
@@ -564,7 +629,8 @@
         "anchor": "Sabrina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=1mN--w0DcE8"
+            "url": "https://www.youtube.com/watch?v=1mN--w0DcE8",
+            "id": "1mN--w0DcE8"
           },
           "AppleMusic": {
             "id": null,
@@ -575,7 +641,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Sabrina"
     },
     {
       "Day": 11,
@@ -585,7 +653,8 @@
         "artist": "Lizzo",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=SmbmeOgWsqE"
+            "url": "https://www.youtube.com/watch?v=SmbmeOgWsqE",
+            "id": "SmbmeOgWsqE"
           },
           "AppleMusic": {
             "id": "1150159755",
@@ -603,7 +672,8 @@
         "artist": "AURORA",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=MUIIkBZVzTU"
+            "url": "https://www.youtube.com/watch?v=MUIIkBZVzTU",
+            "id": "MUIIkBZVzTU"
           },
           "AppleMusic": {
             "id": null,
@@ -621,7 +691,8 @@
         "anchor": "Sabrina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=koGv4EY1Wl0"
+            "url": "https://www.youtube.com/watch?v=koGv4EY1Wl0",
+            "id": "koGv4EY1Wl0"
           },
           "AppleMusic": {
             "id": null,
@@ -632,7 +703,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
     },
     {
       "Day": 12,
@@ -642,7 +715,8 @@
         "artist": "Lizzo",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=P00HMxdsVZI"
+            "url": "https://www.youtube.com/watch?v=P00HMxdsVZI",
+            "id": "P00HMxdsVZI"
           },
           "AppleMusic": {
             "id": "1494981961",
@@ -660,7 +734,8 @@
         "artist": "Chappell Roan",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=xaPNR-_Cfn0"
+            "url": "https://www.youtube.com/watch?v=xaPNR-_Cfn0",
+            "id": "xaPNR-_Cfn0"
           },
           "AppleMusic": {
             "id": "1698723221",
@@ -679,7 +754,8 @@
         "anchor": "Sabrina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=f8rHvrzc5h0"
+            "url": "https://www.youtube.com/watch?v=f8rHvrzc5h0",
+            "id": "f8rHvrzc5h0"
           },
           "AppleMusic": {
             "id": null,
@@ -690,17 +766,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
     },
     {
       "Day": 13,
       "Date": "2025-11-17",
       "Explainer": {
-        "title": "Take A Bow (Official Video) [4K]",
+        "title": "Take A Bow",
         "artist": "Madonna",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=XDeiovnCv1o"
+            "url": "https://www.youtube.com/watch?v=XDeiovnCv1o",
+            "id": "XDeiovnCv1o"
           },
           "AppleMusic": {
             "id": null,
@@ -717,7 +796,8 @@
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=aIHF7u9Wwiw"
+            "url": "https://www.youtube.com/watch?v=aIHF7u9Wwiw",
+            "id": "aIHF7u9Wwiw"
           },
           "AppleMusic": {
             "id": null,
@@ -735,7 +815,8 @@
         "anchor": "Sabrina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=eWUxqVFBq74"
+            "url": "https://www.youtube.com/watch?v=eWUxqVFBq74",
+            "id": "eWUxqVFBq74"
           },
           "AppleMusic": {
             "id": null,
@@ -746,7 +827,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
     },
     {
       "Day": 14,
@@ -756,7 +839,8 @@
         "artist": "The Verve",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=1lyu1KKwC74"
+            "url": "https://www.youtube.com/watch?v=1lyu1KKwC74",
+            "id": "1lyu1KKwC74"
           },
           "AppleMusic": {
             "id": "1443258189",
@@ -774,7 +858,8 @@
         "artist": "Brian Eno",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=OlaTeXX3uH8"
+            "url": "https://www.youtube.com/watch?v=OlaTeXX3uH8",
+            "id": "OlaTeXX3uH8"
           },
           "AppleMusic": {
             "id": null,
@@ -792,7 +877,8 @@
         "anchor": "Sabrina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=3_0JkdK6QKs"
+            "url": "https://www.youtube.com/watch?v=3_0JkdK6QKs",
+            "id": "3_0JkdK6QKs"
           },
           "AppleMusic": {
             "id": null,
@@ -803,17 +889,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
     },
     {
       "Day": 15,
       "Date": "2025-11-19",
       "Explainer": {
-        "title": "Work It [Official Music Video]",
+        "title": "Work It",
         "artist": "Missy Elliott",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=cjIvu7e6Wq8"
+            "url": "https://www.youtube.com/watch?v=cjIvu7e6Wq8",
+            "id": "cjIvu7e6Wq8"
           },
           "AppleMusic": {
             "id": null,
@@ -830,7 +919,8 @@
         "artist": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg"
+            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+            "id": "RZIzD0ZfTFg"
           },
           "AppleMusic": {
             "id": "1440903544",
@@ -849,7 +939,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE"
+            "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE",
+            "id": "cZAw8qxn0ZE"
           },
           "AppleMusic": {
             "id": null,
@@ -860,7 +951,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 16,
@@ -870,7 +963,8 @@
         "artist": "Lizzo",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=XaCrQL_8eMY"
+            "url": "https://www.youtube.com/watch?v=XaCrQL_8eMY",
+            "id": "XaCrQL_8eMY"
           },
           "AppleMusic": {
             "id": "1452319283",
@@ -888,7 +982,8 @@
         "artist": "Sophie Ellis-Bextor",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=hAx6mYeC6pY"
+            "url": "https://www.youtube.com/watch?v=hAx6mYeC6pY",
+            "id": "hAx6mYeC6pY"
           },
           "AppleMusic": {
             "id": null,
@@ -906,7 +1001,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=3hMZ1-j0qF0"
+            "url": "https://www.youtube.com/watch?v=3hMZ1-j0qF0",
+            "id": "3hMZ1-j0qF0"
           },
           "AppleMusic": {
             "id": null,
@@ -917,7 +1013,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 17,
@@ -927,7 +1025,8 @@
         "artist": "Prince",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=4gazNwzC4H0"
+            "url": "https://www.youtube.com/watch?v=4gazNwzC4H0",
+            "id": "4gazNwzC4H0"
           },
           "AppleMusic": {
             "id": null,
@@ -944,7 +1043,8 @@
         "artist": "Billie Eilish",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=-PZsSWwc9xA"
+            "url": "https://www.youtube.com/watch?v=-PZsSWwc9xA",
+            "id": "-PZsSWwc9xA"
           },
           "AppleMusic": {
             "id": null,
@@ -962,7 +1062,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=YUdQxXEe8w8"
+            "url": "https://www.youtube.com/watch?v=YUdQxXEe8w8",
+            "id": "YUdQxXEe8w8"
           },
           "AppleMusic": {
             "id": null,
@@ -973,7 +1074,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 18,
@@ -983,7 +1086,8 @@
         "artist": "",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=DCYmJDO2_IE"
+            "url": "https://www.youtube.com/watch?v=DCYmJDO2_IE",
+            "id": "DCYmJDO2_IE"
           },
           "AppleMusic": {
             "id": null,
@@ -1000,7 +1104,8 @@
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=_GC2wFTCAGY"
+            "url": "https://www.youtube.com/watch?v=_GC2wFTCAGY",
+            "id": "_GC2wFTCAGY"
           },
           "AppleMusic": {
             "id": null,
@@ -1018,7 +1123,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=V3F6NdrmAQk"
+            "url": "https://www.youtube.com/watch?v=V3F6NdrmAQk",
+            "id": "V3F6NdrmAQk"
           },
           "AppleMusic": {
             "id": null,
@@ -1029,7 +1135,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 19,
@@ -1039,7 +1147,8 @@
         "artist": "Florence + The Machine",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=iWOyfLBYtuU"
+            "url": "https://www.youtube.com/watch?v=iWOyfLBYtuU",
+            "id": "iWOyfLBYtuU"
           },
           "AppleMusic": {
             "id": null,
@@ -1056,7 +1165,8 @@
         "artist": "Sabrina Carpenter",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ"
+            "url": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ",
+            "id": "YcSP1ZUf1eQ"
           },
           "AppleMusic": {
             "id": null,
@@ -1074,7 +1184,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=eY9KfG3Ypo8"
+            "url": "https://www.youtube.com/watch?v=eY9KfG3Ypo8",
+            "id": "eY9KfG3Ypo8"
           },
           "AppleMusic": {
             "id": null,
@@ -1085,7 +1196,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌒 Waxing Crescent",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 20,
@@ -1095,7 +1208,8 @@
         "artist": "Dua Lipa",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=oygrmJFKYZY"
+            "url": "https://www.youtube.com/watch?v=oygrmJFKYZY",
+            "id": "oygrmJFKYZY"
           },
           "AppleMusic": {
             "id": "1484636829",
@@ -1113,7 +1227,8 @@
         "artist": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=XCf_kdmmVNE"
+            "url": "https://www.youtube.com/watch?v=XCf_kdmmVNE",
+            "id": "XCf_kdmmVNE"
           },
           "AppleMusic": {
             "id": null,
@@ -1131,7 +1246,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=waszeFtYqY8"
+            "url": "https://www.youtube.com/watch?v=waszeFtYqY8",
+            "id": "waszeFtYqY8"
           },
           "AppleMusic": {
             "id": null,
@@ -1142,7 +1258,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌒 Waxing Crescent",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 21,
@@ -1152,7 +1270,8 @@
         "artist": "Post Malone, Swae Lee",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=ApXoWvfEYVU"
+            "url": "https://www.youtube.com/watch?v=ApXoWvfEYVU",
+            "id": "ApXoWvfEYVU"
           },
           "AppleMusic": {
             "id": null,
@@ -1169,7 +1288,8 @@
         "artist": "Max Richter",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=InyT9Gyoz_o"
+            "url": "https://www.youtube.com/watch?v=InyT9Gyoz_o",
+            "id": "InyT9Gyoz_o"
           },
           "AppleMusic": {
             "id": null,
@@ -1187,7 +1307,8 @@
         "anchor": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=tdtOOk4yfH0"
+            "url": "https://www.youtube.com/watch?v=tdtOOk4yfH0",
+            "id": "tdtOOk4yfH0"
           },
           "AppleMusic": {
             "id": null,
@@ -1198,17 +1319,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌒 Waxing Crescent",
+      "Figure": "Emma Stone"
     },
     {
       "Day": 22,
       "Date": "2025-11-26",
       "Explainer": {
         "title": "Formation",
-        "artist": "Beyonc\u00c3\u00a9",
+        "artist": "Beyoncé",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=WDZJPJV__bQ"
+            "url": "https://www.youtube.com/watch?v=WDZJPJV__bQ",
+            "id": "WDZJPJV__bQ"
           },
           "AppleMusic": {
             "id": null,
@@ -1225,7 +1349,8 @@
         "artist": null,
         "Platforms": {
           "YouTube": {
-            "url": ""
+            "url": "",
+            "id": ""
           },
           "AppleMusic": {
             "id": null,
@@ -1243,7 +1368,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=RBtlPT23PTM"
+            "url": "https://www.youtube.com/watch?v=RBtlPT23PTM",
+            "id": "RBtlPT23PTM"
           },
           "AppleMusic": {
             "id": null,
@@ -1254,7 +1380,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 23,
@@ -1264,7 +1392,8 @@
         "artist": "Hurts",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=6CvuyaKmLnw"
+            "url": "https://www.youtube.com/watch?v=6CvuyaKmLnw",
+            "id": "6CvuyaKmLnw"
           },
           "AppleMusic": {
             "id": "387681168",
@@ -1282,7 +1411,8 @@
         "artist": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=8qnOpJfFfpU"
+            "url": "https://www.youtube.com/watch?v=8qnOpJfFfpU",
+            "id": "8qnOpJfFfpU"
           },
           "AppleMusic": {
             "id": null,
@@ -1300,7 +1430,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=sI66hcu9fIs"
+            "url": "https://www.youtube.com/watch?v=sI66hcu9fIs",
+            "id": "sI66hcu9fIs"
           },
           "AppleMusic": {
             "id": null,
@@ -1311,17 +1442,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 24,
       "Date": "2025-11-28",
       "Explainer": {
         "title": "HONEY (ARE U COMING?)",
-        "artist": "M\u00c3\u00a5neskin",
+        "artist": "Måneskin",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=HZnNt9nnEhw"
+            "url": "https://www.youtube.com/watch?v=HZnNt9nnEhw",
+            "id": "HZnNt9nnEhw"
           },
           "AppleMusic": {
             "id": null,
@@ -1338,7 +1472,8 @@
         "artist": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=eu0KsZ_MVBc"
+            "url": "https://www.youtube.com/watch?v=eu0KsZ_MVBc",
+            "id": "eu0KsZ_MVBc"
           },
           "AppleMusic": {
             "id": null,
@@ -1356,7 +1491,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=iYYRH4apXDo"
+            "url": "https://www.youtube.com/watch?v=iYYRH4apXDo",
+            "id": "iYYRH4apXDo"
           },
           "AppleMusic": {
             "id": null,
@@ -1367,7 +1503,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 25,
@@ -1377,7 +1515,8 @@
         "artist": "Madonna",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=GsVcUzP_O_8"
+            "url": "https://www.youtube.com/watch?v=GsVcUzP_O_8",
+            "id": "GsVcUzP_O_8"
           },
           "AppleMusic": {
             "id": "329043302",
@@ -1395,7 +1534,8 @@
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=N29-54dhVHg"
+            "url": "https://www.youtube.com/watch?v=N29-54dhVHg",
+            "id": "N29-54dhVHg"
           },
           "AppleMusic": {
             "id": null,
@@ -1413,7 +1553,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=90M60PzmxEE"
+            "url": "https://www.youtube.com/watch?v=90M60PzmxEE",
+            "id": "90M60PzmxEE"
           },
           "AppleMusic": {
             "id": null,
@@ -1424,17 +1565,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 26,
       "Date": "2025-11-30",
       "Explainer": {
-        "title": "Savage Remix (feat. Beyonc\u00c3\u00a9) [Official Audio]",
+        "title": "Savage Remix (feat. Beyoncé)",
         "artist": "Megan Thee Stallion",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=lEIqjoO0-Bs"
+            "url": "https://www.youtube.com/watch?v=lEIqjoO0-Bs",
+            "id": "lEIqjoO0-Bs"
           },
           "AppleMusic": {
             "id": null,
@@ -1451,7 +1595,8 @@
         "artist": "Lady Gaga",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=5vheNbQlsyU"
+            "url": "https://www.youtube.com/watch?v=5vheNbQlsyU",
+            "id": "5vheNbQlsyU"
           },
           "AppleMusic": {
             "id": null,
@@ -1469,7 +1614,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=dzNvk80XY9s"
+            "url": "https://www.youtube.com/watch?v=dzNvk80XY9s",
+            "id": "dzNvk80XY9s"
           },
           "AppleMusic": {
             "id": null,
@@ -1480,7 +1626,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 27,
@@ -1490,7 +1638,8 @@
         "artist": "M.I.A.",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=ewRjZoRtu0Y"
+            "url": "https://www.youtube.com/watch?v=ewRjZoRtu0Y",
+            "id": "ewRjZoRtu0Y"
           },
           "AppleMusic": {
             "id": "296393515",
@@ -1508,7 +1657,8 @@
         "artist": "AURORA",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=d_HlPboLRL8"
+            "url": "https://www.youtube.com/watch?v=d_HlPboLRL8",
+            "id": "d_HlPboLRL8"
           },
           "AppleMusic": {
             "id": null,
@@ -1526,7 +1676,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=IDhapt7mwv4"
+            "url": "https://www.youtube.com/watch?v=IDhapt7mwv4",
+            "id": "IDhapt7mwv4"
           },
           "AppleMusic": {
             "id": null,
@@ -1537,7 +1688,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 28,
@@ -1547,7 +1700,8 @@
         "artist": "Coldplay",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=dvgZkm1xWPE"
+            "url": "https://www.youtube.com/watch?v=dvgZkm1xWPE",
+            "id": "dvgZkm1xWPE"
           },
           "AppleMusic": {
             "id": "1122773680",
@@ -1565,7 +1719,8 @@
         "artist": "Muse",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=w8KQmps-Sog"
+            "url": "https://www.youtube.com/watch?v=w8KQmps-Sog",
+            "id": "w8KQmps-Sog"
           },
           "AppleMusic": {
             "id": null,
@@ -1583,7 +1738,8 @@
         "anchor": "Janet Planet",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=LBjlZ1c6LrY"
+            "url": "https://www.youtube.com/watch?v=LBjlZ1c6LrY",
+            "id": "LBjlZ1c6LrY"
           },
           "AppleMusic": {
             "id": "1122773712",
@@ -1595,7 +1751,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Janet Planet"
     },
     {
       "Day": 29,
@@ -1605,7 +1763,8 @@
         "artist": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=xFYQQPAOz7Y"
+            "url": "https://www.youtube.com/watch?v=xFYQQPAOz7Y",
+            "id": "xFYQQPAOz7Y"
           },
           "AppleMusic": {
             "id": "1444221569",
@@ -1619,11 +1778,12 @@
         }
       },
       "AnchorPublic": {
-        "title": "Don\u2019t Start Now",
+        "title": "Don't Start Now",
         "artist": "Dua Lipa",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=oygrmJFKYZY"
+            "url": "https://www.youtube.com/watch?v=oygrmJFKYZY",
+            "id": "oygrmJFKYZY"
           },
           "AppleMusic": {
             "id": null,
@@ -1641,7 +1801,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=8KwntZVxbZA"
+            "url": "https://www.youtube.com/watch?v=8KwntZVxbZA",
+            "id": "8KwntZVxbZA"
           },
           "AppleMusic": {
             "id": "1698723221",
@@ -1653,7 +1814,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 30,
@@ -1663,7 +1826,8 @@
         "artist": "Taylor Swift",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=nfWlot6h_JM"
+            "url": "https://www.youtube.com/watch?v=nfWlot6h_JM",
+            "id": "nfWlot6h_JM"
           },
           "AppleMusic": {
             "id": "1440936016",
@@ -1681,7 +1845,8 @@
         "artist": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=jsdI3JezUSs"
+            "url": "https://www.youtube.com/watch?v=jsdI3JezUSs",
+            "id": "jsdI3JezUSs"
           },
           "AppleMusic": {
             "id": null,
@@ -1699,7 +1864,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=GdJ6N4u0E_w"
+            "url": "https://www.youtube.com/watch?v=GdJ6N4u0E_w",
+            "id": "GdJ6N4u0E_w"
           },
           "AppleMusic": {
             "id": null,
@@ -1710,7 +1876,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 31,
@@ -1720,7 +1888,8 @@
         "artist": "Dua Lipa",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=TUVcZfQe-Kw"
+            "url": "https://www.youtube.com/watch?v=TUVcZfQe-Kw",
+            "id": "TUVcZfQe-Kw"
           },
           "AppleMusic": {
             "id": null,
@@ -1737,7 +1906,8 @@
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=6B3YwcjQ_bU"
+            "url": "https://www.youtube.com/watch?v=6B3YwcjQ_bU",
+            "id": "6B3YwcjQ_bU"
           },
           "AppleMusic": {
             "id": null,
@@ -1755,7 +1925,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=n4G1ZzNf5zc"
+            "url": "https://www.youtube.com/watch?v=n4G1ZzNf5zc",
+            "id": "n4G1ZzNf5zc"
           },
           "AppleMusic": {
             "id": null,
@@ -1766,17 +1937,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 32,
       "Date": "2025-12-06",
       "Explainer": {
         "title": "ENERGY",
-        "artist": "Beyonc\u00c3\u00a9",
+        "artist": "Beyoncé",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=O9rk6ldyFkA"
+            "url": "https://www.youtube.com/watch?v=O9rk6ldyFkA",
+            "id": "O9rk6ldyFkA"
           },
           "AppleMusic": {
             "id": null,
@@ -1793,7 +1967,8 @@
         "artist": "Emma Stone",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=ylvh800i85I"
+            "url": "https://www.youtube.com/watch?v=ylvh800i85I",
+            "id": "ylvh800i85I"
           },
           "AppleMusic": {
             "id": null,
@@ -1811,7 +1986,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=G2AJh5g7teQ"
+            "url": "https://www.youtube.com/watch?v=G2AJh5g7teQ",
+            "id": "G2AJh5g7teQ"
           },
           "AppleMusic": {
             "id": null,
@@ -1822,7 +1998,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 33,
@@ -1832,7 +2010,8 @@
         "artist": "",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=5oWyMakvQew"
+            "url": "https://www.youtube.com/watch?v=5oWyMakvQew",
+            "id": "5oWyMakvQew"
           },
           "AppleMusic": {
             "id": null,
@@ -1849,7 +2028,8 @@
         "artist": "Sabrina Carpenter",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=eVli-tstM5E"
+            "url": "https://www.youtube.com/watch?v=eVli-tstM5E",
+            "id": "eVli-tstM5E"
           },
           "AppleMusic": {
             "id": null,
@@ -1867,7 +2047,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=eVli-tstM5E"
+            "url": "https://www.youtube.com/watch?v=eVli-tstM5E",
+            "id": "eVli-tstM5E"
           },
           "AppleMusic": {
             "id": null,
@@ -1878,7 +2059,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 34,
@@ -1888,7 +2071,8 @@
         "artist": "Stevie Nicks",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=UmPgMc3R8zg"
+            "url": "https://www.youtube.com/watch?v=UmPgMc3R8zg",
+            "id": "UmPgMc3R8zg"
           },
           "AppleMusic": {
             "id": "219393906",
@@ -1906,7 +2090,8 @@
         "artist": "The Avalanches",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=wpqm-05R2Jk"
+            "url": "https://www.youtube.com/watch?v=wpqm-05R2Jk",
+            "id": "wpqm-05R2Jk"
           },
           "AppleMusic": {
             "id": null,
@@ -1924,7 +2109,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=tV8Kp2Kj2MQ"
+            "url": "https://www.youtube.com/watch?v=tV8Kp2Kj2MQ",
+            "id": "tV8Kp2Kj2MQ"
           },
           "AppleMusic": {
             "id": null,
@@ -1935,7 +2121,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 35,
@@ -1945,7 +2133,8 @@
         "artist": "Lady Gaga",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=wV1FrqwZyKw"
+            "url": "https://www.youtube.com/watch?v=wV1FrqwZyKw",
+            "id": "wV1FrqwZyKw"
           },
           "AppleMusic": {
             "id": "1440857424",
@@ -1963,7 +2152,8 @@
         "artist": "Pete Seeger",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=R8eK9ZXf-Ow"
+            "url": "https://www.youtube.com/watch?v=R8eK9ZXf-Ow",
+            "id": "R8eK9ZXf-Ow"
           },
           "AppleMusic": {
             "id": null,
@@ -1981,7 +2171,8 @@
         "anchor": "Hot To Go",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=Q3iC8c7L1NQ"
+            "url": "https://www.youtube.com/watch?v=Q3iC8c7L1NQ",
+            "id": "Q3iC8c7L1NQ"
           },
           "AppleMusic": {
             "id": null,
@@ -1992,7 +2183,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Hot To Go"
     },
     {
       "Day": 36,
@@ -2002,7 +2195,8 @@
         "artist": "Coldplay",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=k4V3Mo61fJM"
+            "url": "https://www.youtube.com/watch?v=k4V3Mo61fJM",
+            "id": "k4V3Mo61fJM"
           },
           "AppleMusic": {
             "id": "1123076826",
@@ -2020,7 +2214,8 @@
         "artist": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=dN0c88XN7eU"
+            "url": "https://www.youtube.com/watch?v=dN0c88XN7eU",
+            "id": "dN0c88XN7eU"
           },
           "AppleMusic": {
             "id": null,
@@ -2038,7 +2233,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=QF8zGdlqgBs"
+            "url": "https://www.youtube.com/watch?v=QF8zGdlqgBs",
+            "id": "QF8zGdlqgBs"
           },
           "AppleMusic": {
             "id": null,
@@ -2049,7 +2245,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Doechii"
     },
     {
       "Day": 37,
@@ -2059,7 +2257,8 @@
         "artist": "Kendrick Lamar",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=Z-48u_uWMHY"
+            "url": "https://www.youtube.com/watch?v=Z-48u_uWMHY",
+            "id": "Z-48u_uWMHY"
           },
           "AppleMusic": {
             "id": "1440829463",
@@ -2077,7 +2276,8 @@
         "artist": "Mac Miller",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=SsKT0s5J8ko"
+            "url": "https://www.youtube.com/watch?v=SsKT0s5J8ko",
+            "id": "SsKT0s5J8ko"
           },
           "AppleMusic": {
             "id": null,
@@ -2095,7 +2295,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=7-1g8L4CLOA"
+            "url": "https://www.youtube.com/watch?v=7-1g8L4CLOA",
+            "id": "7-1g8L4CLOA"
           },
           "AppleMusic": {
             "id": null,
@@ -2106,7 +2307,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
     },
     {
       "Day": 38,
@@ -2116,7 +2319,8 @@
         "artist": "Ariana Grande",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=gl1aHhXnN1k"
+            "url": "https://www.youtube.com/watch?v=gl1aHhXnN1k",
+            "id": "gl1aHhXnN1k"
           },
           "AppleMusic": {
             "id": "1450330686",
@@ -2134,7 +2338,8 @@
         "artist": "Daft Punk",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=FGBhQbmPwH8"
+            "url": "https://www.youtube.com/watch?v=FGBhQbmPwH8",
+            "id": "FGBhQbmPwH8"
           },
           "AppleMusic": {
             "id": null,
@@ -2152,7 +2357,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=FGBhQbmPwH8"
+            "url": "https://www.youtube.com/watch?v=FGBhQbmPwH8",
+            "id": "FGBhQbmPwH8"
           },
           "AppleMusic": {
             "id": null,
@@ -2163,7 +2369,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
     },
     {
       "Day": 39,
@@ -2173,7 +2381,8 @@
         "artist": "Amy Winehouse",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=TJAfLE39ZZ8"
+            "url": "https://www.youtube.com/watch?v=TJAfLE39ZZ8",
+            "id": "TJAfLE39ZZ8"
           },
           "AppleMusic": {
             "id": "1422677785",
@@ -2191,7 +2400,8 @@
         "artist": "Hozier",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=PVjiKRfKpPI"
+            "url": "https://www.youtube.com/watch?v=PVjiKRfKpPI",
+            "id": "PVjiKRfKpPI"
           },
           "AppleMusic": {
             "id": null,
@@ -2209,7 +2419,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=x3J4f5m-0o8"
+            "url": "https://www.youtube.com/watch?v=x3J4f5m-0o8",
+            "id": "x3J4f5m-0o8"
           },
           "AppleMusic": {
             "id": null,
@@ -2220,17 +2431,20 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
     },
     {
       "Day": 40,
       "Date": "2025-12-14",
       "Explainer": {
         "title": "XO",
-        "artist": "Beyonc\u00c3\u00a9",
+        "artist": "Beyoncé",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=3xUfCUFPL-8"
+            "url": "https://www.youtube.com/watch?v=3xUfCUFPL-8",
+            "id": "3xUfCUFPL-8"
           },
           "AppleMusic": {
             "id": null,
@@ -2247,7 +2461,8 @@
         "artist": "Eminem",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY"
+            "url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY",
+            "id": "YVkUvmDQ3HY"
           },
           "AppleMusic": {
             "id": null,
@@ -2265,7 +2480,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=QfKQGnk7SIE"
+            "url": "https://www.youtube.com/watch?v=QfKQGnk7SIE",
+            "id": "QfKQGnk7SIE"
           },
           "AppleMusic": {
             "id": null,
@@ -2276,7 +2492,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
     },
     {
       "Day": 41,
@@ -2286,7 +2504,8 @@
         "artist": "Frank Ocean",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=r4l9bFqgMaQ"
+            "url": "https://www.youtube.com/watch?v=r4l9bFqgMaQ",
+            "id": "r4l9bFqgMaQ"
           },
           "AppleMusic": {
             "id": "1146195720",
@@ -2304,7 +2523,8 @@
         "artist": "Eva Cassidy",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=2rd8VktT8xY"
+            "url": "https://www.youtube.com/watch?v=2rd8VktT8xY",
+            "id": "2rd8VktT8xY"
           },
           "AppleMusic": {
             "id": null,
@@ -2322,7 +2542,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=2rd8VktT8xY"
+            "url": "https://www.youtube.com/watch?v=2rd8VktT8xY",
+            "id": "2rd8VktT8xY"
           },
           "AppleMusic": {
             "id": null,
@@ -2333,7 +2554,9 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Doechii"
     },
     {
       "Day": 42,
@@ -2343,7 +2566,8 @@
         "artist": "Semisonic",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=xGytDsqkQY8"
+            "url": "https://www.youtube.com/watch?v=xGytDsqkQY8",
+            "id": "xGytDsqkQY8"
           },
           "AppleMusic": {
             "id": "1443912092",
@@ -2361,7 +2585,8 @@
         "artist": "Pink Floyd",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=1Z39KZAryzk"
+            "url": "https://www.youtube.com/watch?v=1Z39KZAryzk",
+            "id": "1Z39KZAryzk"
           },
           "AppleMusic": {
             "id": null,
@@ -2379,7 +2604,8 @@
         "anchor": "Doechii",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=1Z39KZAryzk"
+            "url": "https://www.youtube.com/watch?v=1Z39KZAryzk",
+            "id": "1Z39KZAryzk"
           },
           "AppleMusic": {
             "id": null,
@@ -2390,7 +2616,2609 @@
             "status": "coming_soon"
           }
         }
-      }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Doechii"
     }
-  ]
+  ],
+  "days": [
+    {
+      "Day": 1,
+      "Date": "2025-11-05",
+      "Explainer": {
+        "title": "White America",
+        "artist": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+            "id": "RZIzD0ZfTFg"
+          },
+          "AppleMusic": {
+            "id": "1440903544",
+            "isrc": "USIR10211052",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Best Day Ever",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=AbV-Q6tz4B8",
+            "id": "AbV-Q6tz4B8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "White America",
+        "artist": "Eminem",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+            "id": "RZIzD0ZfTFg"
+          },
+          "AppleMusic": {
+            "id": "1440903544",
+            "isrc": "USIR10211052",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 2,
+      "Date": "2025-11-06",
+      "Explainer": {
+        "title": "HOT TO GO!",
+        "artist": "Chappell Roan",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=xaPNR-_Cfn0",
+            "id": "xaPNR-_Cfn0"
+          },
+          "AppleMusic": {
+            "id": "1698723221",
+            "isrc": "USUG12305911",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Feather",
+        "artist": "Sabrina Carpenter",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=kLbn61Z4LDI",
+            "id": "kLbn61Z4LDI"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Lose Yourself",
+        "artist": "Eminem",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=_Yhyp-_hX2s",
+            "id": "_Yhyp-_hX2s"
+          },
+          "AppleMusic": {
+            "id": "1444221569",
+            "isrc": "USIR10211559",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 3,
+      "Date": "2025-11-07",
+      "Explainer": {
+        "title": "Honey",
+        "artist": "Robyn",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=Mru9GG3ur9U",
+            "id": "Mru9GG3ur9U"
+          },
+          "AppleMusic": {
+            "id": "1436781347",
+            "isrc": "SEWKZ1800013",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Killing in the Name",
+        "artist": "Rage Against the Machine",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=bWXazVhlyxQ",
+            "id": "bWXazVhlyxQ"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Not Afraid",
+        "artist": "Eminem",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=j5-yKhDd64s",
+            "id": "j5-yKhDd64s"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 4,
+      "Date": "2025-11-08",
+      "Explainer": {
+        "title": "Strawberry Swing",
+        "artist": "Coldplay",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=h3pJZSTQqIg",
+            "id": "h3pJZSTQqIg"
+          },
+          "AppleMusic": {
+            "id": "1122773712",
+            "isrc": "GBAYE1600219",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "What It Is (Block Boy)",
+        "artist": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=phtcAd8j6Ro",
+            "id": "phtcAd8j6Ro"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Till I Collapse",
+        "artist": "Eminem",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=Obim8BYGnOE",
+            "id": "Obim8BYGnOE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 5,
+      "Date": "2025-11-09",
+      "Explainer": {
+        "title": "Honey",
+        "artist": "Mariah Carey",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=w3KOowB4k_k",
+            "id": "w3KOowB4k_k"
+          },
+          "AppleMusic": {
+            "id": "192812332",
+            "isrc": "USSM19701569",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Right Here, Right Now (Remix)",
+        "artist": "Greta Thunberg",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=FrEP4MHCKDc&list=PL2H7n7qLAdf7VTOrmFlY9G-PaE94VrHAY&index=5",
+            "id": "FrEP4MHCKDc"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "The Way I Am",
+        "artist": "Eminem",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=KENQwm7l5nY",
+            "id": "KENQwm7l5nY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 6,
+      "Date": "2025-11-10",
+      "Explainer": {
+        "title": "HUMBLE.",
+        "artist": "Kendrick Lamar",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=tvTRZJ-4EyI",
+            "id": "tvTRZJ-4EyI"
+          },
+          "AppleMusic": {
+            "id": "1440881684",
+            "isrc": "USUM71703085",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Dang! (feat. Anderson.Paak)",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=LR3GQfryp9M",
+            "id": "LR3GQfryp9M"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Without Me",
+        "artist": "Eminem",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY",
+            "id": "YVkUvmDQ3HY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 7,
+      "Date": "2025-11-11",
+      "Explainer": {
+        "title": "Sweet Disposition",
+        "artist": "The Temper Trap",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=jxKjOOR9sPU",
+            "id": "jxKjOOR9sPU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Saturn (Planetarium)",
+        "artist": "Sufjan Stevens et al.",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=k92cL337BuM",
+            "id": "k92cL337BuM"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Love The Way You Lie",
+        "artist": "Eminem ft. Rihanna",
+        "anchor": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=uelHwf8o7_U",
+            "id": "uelHwf8o7_U"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Eminem"
+    },
+    {
+      "Day": 8,
+      "Date": "2025-11-12",
+      "Explainer": {
+        "title": "Taste ft. Offset",
+        "artist": "Tyga",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=LjxulQ1bEWg",
+            "id": "LjxulQ1bEWg"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Crazy",
+        "artist": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=0aQ9Q0hRTwY",
+            "id": "0aQ9Q0hRTwY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Honey",
+        "artist": "Robyn",
+        "anchor": "SWEETENING",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=btOfwhl7V44",
+            "id": "btOfwhl7V44"
+          },
+          "AppleMusic": {
+            "id": "1436781347",
+            "isrc": "SEWKZ1800013",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "SWEETENING"
+    },
+    {
+      "Day": 9,
+      "Date": "2025-11-13",
+      "Explainer": {
+        "title": "Froot",
+        "artist": "MARINA AND THE DIAMONDS",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=WZzcY7ASQno",
+            "id": "WZzcY7ASQno"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "City of Stars (La La Land)",
+        "artist": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE",
+            "id": "cZAw8qxn0ZE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Feather",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Sabrina",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=G2BD75m1HZ0",
+            "id": "G2BD75m1HZ0"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Sabrina"
+    },
+    {
+      "Day": 10,
+      "Date": "2025-11-14",
+      "Explainer": {
+        "title": "Do It",
+        "artist": "Chloe x Halle",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=a9HIaGcBocc",
+            "id": "a9HIaGcBocc"
+          },
+          "AppleMusic": {
+            "id": "1512284179",
+            "isrc": "USSM12002039",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Lose Yourself",
+        "artist": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=eRhEcKHU5LY",
+            "id": "eRhEcKHU5LY"
+          },
+          "AppleMusic": {
+            "id": "1444221569",
+            "isrc": "USIR10211559",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Nonsense",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Sabrina",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=1mN--w0DcE8",
+            "id": "1mN--w0DcE8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Sabrina"
+    },
+    {
+      "Day": 11,
+      "Date": "2025-11-15",
+      "Explainer": {
+        "title": "Good As Hell",
+        "artist": "Lizzo",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=SmbmeOgWsqE",
+            "id": "SmbmeOgWsqE"
+          },
+          "AppleMusic": {
+            "id": "1150159755",
+            "isrc": "USAT21600856",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "The Seed",
+        "artist": "AURORA",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=MUIIkBZVzTU",
+            "id": "MUIIkBZVzTU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Please Please Please",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Sabrina",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=koGv4EY1Wl0",
+            "id": "koGv4EY1Wl0"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
+    },
+    {
+      "Day": 12,
+      "Date": "2025-11-16",
+      "Explainer": {
+        "title": "Truth Hurts",
+        "artist": "Lizzo",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=P00HMxdsVZI",
+            "id": "P00HMxdsVZI"
+          },
+          "AppleMusic": {
+            "id": "1494981961",
+            "isrc": "USAT21703896",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "HOT TO GO!",
+        "artist": "Chappell Roan",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=xaPNR-_Cfn0",
+            "id": "xaPNR-_Cfn0"
+          },
+          "AppleMusic": {
+            "id": "1698723221",
+            "isrc": "USUG12305911",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Because I Liked A Boy",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Sabrina",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=f8rHvrzc5h0",
+            "id": "f8rHvrzc5h0"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
+    },
+    {
+      "Day": 13,
+      "Date": "2025-11-17",
+      "Explainer": {
+        "title": "Take A Bow",
+        "artist": "Madonna",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=XDeiovnCv1o",
+            "id": "XDeiovnCv1o"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Good News",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=aIHF7u9Wwiw",
+            "id": "aIHF7u9Wwiw"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Sue Me",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Sabrina",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=eWUxqVFBq74",
+            "id": "eWUxqVFBq74"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
+    },
+    {
+      "Day": 14,
+      "Date": "2025-11-18",
+      "Explainer": {
+        "title": "Bitter Sweet Symphony",
+        "artist": "The Verve",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=1lyu1KKwC74",
+            "id": "1lyu1KKwC74"
+          },
+          "AppleMusic": {
+            "id": "1443258189",
+            "isrc": "GBUM71601816",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "An Ending (Ascent)",
+        "artist": "Brian Eno",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=OlaTeXX3uH8",
+            "id": "OlaTeXX3uH8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Vicious",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Sabrina",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=3_0JkdK6QKs",
+            "id": "3_0JkdK6QKs"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Sabrina"
+    },
+    {
+      "Day": 15,
+      "Date": "2025-11-19",
+      "Explainer": {
+        "title": "Work It",
+        "artist": "Missy Elliott",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=cjIvu7e6Wq8",
+            "id": "cjIvu7e6Wq8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "White America",
+        "artist": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+            "id": "RZIzD0ZfTFg"
+          },
+          "AppleMusic": {
+            "id": "1440903544",
+            "isrc": "USIR10211052",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "City of Stars",
+        "artist": "Ryan Gosling & Emma Stone",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE",
+            "id": "cZAw8qxn0ZE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 16,
+      "Date": "2025-11-20",
+      "Explainer": {
+        "title": "Juice",
+        "artist": "Lizzo",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=XaCrQL_8eMY",
+            "id": "XaCrQL_8eMY"
+          },
+          "AppleMusic": {
+            "id": "1452319283",
+            "isrc": "USAT21813044",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Murder on the Dancefloor",
+        "artist": "Sophie Ellis-Bextor",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=hAx6mYeC6pY",
+            "id": "hAx6mYeC6pY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Audition (The Fools Who Dream)",
+        "artist": "Emma Stone",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=3hMZ1-j0qF0",
+            "id": "3hMZ1-j0qF0"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 17,
+      "Date": "2025-11-21",
+      "Explainer": {
+        "title": "Controversy",
+        "artist": "Prince",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=4gazNwzC4H0",
+            "id": "4gazNwzC4H0"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "all the good girls go to hell",
+        "artist": "Billie Eilish",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=-PZsSWwc9xA",
+            "id": "-PZsSWwc9xA"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Someone In The Crowd",
+        "artist": "Emma Stone & Cast",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=YUdQxXEe8w8",
+            "id": "YUdQxXEe8w8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 18,
+      "Date": "2025-11-22",
+      "Explainer": {
+        "title": "Cinnamon Girl",
+        "artist": "",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=DCYmJDO2_IE",
+            "id": "DCYmJDO2_IE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Blue World",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=_GC2wFTCAGY",
+            "id": "_GC2wFTCAGY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "A Lovely Night",
+        "artist": "Ryan Gosling & Emma Stone",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=V3F6NdrmAQk",
+            "id": "V3F6NdrmAQk"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌑 New Moon",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 19,
+      "Date": "2025-11-23",
+      "Explainer": {
+        "title": "Dog Days Are Over (2010 Version)",
+        "artist": "Florence + The Machine",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=iWOyfLBYtuU",
+            "id": "iWOyfLBYtuU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Nonsense",
+        "artist": "Sabrina Carpenter",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ",
+            "id": "YcSP1ZUf1eQ"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "I Saw Her Today at the Reception (Shampoo Scene)",
+        "artist": "Emma Stone (clip)",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=eY9KfG3Ypo8",
+            "id": "eY9KfG3Ypo8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌒 Waxing Crescent",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 20,
+      "Date": "2025-11-24",
+      "Explainer": {
+        "title": "Don't Start Now",
+        "artist": "Dua Lipa",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=oygrmJFKYZY",
+            "id": "oygrmJFKYZY"
+          },
+          "AppleMusic": {
+            "id": "1484636829",
+            "isrc": "GBAHT1901121",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Audition (The Fools Who Dream)",
+        "artist": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=XCf_kdmmVNE",
+            "id": "XCf_kdmmVNE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Another Day of Sun",
+        "artist": "La La Land Cast",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=waszeFtYqY8",
+            "id": "waszeFtYqY8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌒 Waxing Crescent",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 21,
+      "Date": "2025-11-25",
+      "Explainer": {
+        "title": "Sunflower (Spider-Man: Into the Spider-Verse)",
+        "artist": "Post Malone, Swae Lee",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=ApXoWvfEYVU",
+            "id": "ApXoWvfEYVU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "On the Nature of Daylight",
+        "artist": "Max Richter",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=InyT9Gyoz_o",
+            "id": "InyT9Gyoz_o"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Epilogue (La La Land)",
+        "artist": "Justin Hurwitz",
+        "anchor": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=tdtOOk4yfH0",
+            "id": "tdtOOk4yfH0"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌒 Waxing Crescent",
+      "Figure": "Emma Stone"
+    },
+    {
+      "Day": 22,
+      "Date": "2025-11-26",
+      "Explainer": {
+        "title": "Formation",
+        "artist": "Beyoncé",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=WDZJPJV__bQ",
+            "id": "WDZJPJV__bQ"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": null,
+        "artist": null,
+        "Platforms": {
+          "YouTube": {
+            "url": "",
+            "id": ""
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Space Song",
+        "artist": "Beach House",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=RBtlPT23PTM",
+            "id": "RBtlPT23PTM"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 23,
+      "Date": "2025-11-27",
+      "Explainer": {
+        "title": "Illuminated",
+        "artist": "Hurts",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=6CvuyaKmLnw",
+            "id": "6CvuyaKmLnw"
+          },
+          "AppleMusic": {
+            "id": "387681168",
+            "isrc": "GBARL1000783",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Yucky Blucky Fruitcake",
+        "artist": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=8qnOpJfFfpU",
+            "id": "8qnOpJfFfpU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Starman",
+        "artist": "David Bowie",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=sI66hcu9fIs",
+            "id": "sI66hcu9fIs"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 24,
+      "Date": "2025-11-28",
+      "Explainer": {
+        "title": "HONEY (ARE U COMING?)",
+        "artist": "Måneskin",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=HZnNt9nnEhw",
+            "id": "HZnNt9nnEhw"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Neon Swarm",
+        "artist": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=eu0KsZ_MVBc",
+            "id": "eu0KsZ_MVBc"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Space Oddity",
+        "artist": "David Bowie",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=iYYRH4apXDo",
+            "id": "iYYRH4apXDo"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 25,
+      "Date": "2025-11-29",
+      "Explainer": {
+        "title": "Express Yourself",
+        "artist": "Madonna",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=GsVcUzP_O_8",
+            "id": "GsVcUzP_O_8"
+          },
+          "AppleMusic": {
+            "id": "329043302",
+            "isrc": "USWB10903609",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Weekend (feat. Miguel)",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=N29-54dhVHg",
+            "id": "N29-54dhVHg"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Across the Universe",
+        "artist": "The Beatles",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=90M60PzmxEE",
+            "id": "90M60PzmxEE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌓 First Quarter",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 26,
+      "Date": "2025-11-30",
+      "Explainer": {
+        "title": "Savage Remix (feat. Beyoncé)",
+        "artist": "Megan Thee Stallion",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=lEIqjoO0-Bs",
+            "id": "lEIqjoO0-Bs"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Always Remember Us This Way",
+        "artist": "Lady Gaga",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=5vheNbQlsyU",
+            "id": "5vheNbQlsyU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Saturn",
+        "artist": "Sleeping At Last",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=dzNvk80XY9s",
+            "id": "dzNvk80XY9s"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 27,
+      "Date": "2025-12-01",
+      "Explainer": {
+        "title": "Paper Planes",
+        "artist": "M.I.A.",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=ewRjZoRtu0Y",
+            "id": "ewRjZoRtu0Y"
+          },
+          "AppleMusic": {
+            "id": "296393515",
+            "isrc": "GBBKS0700215",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Runaway",
+        "artist": "AURORA",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=d_HlPboLRL8",
+            "id": "d_HlPboLRL8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "The Planet Song",
+        "artist": "Julie Bernstein",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=IDhapt7mwv4",
+            "id": "IDhapt7mwv4"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 28,
+      "Date": "2025-12-02",
+      "Explainer": {
+        "title": "Viva La Vida",
+        "artist": "Coldplay",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=dvgZkm1xWPE",
+            "id": "dvgZkm1xWPE"
+          },
+          "AppleMusic": {
+            "id": "1122773680",
+            "isrc": "GBAYE1600217",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Uprising",
+        "artist": "Muse",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=w8KQmps-Sog",
+            "id": "w8KQmps-Sog"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Strawberry Swing",
+        "artist": "Coldplay",
+        "anchor": "Janet Planet",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=LBjlZ1c6LrY",
+            "id": "LBjlZ1c6LrY"
+          },
+          "AppleMusic": {
+            "id": "1122773712",
+            "isrc": "GBAYE1600219",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Janet Planet"
+    },
+    {
+      "Day": 29,
+      "Date": "2025-12-03",
+      "Explainer": {
+        "title": "Lose Yourself",
+        "artist": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=xFYQQPAOz7Y",
+            "id": "xFYQQPAOz7Y"
+          },
+          "AppleMusic": {
+            "id": "1444221569",
+            "isrc": "USIR10211559",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Don't Start Now",
+        "artist": "Dua Lipa",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=oygrmJFKYZY",
+            "id": "oygrmJFKYZY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "HOT TO GO!",
+        "artist": "Chappell Roan",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=8KwntZVxbZA",
+            "id": "8KwntZVxbZA"
+          },
+          "AppleMusic": {
+            "id": "1698723221",
+            "isrc": "USUG12305911",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌔 Waxing Gibbous",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 30,
+      "Date": "2025-12-04",
+      "Explainer": {
+        "title": "Shake It Off",
+        "artist": "Taylor Swift",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=nfWlot6h_JM",
+            "id": "nfWlot6h_JM"
+          },
+          "AppleMusic": {
+            "id": "1440936016",
+            "isrc": "USCJY1431349",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "The Way I Am",
+        "artist": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=jsdI3JezUSs",
+            "id": "jsdI3JezUSs"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Good Luck, Babe!",
+        "artist": "Chappell Roan",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=GdJ6N4u0E_w",
+            "id": "GdJ6N4u0E_w"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 31,
+      "Date": "2025-12-05",
+      "Explainer": {
+        "title": "Levitating Featuring DaBaby",
+        "artist": "Dua Lipa",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=TUVcZfQe-Kw",
+            "id": "TUVcZfQe-Kw"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "2009",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=6B3YwcjQ_bU",
+            "id": "6B3YwcjQ_bU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Red Wine Supernova",
+        "artist": "Chappell Roan",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=n4G1ZzNf5zc",
+            "id": "n4G1ZzNf5zc"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 32,
+      "Date": "2025-12-06",
+      "Explainer": {
+        "title": "ENERGY",
+        "artist": "Beyoncé",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=O9rk6ldyFkA",
+            "id": "O9rk6ldyFkA"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Pocketful of Sunshine (Easy A clip)",
+        "artist": "Emma Stone",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=ylvh800i85I",
+            "id": "ylvh800i85I"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Casual",
+        "artist": "Chappell Roan",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=G2AJh5g7teQ",
+            "id": "G2AJh5g7teQ"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌕 Full Moon",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 33,
+      "Date": "2025-12-07",
+      "Explainer": {
+        "title": "Dreams",
+        "artist": "",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=5oWyMakvQew",
+            "id": "5oWyMakvQew"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Espresso",
+        "artist": "Sabrina Carpenter",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=eVli-tstM5E",
+            "id": "eVli-tstM5E"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Espresso",
+        "artist": "Sabrina Carpenter",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=eVli-tstM5E",
+            "id": "eVli-tstM5E"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 34,
+      "Date": "2025-12-08",
+      "Explainer": {
+        "title": "Edge of Seventeen",
+        "artist": "Stevie Nicks",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=UmPgMc3R8zg",
+            "id": "UmPgMc3R8zg"
+          },
+          "AppleMusic": {
+            "id": "219393906",
+            "isrc": "USAT28300037",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Since I Left You",
+        "artist": "The Avalanches",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=wpqm-05R2Jk",
+            "id": "wpqm-05R2Jk"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "After Midnight",
+        "artist": "Chappell Roan",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=tV8Kp2Kj2MQ",
+            "id": "tV8Kp2Kj2MQ"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 35,
+      "Date": "2025-12-09",
+      "Explainer": {
+        "title": "Born This Way",
+        "artist": "Lady Gaga",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=wV1FrqwZyKw",
+            "id": "wV1FrqwZyKw"
+          },
+          "AppleMusic": {
+            "id": "1440857424",
+            "isrc": "USUM71100638",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Solidarity Forever",
+        "artist": "Pete Seeger",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=R8eK9ZXf-Ow",
+            "id": "R8eK9ZXf-Ow"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Pink Pony Club",
+        "artist": "Chappell Roan",
+        "anchor": "Hot To Go",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=Q3iC8c7L1NQ",
+            "id": "Q3iC8c7L1NQ"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Hot To Go"
+    },
+    {
+      "Day": 36,
+      "Date": "2025-12-10",
+      "Explainer": {
+        "title": "Fix You",
+        "artist": "Coldplay",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=k4V3Mo61fJM",
+            "id": "k4V3Mo61fJM"
+          },
+          "AppleMusic": {
+            "id": "1123076826",
+            "isrc": "GBAYE1600179",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Spookie Coochie",
+        "artist": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=dN0c88XN7eU",
+            "id": "dN0c88XN7eU"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "What It Is (Solo Version)",
+        "artist": "Doechii",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=QF8zGdlqgBs",
+            "id": "QF8zGdlqgBs"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌖 Waning Gibbous",
+      "Figure": "Doechii"
+    },
+    {
+      "Day": 37,
+      "Date": "2025-12-11",
+      "Explainer": {
+        "title": "Alright",
+        "artist": "Kendrick Lamar",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=Z-48u_uWMHY",
+            "id": "Z-48u_uWMHY"
+          },
+          "AppleMusic": {
+            "id": "1440829463",
+            "isrc": "USUM71502498",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Self Care",
+        "artist": "Mac Miller",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=SsKT0s5J8ko",
+            "id": "SsKT0s5J8ko"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Persuasive",
+        "artist": "Doechii & SZA",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=7-1g8L4CLOA",
+            "id": "7-1g8L4CLOA"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
+    },
+    {
+      "Day": 38,
+      "Date": "2025-12-12",
+      "Explainer": {
+        "title": "thank u, next",
+        "artist": "Ariana Grande",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=gl1aHhXnN1k",
+            "id": "gl1aHhXnN1k"
+          },
+          "AppleMusic": {
+            "id": "1450330686",
+            "isrc": "USUM71819361",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "One More Time",
+        "artist": "Daft Punk",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=FGBhQbmPwH8",
+            "id": "FGBhQbmPwH8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "One More Time",
+        "artist": "Daft Punk",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=FGBhQbmPwH8",
+            "id": "FGBhQbmPwH8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
+    },
+    {
+      "Day": 39,
+      "Date": "2025-12-13",
+      "Explainer": {
+        "title": "Back To Black",
+        "artist": "Amy Winehouse",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=TJAfLE39ZZ8",
+            "id": "TJAfLE39ZZ8"
+          },
+          "AppleMusic": {
+            "id": "1422677785",
+            "isrc": "GBUM70604698",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Take Me to Church",
+        "artist": "Hozier",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=PVjiKRfKpPI",
+            "id": "PVjiKRfKpPI"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Crazy",
+        "artist": "Doechii",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=x3J4f5m-0o8",
+            "id": "x3J4f5m-0o8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
+    },
+    {
+      "Day": 40,
+      "Date": "2025-12-14",
+      "Explainer": {
+        "title": "XO",
+        "artist": "Beyoncé",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=3xUfCUFPL-8",
+            "id": "3xUfCUFPL-8"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Without Me",
+        "artist": "Eminem",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY",
+            "id": "YVkUvmDQ3HY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Yucky Blucky Fruitcake",
+        "artist": "Doechii",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=QfKQGnk7SIE",
+            "id": "QfKQGnk7SIE"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌗 Last Quarter",
+      "Figure": "Doechii"
+    },
+    {
+      "Day": 41,
+      "Date": "2025-12-15",
+      "Explainer": {
+        "title": "Nights",
+        "artist": "Frank Ocean",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=r4l9bFqgMaQ",
+            "id": "r4l9bFqgMaQ"
+          },
+          "AppleMusic": {
+            "id": "1146195720",
+            "isrc": "QZ5C81600009",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Over the Rainbow",
+        "artist": "Eva Cassidy",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=2rd8VktT8xY",
+            "id": "2rd8VktT8xY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Somewhere Over the Rainbow",
+        "artist": "Eva Cassidy",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=2rd8VktT8xY",
+            "id": "2rd8VktT8xY"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Doechii"
+    },
+    {
+      "Day": 42,
+      "Date": "2025-12-16",
+      "Explainer": {
+        "title": "Closing Time",
+        "artist": "Semisonic",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=xGytDsqkQY8",
+            "id": "xGytDsqkQY8"
+          },
+          "AppleMusic": {
+            "id": "1443912092",
+            "isrc": "USMC19800013",
+            "status": "exists"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorPublic": {
+        "title": "Brain Damage / Eclipse",
+        "artist": "Pink Floyd",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=1Z39KZAryzk",
+            "id": "1Z39KZAryzk"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "AnchorBuilt": {
+        "title": "Brain Damage / Eclipse",
+        "artist": "Pink Floyd",
+        "anchor": "Doechii",
+        "Platforms": {
+          "YouTube": {
+            "url": "https://www.youtube.com/watch?v=1Z39KZAryzk",
+            "id": "1Z39KZAryzk"
+          },
+          "AppleMusic": {
+            "id": null,
+            "status": "coming_soon"
+          },
+          "Spotify": {
+            "id": null,
+            "status": "coming_soon"
+          }
+        }
+      },
+      "MoonPhase": "🌘 Waning Crescent",
+      "Figure": "Doechii"
+    }
+  ],
+  "schema_version": "1.1-clean",
+  "cleaned_at": "2025-09-24T18:04:39Z"
 }
