@@ -1,410 +1,710 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Beacon — τ Handshake & Test Bench</title>
-  <meta name="theme-color" content="#0B0F19">
-  <meta name="description" content="Prime-length preambles (31/47), control header bits, and descriptor payload builder for Illumina rendezvous.">
-  <style>
-    :root{
-      --bg:#0B0F19; --ink:#E6EAF2; --muted:#94A3B8; --line:rgba(255,255,255,.12);
-      --card:#0F1524; --accent:#A4E8FF; --ok:#34D399; --warn:#FBBF24; --err:#F87171;
-      --amber:#F59E0B; --honey:#F7C948; --r:14px; --pad:16px; --maxw:1100px;
-    }
-    /* Honey / Neon / Jupiter themes to match Tunes */
-    body.theme-honey{ --bg:#0C0A09; --ink:#F8FAFC; --muted:#D6D3D1; --line:rgba(245,158,11,.18); --accent:#F5D142; }
-    body.theme-neon{  --bg:#080A12; --ink:#EAF2FF; --muted:#9CA3AF; --line:rgba(58,199,255,.25); --accent:#39FF14; }
-    body.theme-jupiter{ --bg:#0B0F19; --ink:#EAECEF; --muted:#AAB2C0; --line:rgba(236,120,56,.22); --accent:#EC7838; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beacon · τ/31–47 Workbench</title>
+<meta name="theme-color" content="#0B0F19">
+<meta name="description" content="Prime-length preambles (31/47), 12-bit control header → Golay(24,12,8), descriptor → RS(31,19) over GF(32), CRC-16, deep-link + low-SNR audio plant.">
+<style>
+  :root{
+    --bg:#0B0F19;--ink:#E6EAF2;--muted:#94A3B8;--line:rgba(255,255,255,.12);
+    --card:#0F1524;--hi:#A4E8FF;--gold:#F7C948;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
+    --shadow:0 16px 40px rgba(0,0,0,.35);
+  }
+  /* Honey theme (warm) */
+  body.theme-honey{ --bg:#0C0A09; --ink:#F8FAFC; --muted:#D6D3D1; --line:rgba(245,158,11,.18); --card:#14110F; --hi:#FFD166; --gold:#F6C75C; }
+  /* Neon theme (club) */
+  body.theme-neon{ --bg:#080A12; --ink:#EAF2FF; --muted:#AEB6C7; --line:rgba(58,199,255,.25); --card:#0C1220; --hi:#3AC7FF; --gold:#39FF14; }
+  /* Jupiter theme (astral) */
+  body.theme-jupiter{ --bg:#0B0F19; --ink:#EAECEF; --muted:#AAB2C0; --line:rgba(236,120,56,.22); --card:#10182A; --hi:#EC7838; --gold:#EC7838; }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--ink);
-      font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Inter,Roboto,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+  a{color:#BBD7FF;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg) 70%,rgba(11,15,25,.88));border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .head{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 16px}
+  h1{margin:0;font-size:22px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%), var(--card);color:var(--ink);font-weight:650;cursor:pointer}
+  .btn:hover{border-color:rgba(164,232,255,.35);box-shadow:var(--shadow);transform:translateY(-1px)}
+  .btn.primary{border-color:rgba(247,201,72,.35);background:linear-gradient(180deg, rgba(247,201,72,.18), rgba(247,201,72,.08))}
+  .select, input[type="number"], input[type="text"], input[type="range"]{
+    appearance:none;background:var(--card);color:var(--ink);border:1px solid var(--line);
+    border-radius:10px;padding:8px 12px;font-size:14px;outline:none
+  }
+  .grid{display:grid;gap:14px;margin:14px 0;grid-template-columns:1fr 1fr}
+  @media (max-width:1000px){ .grid{grid-template-columns:1fr} }
+  .card{background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%), var(--card);
+        border:1px solid var(--line);border-radius:16px;padding:14px;position:relative;overflow:hidden}
+  .card h2{margin:0 0 6px;font-size:18px}
+  .muted{color:var(--muted)}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#CFE2FF}
+  .out{user-select:all;word-break:break-all}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .k{font:12px/1 ui-monospace,Menlo,Consolas,monospace;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
 
-    a{color:#BBD7FF;text-decoration:none}
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
-    header{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
-    h1{margin:0;font-size:clamp(22px,4.5vw,34px);letter-spacing:.2px}
-    .muted{color:var(--muted)}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);
-         border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%), var(--card);
-         color:var(--ink);font-weight:700;cursor:pointer}
-    .btn:hover{border-color:rgba(164,232,255,.35);box-shadow:0 12px 30px rgba(0,0,0,.3)}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
-    select,input[type="number"],input[type="text"]{background:var(--card);border:1px solid var(--line);color:var(--ink);padding:8px 10px;border-radius:10px}
-    .grid{display:grid;gap:14px}
-    @media(min-width:900px){ .two{grid-template-columns:1fr 1fr} }
-    .card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%), var(--card);padding:14px}
-    .card h2{margin:2px 0 8px 0;font-size:18px}
-    .card h3{margin:10px 0 6px 0;font-size:15px;color:#CFE7FF}
-    .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#C9D2E3;word-break:break-all}
-    .kv{display:grid;grid-template-columns:160px 1fr;gap:8px;align-items:center}
-    .badge{font-size:12px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
-    .ok{color:var(--ok);border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.12)}
-    .warn{color:#FBBF24;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.12)}
-    .err{color:var(--err);border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.12)}
-    hr{border:none;border-top:1px solid var(--line);margin:14px 0}
-    .copy{margin-left:auto}
-    .small{font-size:12px;color:var(--muted)}
-    .hl{color:#BBD7FF}
-    .footer{margin-top:18px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
-    .stack{display:flex;flex-direction:column;gap:10px}
-    .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;background:rgba(255,255,255,.02)}
-  </style>
+  .stat{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .badge{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .badge.hi{border-color:rgba(164,232,255,.35);color:#C8F1FF;background:rgba(164,232,255,.08)}
+  .badge.good{border-color:rgba(52,211,153,.35);color:#9ff1c9;background:rgba(52,211,153,.12)}
+  .badge.warn{border-color:rgba(251,191,36,.35);color:#ffde89;background:rgba(251,191,36,.12)}
+
+  .footer{margin:18px 0;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .hr{border:none;border-top:1px solid var(--line);margin:12px 0}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>Beacon — τ Handshake & Test Bench</h1>
-        <div class="muted">Prime preambles (31/47) · Golay header (24,12,8) · RS(31,19) descriptor · Day 31 ↔ Day 5 bridge</div>
-      </div>
-      <div class="row">
-        <a class="btn" href="https://tunes.plnt.earth" target="_blank" rel="noopener">🎶 Back to Tunes</a>
-        <a class="btn" href="https://jar.plnt.earth/day/" target="_blank" rel="noopener">🍯 Jar Day</a>
-        <a class="btn" href="https://illumina.plnt.earth/%CF%84" target="_blank" rel="noopener">τ Spec</a>
+<header>
+  <div class="head wrap">
+    <div>
+      <h1>Beacon · τ/31–47 Workbench</h1>
+      <div class="sub">Prime preambles · Golay(24,12,8) header · RS(31,19) descriptor · CRC‑16 · deep‑link · low‑SNR audio plant</div>
+      <div class="row" style="margin-top:6px">
         <label class="pill">Theme
-          <select id="themeSel">
+          <select id="themeSel" class="select">
             <option value="">Default</option>
             <option value="honey">Honey</option>
             <option value="neon">Neon</option>
             <option value="jupiter">Jupiter</option>
           </select>
         </label>
+        <a class="btn" href="https://tunes.plnt.earth" target="_blank" rel="noopener">🎶 Back to Tunes</a>
+        <a class="btn" href="https://jar.plnt.earth/day/" target="_blank" rel="noopener">🍯 Jar Day</a>
+        <a class="btn" href="https://jar.plnt.earth/map/" target="_blank" rel="noopener">✨ Constellation</a>
+        <button id="shareBtn" class="btn">🔗 Copy Share Link</button>
       </div>
-    </header>
-
-    <section class="card">
-      <h2>1) Convergent Rendezvous (quick view)</h2>
-      <div class="chips">
-        <span class="chip">Prime preambles: <b class="hl">31</b>, <b class="hl">47</b></span>
-        <span class="chip">Low sidelobes (m‑seq, Legendre)</span>
-        <span class="chip">Control: Golay <b class="hl">(24,12,8)</b></span>
-        <span class="chip">Payload: RS <b class="hl">(31,19)</b> over GF(32)</span>
-        <span class="chip">Dimensionless anchors: α, μ = mₚ/mₑ, Q, α<sub>G</sub></span>
-        <span class="chip">31 → 47 = Day 31 ↔ next cycle Day 5</span>
-      </div>
-    </section>
-
-    <section class="grid two">
-      <div class="card">
-        <h2>2) Preamble Builder (31 / 47)</h2>
-        <div class="kv"><div>Length</div>
-          <div>
-            <label><input type="radio" name="plen" value="31" checked> 31 (in‑cycle)</label>
-            &nbsp;&nbsp;
-            <label><input type="radio" name="plen" value="47"> 47 (cross‑cycle)</label>
-          </div>
-        </div>
-        <div class="kv"><div>Sequence</div>
-          <div>
-            <select id="ptype">
-              <option value="auto">Auto (good default)</option>
-              <option value="mseq">m‑sequence (LFSR)</option>
-              <option value="legendre">Legendre (+/− residues)</option>
-            </select>
-          </div>
-        </div>
-        <div class="kv"><div>Symbols</div>
-          <div>
-            <label><input type="radio" name="sym" value="01" checked> 0/1</label>
-            &nbsp;&nbsp;
-            <label><input type="radio" name="sym" value="pm"> ±1</label>
-          </div>
-        </div>
-        <div class="row" style="margin-top:8px">
-          <button id="genPre" class="btn">Generate</button>
-          <span id="preStats" class="pill">—</span>
-          <button id="copyPre" class="btn copy">Copy bits</button>
-        </div>
-        <hr>
-        <div class="mono" id="preOut">—</div>
-        <div class="small">31 uses 5‑bit LFSR (poly x⁵ + x² + 1). 47 uses Legendre sequence over ℤ₄₇ (n=0..46), with s(0)=0, residues → 1, non‑residues → 0 (or ±1).</div>
-      </div>
-
-      <div class="card">
-        <h2>3) Control Header (12 bits → Golay 24)</h2>
-        <div class="kv"><div>Version (v)</div><div><input id="v" type="number" min="0" max="7" value="1"> <span class="small">3 bits</span></div></div>
-        <div class="kv"><div>Topology echo</div><div><select id="topo"><option value="0">0 (off)</option><option value="1">1 (on)</option></select> <span class="small">1 bit</span></div></div>
-        <div class="kv"><div>Template ID</div><div><input id="mc" type="number" min="0" max="63" value="0"> <span class="small">6 bits</span></div></div>
-        <div class="kv"><div>Lane</div>
-          <div>
-            <select id="lane">
-              <option value="0">0 · Explainer</option>
-              <option value="1">1 · AnchorPublic</option>
-              <option value="2">2 · AnchorBuilt</option>
-            </select>
-            <span class="small">2 bits</span>
-          </div>
-        </div>
-        <div class="row" style="margin-top:8px">
-          <button id="pack12" class="btn">Pack 12‑bit</button>
-          <span id="hstat" class="pill">—</span>
-          <button id="copy12" class="btn copy">Copy 12‑bit</button>
-        </div>
-        <hr>
-        <div class="mono" id="hbits">—</div>
-        <div class="small">Encoding with Golay(24,12,8) happens after packing. (This page outputs the 12 data bits; you can feed them to a Golay encoder.)</div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>4) Descriptor Payload (→ RS(31,19) data)</h2>
-      <div class="kv"><div>Day</div><div><input id="day" type="number" min="1" max="42" value="31"> <span class="small">6 bits</span></div></div>
-      <div class="kv"><div>Cross‑cycle offset</div><div><input id="xo" type="number" min="-21" max="21" value="16"> <span class="small">6 bits (e.g., +16 for 31→47)</span></div></div>
-      <div class="kv"><div>Anchor A ID</div><div><input id="a1" type="number" min="0" max="127" value="5"> <span class="small">7 bits</span></div></div>
-      <div class="kv"><div>Anchor B ID</div><div><input id="a2" type="number" min="0" max="127" value="17"> <span class="small">7 bits</span></div></div>
-      <div class="kv"><div>Seed token</div><div><input id="seedTok" type="number" min="0" max="255" value="42"> <span class="small">8 bits</span></div></div>
-      <div class="kv"><div>Spare</div><div><input id="spare" type="number" min="0" max="255" value="0"> <span class="small">8 bits (free)</span></div></div>
-      <div class="row"><span class="pill">CRC‑16 (CCITT) computed over the above fields</span></div>
-      <div class="row" style="margin-top:8px">
-        <button id="buildDesc" class="btn">Build payload bits</button>
-        <span id="dstat" class="pill">—</span>
-        <button id="copyDesc" class="btn copy">Copy (bits + CRC)</button>
-      </div>
-      <hr>
-      <div class="mono" id="dbits">—</div>
-      <div class="small">The result is a ~95‑bit data block + 16‑bit CRC. Feed into RS(31,19) as 19 five‑bit symbols (pad as needed). RS parity (12 symbols) is added by the encoder.</div>
-    </section>
-
-    <section class="grid two">
-      <div class="card">
-        <h2>5) Assemble (pre‑ECC)</h2>
-        <p class="small">Concatenate: <b>Preamble</b> • <b>Golay‑coded Header (24 bits)</b> • <b>RS(31,19) codeword (31×5‑bit symbols)</b>. Below is a convenience glue of <i>preamble + raw header + raw payload</i> so you can inspect bit budgets before encoding.</p>
-        <div class="row">
-          <button id="assemble" class="btn">Assemble</button>
-          <span id="astat" class="pill">—</span>
-          <button id="copyAsm" class="btn copy">Copy pre‑ECC</button>
-        </div>
-        <hr>
-        <div class="mono" id="asmOut">—</div>
-      </div>
-
-      <div class="card">
-        <h2>6) Where to test it</h2>
-        <p class="muted">Use these surfaces to plant & detect your 31/47 handshakes under real playback:</p>
-        <ul class="small">
-          <li>Tunes player (fixed header, auto‑next): <a href="https://tunes.plnt.earth" target="_blank" rel="noopener">tunes.plnt.earth</a></li>
-          <li>Jar Day (sticky player, per‑day tasks): <a href="https://jar.plnt.earth/day/" target="_blank" rel="noopener">jar.plnt.earth/day</a></li>
-          <li>Constellation Map (context & links): <a href="https://jar.plnt.earth/map/" target="_blank" rel="noopener">jar.plnt.earth/map</a></li>
-        </ul>
-        <div class="chips">
-          <span class="chip">Tip: loop Day 31 in Jar</span>
-          <span class="chip">Tip: use 47 preamble to flag Day 5 bridge</span>
-          <span class="chip">Tip: keep plant < 5σ for detectability tests</span>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">
-      <div>© <span id="yy"></span> PLNT.earth — Beacon</div>
-      <div><span class="small">This page outputs raw bits; ECC encoding happens downstream.</span></div>
+    </div>
+    <div class="row" style="justify-content:flex-end">
+      <span class="pill">31 ↔ 47 bridge ready</span>
     </div>
   </div>
+</header>
 
-  <script>
-    // Year
-    document.getElementById('yy').textContent = new Date().getFullYear();
+<div class="wrap">
 
-    // Theme (persist like Tunes)
-    (function(){
-      try{
-        var sel = document.getElementById('themeSel');
-        var saved = localStorage.getItem('beacon.theme') || '';
-        if(saved){ document.body.classList.add('theme-'+saved); sel.value = saved; }
-        sel.addEventListener('change', function(){
-          document.body.classList.remove('theme-honey','theme-neon','theme-jupiter');
-          if(this.value) document.body.classList.add('theme-'+this.value);
-          localStorage.setItem('beacon.theme', this.value||'');
-        });
-      }catch(e){}
-    })();
+  <!-- PREAMBLE -->
+  <section class="card">
+    <h2>1) Preamble · prime length</h2>
+    <div class="row">
+      <label class="pill">Length
+        <select id="plen" class="select">
+          <option value="31">31 (in‑cycle)</option>
+          <option value="47">47 (cross‑cycle)</option>
+        </select>
+      </label>
+      <label class="pill">Sequence
+        <select id="ptype" class="select">
+          <option value="auto">Auto (m‑seq for 31, Legendre for 47)</option>
+          <option value="mseq31">m‑sequence (x⁵+x²+1)</option>
+          <option value="legendre">Legendre (quadratic residues)</option>
+        </select>
+      </label>
+      <label class="pill">Symbols
+        <select id="psym" class="select">
+          <option value="01">0/1</option>
+          <option value="pm">±1</option>
+        </select>
+      </label>
+      <button id="regenP" class="btn">Rebuild</button>
+      <button id="copyP" class="btn">Copy bits</button>
+    </div>
+    <div class="stat">
+      <span id="pStat" class="badge hi">—</span>
+      <span id="pAuto" class="badge">Auto: 31→mseq, 47→Legendre</span>
+      <span id="pCorr" class="badge">Corr: —</span>
+    </div>
+    <div id="pBits" class="mono out" style="margin-top:8px">—</div>
+    <div class="hint">Autocorrelation shown as max sidelobe (periodic). ±1 symbols recommended for BPSK audio plants.</div>
+  </section>
 
-    // Helpers
-    function bitstrToArray(s){ return (s||'').trim().split('').map(function(c){return c==='1'?1:0;}); }
-    function toBits(val, width){
-      var n = Math.max(0, width|0), v = Math.max(0, val|0);
-      var out = Array(n).fill(0);
-      for(var i=0;i<n;i++){ var b = (v>>>(n-1-i)) & 1; out[i]=b; }
+  <!-- CONTROL HEADER + GOLAY -->
+  <section class="card">
+    <h2>2) Control Header → Golay(24,12,8)</h2>
+    <div class="three">
+      <label>Version (v, 3 bits) <input id="v" type="number" min="0" max="7" value="1" class="select"></label>
+      <label>Topology echo (1 bit) <input id="topo" type="number" min="0" max="1" value="0" class="select"></label>
+      <label>Template ID (6 bits) <input id="tid" type="number" min="0" max="63" value="0" class="select"></label>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label class="pill">Lane (2 bits)
+        <select id="lane" class="select">
+          <option value="0">Explainer (00)</option>
+          <option value="1">AnchorPublic (01)</option>
+          <option value="2">AnchorBuilt (10)</option>
+          <option value="3">Spare (11)</option>
+        </select>
+      </label>
+      <button id="encodeGolay" class="btn primary">Encode Golay(24,12)</button>
+      <button id="copyH12" class="btn">Copy 12 data bits</button>
+      <button id="copyG24" class="btn">Copy 24 code bits</button>
+    </div>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <div class="muted">Raw 12‑bit header (v|topo|tid|lane)</div>
+        <div id="h12" class="mono out">—</div>
+      </div>
+      <div>
+        <div class="muted">Golay(24,12,8) codeword (23b Golay + even parity)</div>
+        <div id="g24" class="mono out">—</div>
+      </div>
+    </div>
+    <div class="hint">We implement the standard <span class="k">(23,12,7)</span> Golay by polynomial division, then append a single even parity bit to form <span class="k">(24,12,8)</span>.</div>
+  </section>
+
+  <!-- DESCRIPTOR + CRC + RS -->
+  <section class="card">
+    <h2>3) Descriptor → CRC‑16 → RS(31,19) over GF(32)</h2>
+    <div class="three">
+      <label>Day (0–63, 6b) <input id="dDay" type="number" min="0" max="63" value="31" class="select"></label>
+      <label>Cross‑cycle Δ (−32..31, 6b 2’s comp) <input id="dOff" type="number" min="-32" max="31" value="5" class="select"></label>
+      <label>Seed token (0–4095, 12b) <input id="dSeed" type="number" min="0" max="4095" value="777" class="select"></label>
+    </div>
+    <div class="three" style="margin-top:8px">
+      <label>Anchor A (0–63, 6b) <input id="dA1" type="number" min="0" max="63" value="7" class="select"></label>
+      <label>Anchor B (0–63, 6b) <input id="dA2" type="number" min="0" max="63" value="12" class="select"></label>
+      <label>Flags (0–15, 4b) <input id="dFlags" type="number" min="0" max="15" value="1" class="select"></label>
+    </div>
+    <div class="three" style="margin-top:8px">
+      <label>Tuple (α, me/mp, Q, Gℏ/c³) mask (8b) <input id="dTuple" type="number" min="0" max="255" value="9" class="select"></label>
+      <label>Reserved (4b) <input id="dRsv" type="number" min="0" max="15" value="0" class="select"></label>
+      <div class="row"><button id="packDesc" class="btn">Pack + CRC‑16</button></div>
+    </div>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <div class="muted">Descriptor bits (pre‑CRC)</div>
+        <div id="descBits" class="mono out">—</div>
+      </div>
+      <div>
+        <div class="muted">CRC‑16/CCITT (poly 0x1021), appended MSB→LSB</div>
+        <div id="crcBits" class="mono out">—</div>
+      </div>
+    </div>
+    <hr class="hr">
+    <div class="row">
+      <button id="encodeRS" class="btn primary">Encode RS(31,19)</button>
+      <button id="copyRS" class="btn">Copy RS codeword (31×5b)</button>
+    </div>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <div class="muted">Data symbols (5‑bit, padded to 19)</div>
+        <div id="symData" class="mono out">—</div>
+      </div>
+      <div>
+        <div class="muted">Parity symbols (12)</div>
+        <div id="symParity" class="mono out">—</div>
+      </div>
+    </div>
+    <div>
+      <div class="muted">Codeword (31 symbols) · hex</div>
+      <div id="symAllHex" class="mono out">—</div>
+    </div>
+    <div class="hint">GF(32) uses primitive polynomial <span class="k">x⁵+x²+1</span> and generator roots α¹…α¹². Data shorter than 19 symbols is zero‑padded.</div>
+  </section>
+
+  <!-- ASSEMBLY VIEW -->
+  <section class="card">
+    <h2>4) Assembly (pre‑/post‑ECC)</h2>
+    <div class="row">
+      <button id="assemblePre" class="btn">Assemble pre‑ECC (preamble + 12b header + desc+CRC bits)</button>
+      <button id="assemblePost" class="btn">Assemble with ECC (Golay24 + RS parity)</button>
+      <button id="copyAsm" class="btn">Copy assembled bits</button>
+    </div>
+    <div id="asmOut" class="mono out" style="margin-top:8px">—</div>
+    <div class="hint">Use pre‑ECC bits when testing symbolization; use post‑ECC when planting full frames in controlled channels.</div>
+  </section>
+
+  <!-- AUDIO PLANT -->
+  <section class="card">
+    <h2>5) Audio Plant (low‑SNR BPSK) · experimental</h2>
+    <div class="three">
+      <label>Chip rate (chips/s) <input id="chipRate" type="number" min="50" max="4000" value="480" class="select"></label>
+      <label>Repeat preamble <input id="pRepeat" type="number" min="1" max="8" value="2" class="select"></label>
+      <label>Payload tail (silence ms) <input id="tailMs" type="number" min="0" max="5000" value="250" class="select"></label>
+    </div>
+    <div class="three" style="margin-top:8px">
+      <label>Noise σ (16‑bit units) <input id="sigma" type="number" min="1" max="6000" value="1200" class="select"></label>
+      <label>BPSK amplitude (|A|) <input id="amp" type="number" min="1" max="30000" value="3000" class="select"></label>
+      <label>Sample rate (Hz) <input id="sr" type="number" min="8000" max="48000" value="48000" class="select"></label>
+    </div>
+    <div class="controls">
+      <button id="makeWav" class="btn primary">Render WAV</button>
+      <a id="dlWav" class="btn" href="#" download="beacon-plant.wav">Download</a>
+      <audio id="aud" controls style="width:100%"></audio>
+    </div>
+    <div class="hint">We BPSK‑map ±1 symbols to {−A,+A}, embed under white noise σ, and export 16‑bit PCM WAV. Defaults plant at &lt;5σ.</div>
+  </section>
+
+  <div class="footer">
+    <div>© <span id="yy"></span> PLNT.earth — Beacon</div>
+    <div class="muted">Roadmap: on‑page decoders, spectrum view, CSV/JSON export.</div>
+  </div>
+</div>
+
+<script>
+  // ===== Theme
+  (function initTheme(){
+    const sel = document.getElementById('themeSel');
+    function apply(name){
+      document.body.classList.remove('theme-honey','theme-neon','theme-jupiter');
+      if(name==='honey') document.body.classList.add('theme-honey');
+      else if(name==='neon') document.body.classList.add('theme-neon');
+      else if(name==='jupiter') document.body.classList.add('theme-jupiter');
+      try{ localStorage.setItem('beacon.theme', name||''); }catch(e){}
+    }
+    try{ const saved = localStorage.getItem('beacon.theme')||''; sel.value=saved; apply(saved);}catch(e){}
+    sel.addEventListener('change', ()=>apply(sel.value));
+  })();
+
+  document.getElementById('yy').textContent = new Date().getFullYear();
+
+  // ===== Bit utils
+  const B = {
+    toBits(num, len){
+      const out = new Array(len);
+      for(let i=len-1;i>=0;i--){ out[len-1-i] = (num>>i)&1; }
       return out;
-    }
-    function bitsToHex(bits){
-      var s = bits.join('');
-      var pad = (4 - (s.length % 4)) % 4;
-      s = (pad? '0'.repeat(pad):'') + s;
-      var out = [];
-      for(var i=0;i<s.length;i+=4){
-        out.push(parseInt(s.slice(i,i+4),2).toString(16).toUpperCase());
+    },
+    fromBits(bits){
+      let v=0; for(const b of bits){ v=(v<<1)|(b&1); } return v>>>0;
+    },
+    xor(a,b){ const out=[]; for(let i=0;i<Math.max(a.length,b.length);i++){ out[i]=(a[i]|0)^(b[i]|0); } return out; },
+    concat(a,b){ return (a||[]).concat(b||[]); },
+    padToMultiple(bits, m){ const r = bits.slice(); while(r.length % m) r.push(0); return r; },
+    group(bits, w){ const g=[]; for(let i=0;i<bits.length;i+=w){ g.push(bits.slice(i,i+w)); } return g; },
+    toHexSymbols(symbols){ return symbols.map(s=>s.toString(16).toUpperCase().padStart(2,'0')).join(' '); },
+    parity(x){ // parity of integer
+      x ^= x>>>16; x ^= x>>>8; x ^= x>>>4; x &= 0xF; return (0x6996>>>x)&1;
+    },
+    copy(id){
+      const el=document.getElementById(id);
+      if(!el) return;
+      const txt=el.textContent;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt); 
       }
-      return out.join('');
     }
-    function bitsToString(bits, mode){
-      if(mode==='pm'){ return bits.map(function(b){ return b?'+1':'-1'; }).join(' '); }
-      return bits.join('');
-    }
-    function copyText(text){
-      try{ navigator.clipboard.writeText(text); }catch(e){}
-    }
+  };
 
-    // 2) Preamble Builder
-    function lfsr_mseq_31(){
-      // Maximal length LFSR for 5-bit: polynomial x^5 + x^2 + 1 (taps at 5 and 2)
-      var state = 0b11111; // nonzero seed
-      var seq = [];
-      for(var i=0;i<31;i++){
-        var out = state & 1; // take LSB
-        seq.push(out);
-        var fb = ((state>>0) ^ (state>>3)) & 1; // taps at bit0 and bit3 (1 and 4) because of LSB orientation
-        state = (state>>>1) | (fb<<4);
+  function bitsStr(bits){ return bits.map(b=>b?1:0).join(''); }
+  function show(id, val){ document.getElementById(id).textContent = val; }
+
+  // ===== 1) Preamble builders
+  function lfsr31(){
+    // 5-bit LFSR, polynomial x^5 + x^2 + 1, maximal length 31
+    let state = 0b11111; // non-zero seed
+    const out=[];
+    for(let i=0;i<31;i++){
+      const bit = state & 1;
+      out.push(bit);
+      // taps: bit0 ^ bit3 -> new bit at msb
+      const fb = ((state & 1) ^ ((state>>3)&1)) & 1; // taps at x^0 and x^3 (since x^5 + x^2 + 1 with right-shift LFSR)
+      state = (state>>>1) | (fb<<4);
+    }
+    return out;
+  }
+  function legendre(p){
+    const res = new Array(p).fill(0);
+    const seen = new Set();
+    for(let k=1;k<=Math.floor((p-1)/2);k++){
+      const r = (k*k)%p;
+      seen.add(r);
+    }
+    for(let n=0;n<p;n++){
+      res[n] = seen.has(n) ? 1 : 0;
+    }
+    // Common convention sets n=0 to 1; keep as-is, user can rotate if desired.
+    return res;
+  }
+  function autocorrMaxSidelobe(pm){ // periodic
+    const n=pm.length;
+    let maxSL=0;
+    for(let tau=1;tau<n;tau++){
+      let c=0;
+      for(let i=0;i<n;i++){
+        const j=(i+tau)%n;
+        c += pm[i]*pm[j];
       }
-      // LFSR above emits LSB-first; rotate to common MSB-first if desired — here we keep as generated.
-      return seq;
+      maxSL = Math.max(maxSL, Math.abs(c));
     }
-    function legendre_mod_p(p){
-      // Produce sequence s[0..p-1]: s0=0, residues=1, nonresidues=0
-      var residues = new Set();
-      for(var x=1;x<p;x++){ residues.add((x*x)%p); }
-      var seq = [];
-      for(var n=0;n<p;n++){
-        if(n===0){ seq.push(0); continue; }
-        seq.push(residues.has(n)?1:0);
+    return maxSL;
+  }
+  function preambleBuild(){
+    const plen = +document.getElementById('plen').value;
+    const ptype = document.getElementById('ptype').value;
+    const sym = document.getElementById('psym').value;
+    let bits;
+    if(ptype==='mseq31' || (ptype==='auto' && plen===31)){
+      bits = lfsr31();
+    }else{ // Legendre default for 47
+      bits = legendre(plen);
+    }
+    if(bits.length!==plen){
+      // simple truncate/extend for odd combos
+      const out = [];
+      for(let i=0;i<plen;i++){ out.push(bits[i % bits.length]); }
+      bits = out;
+    }
+    // mapping
+    let pm = bits.map(b => b? +1 : -1);
+    const maxSL = autocorrMaxSidelobe(pm);
+    document.getElementById('pCorr').textContent = 'Corr: max sidelobe '+maxSL.toFixed(0)+' (±1 periodic)';
+    const outStr = (sym==='01') ? bitsStr(bits) : pm.join(' ');
+    document.getElementById('pBits').textContent = outStr;
+    document.getElementById('pStat').textContent = 'Preamble length '+plen+' · '+(ptype==='auto' ? (plen===31?'m‑seq':'Legendre') : (ptype==='mseq31'?'m‑seq':'Legendre'));
+    updateLink();
+    return {bits, pm};
+  }
+  document.getElementById('regenP').addEventListener('click', preambleBuild);
+  document.getElementById('copyP').addEventListener('click', ()=>B.copy('pBits'));
+
+  // ===== 2) Golay(24,12,8) encoder via (23,12,7)+parity
+  // Generator polynomial for Golay (23,12,7): g(x) = x^11 + x^9 + x^7 + x^6 + x^5 + x + 1
+  const GOLAY23_POLY = (1<<11)|(1<<9)|(1<<7)|(1<<6)|(1<<5)|(1<<1)|(1<<0); // 0b1_0101_1110_0011 ?;
+
+  function golay23_encode_12(u12){
+    // Create 23-bit code by appending remainder of (u(x) * x^11) / g(x)
+    let msg = u12 << 11;
+    let reg = msg;
+    for(let i=(12+11-1); i>=11; i--){
+      if((reg>>>i) & 1){
+        reg ^= GOLAY23_POLY << (i-11);
       }
-      return seq;
     }
-    function genPreamble(){
-      var plen = +document.querySelector('input[name="plen"]:checked').value;
-      var ptype = document.getElementById('ptype').value;
-      var sym = document.querySelector('input[name="sym"]:checked').value;
-      var bits;
-      if(plen===31){
-        if(ptype==='legendre'){ bits = legendre_mod_p(31); }
-        else { bits = lfsr_mseq_31(); }
-      }else{ // 47
-        if(ptype==='mseq'){ bits = legendre_mod_p(47); } // no 47-length m-seq; fall back to Legendre
-        else { bits = legendre_mod_p(47); }
+    const parity11 = reg & ((1<<11)-1);
+    const n23 = msg | parity11;
+    return n23 >>> 0;
+  }
+  function golay24_encode(u12){
+    const n23 = golay23_encode_12(u12);
+    const p = B.parity(n23); // even parity -> append p so that total parity is even
+    const n24 = (n23<<1) | p;
+    // Present MSB→LSB string of 24 bits
+    const bits24 = B.toBits(n24,24);
+    return bits24;
+  }
+  function buildHeader12bits(){
+    const v = (+document.getElementById('v').value) & 0x7;
+    const topo = (+document.getElementById('topo').value) & 0x1;
+    const tid = (+document.getElementById('tid').value) & 0x3F;
+    const lane = (+document.getElementById('lane').value) & 0x3;
+    const bits = [].concat(B.toBits(v,3), B.toBits(topo,1), B.toBits(tid,6), B.toBits(lane,2));
+    return bits;
+  }
+  function renderHeader(){
+    const bits12 = buildHeader12bits();
+    show('h12', bitsStr(bits12));
+  }
+  document.getElementById('v').addEventListener('input', renderHeader);
+  document.getElementById('topo').addEventListener('input', renderHeader);
+  document.getElementById('tid').addEventListener('input', renderHeader);
+  document.getElementById('lane').addEventListener('change', renderHeader);
+  document.getElementById('copyH12').addEventListener('click', ()=>B.copy('h12'));
+  document.getElementById('encodeGolay').addEventListener('click', ()=>{
+    const bits12 = buildHeader12bits();
+    const u12 = B.fromBits(bits12);
+    const bits24 = golay24_encode(u12);
+    show('g24', bitsStr(bits24));
+    updateLink();
+  });
+  document.getElementById('copyG24').addEventListener('click', ()=>B.copy('g24'));
+
+  // ===== 3) Descriptor pack + CRC16/CCITT + RS(31,19)
+  function toTwosComplement(val, bits){
+    if(val<0){ return ((1<<bits)+val) & ((1<<bits)-1); }
+    return val & ((1<<bits)-1);
+  }
+  function packDescriptor(){
+    const day   = (+document.getElementById('dDay').value)|0;
+    const off   = toTwosComplement((+document.getElementById('dOff').value)|0, 6);
+    const seed  = (+document.getElementById('dSeed').value)|0;
+    const a1    = (+document.getElementById('dA1').value)|0;
+    const a2    = (+document.getElementById('dA2').value)|0;
+    const flags = (+document.getElementById('dFlags').value)&0xF;
+    const tuple = (+document.getElementById('dTuple').value)&0xFF;
+    const rsv   = (+document.getElementById('dRsv').value)&0xF;
+
+    let bits = [];
+    bits = bits.concat(B.toBits(day,6));
+    bits = bits.concat(B.toBits(off,6));
+    bits = bits.concat(B.toBits(a1,6));
+    bits = bits.concat(B.toBits(a2,6));
+    bits = bits.concat(B.toBits(seed,12));
+    bits = bits.concat(B.toBits(flags,4));
+    bits = bits.concat(B.toBits(tuple,8));
+    bits = bits.concat(B.toBits(rsv,4));
+    return bits;
+  }
+  // CRC16-CCITT (0x1021), init 0xFFFF, no reflect, bit-by-bit over MSB-first bits
+  function crc16_ccitt_bits(bits){
+    let crc = 0xFFFF;
+    for (let i=0;i<bits.length;i++){
+      const bit = bits[i]&1;             // MSB-first bits
+      const msb = (crc>>>15)&1;
+      const x = msb ^ bit;
+      crc = ((crc<<1)&0xFFFF);
+      if (x){ crc ^= 0x1021; }
+    }
+    return crc & 0xFFFF;
+  }
+  // GF(32) arithmetic with primitive poly x^5 + x^2 + 1 (0x25)
+  const GF = (function(){
+    const prim = 0x25;
+    const exp = new Uint8Array(62); // 2*31
+    const log = new Int16Array(32).fill(-1);
+    let x=1;
+    for(let i=0;i<31;i++){
+      exp[i]=x; log[x]=i;
+      x <<= 1;
+      if(x & 0x20) x ^= prim;
+      x &= 0x1F;
+    }
+    for(let i=31;i<62;i++) exp[i]=exp[i-31];
+    function mul(a,b){
+      if(a===0 || b===0) return 0;
+      return exp[(log[a]+log[b])%31];
+    }
+    function div(a,b){
+      if(a===0) return 0;
+      if(b===0) throw new Error('GF divide by zero');
+      let d = log[a]-log[b];
+      if(d<0) d+=31;
+      return exp[d];
+    }
+    function pow(a,k){
+      if(a===0) return 0;
+      let e = (log[a]*k)%31;
+      return exp[e];
+    }
+    return {exp,log,mul,div,pow};
+  })();
+  // Build RS generator g(x) = Π_{i=1..12} (x + α^i)
+  const RS = (function(){
+    const t2 = 12;
+    function genPoly(){
+      let g = new Uint8Array([1]); // degree 0
+      for(let i=1;i<=t2;i++){
+        const root = GF.exp[i]; // α^i
+        // g = conv(g, [1, root])
+        const ng = new Uint8Array(g.length+1);
+        for(let j=0;j<g.length;j++){
+          // x*g
+          ng[j] ^= 0; // implicit
+          ng[j+1] ^= g[j];
+        }
+        for(let j=0;j<g.length;j++){
+          const prod = GF.mul(g[j], root);
+          ng[j] ^= prod;
+        }
+        g = ng;
       }
-      // Stats
-      var ones = bits.reduce(function(a,b){return a+(b?1:0);},0);
-      var zeros = bits.length - ones;
-      var stats = 'len '+bits.length+' · 1s '+ones+' · 0s '+zeros;
-      document.getElementById('preStats').textContent = stats;
-      // Render
-      document.getElementById('preOut').textContent = bitsToString(bits, sym);
-      // Attach to button
-      document.getElementById('copyPre').onclick = function(){ copyText(document.getElementById('preOut').textContent); };
-      return bits;
+      return g; // length 13 (degree 12)
     }
-    document.getElementById('genPre').addEventListener('click', genPreamble);
-    var lastPre = genPreamble();
-
-    // 3) Control Header pack (12 bits: v3, topo1, mc6, lane2)
-    function packHeader12(){
-      var v = (+document.getElementById('v').value)|0;
-      var topo = (+document.getElementById('topo').value)|0;
-      var mc = (+document.getElementById('mc').value)|0;
-      var lane = (+document.getElementById('lane').value)|0;
-      // Bounds
-      v = Math.min(7, Math.max(0,v));
-      topo = topo?1:0;
-      mc = Math.min(63, Math.max(0,mc));
-      lane = Math.min(3, Math.max(0,lane));
-      // Layout: [v(3) | topo(1) | mc(6) | lane(2)]
-      var bits = []
-        .concat(toBits(v,3))
-        .concat(toBits(topo,1))
-        .concat(toBits(mc,6))
-        .concat(toBits(lane,2));
-      var hex = bitsToHex(bits);
-      document.getElementById('hbits').textContent = 'bits: '+bits.join('')+'  · hex: 0x'+hex;
-      document.getElementById('hstat').textContent = '12 bits ready';
-      document.getElementById('copy12').onclick = function(){ copyText(bits.join('')); };
-      return bits;
-    }
-    document.getElementById('pack12').addEventListener('click', packHeader12);
-    var lastHdr = packHeader12();
-
-    // CRC-16/CCITT (0x1021), init 0xFFFF, no reflection, no xorout
-    function crc16_ccitt_bits(bits){
-      var crc = 0xFFFF;
-      for(var i=0;i<bits.length;i++){
-        var bit = bits[i] & 1;
-        var c15 = ((crc >> 15) & 1);
-        crc = ((crc << 1) & 0xFFFF) | 0;
-        if (c15 ^ bit) { crc ^= 0x1021; }
+    const G = genPoly();
+    function encode(dataSyms){ // returns {parity:Uint8Array(12)}
+      const k=19, n=31, p=12;
+      const reg = new Uint8Array(p); // all zeros
+      for(let i=0;i<k;i++){
+        const d = dataSyms[i]||0;
+        const feedback = d ^ reg[0];
+        // shift + add feedback*G[j+1]
+        for(let j=0;j<p-1;j++){
+          reg[j] = reg[j+1] ^ GF.mul(feedback, G[j+1]);
+        }
+        reg[p-1] = GF.mul(feedback, G[p]);
       }
-      return crc & 0xFFFF;
+      return {parity: reg};
     }
+    return {G, encode};
+  })();
 
-    // 4) Build descriptor (~95 bits + CRC-16) — field pack
-    function buildDescriptor(){
-      var day = (+document.getElementById('day').value)|0;
-      var xo  = (+document.getElementById('xo').value)|0;
-      var a1  = (+document.getElementById('a1').value)|0;
-      var a2  = (+document.getElementById('a2').value)|0;
-      var seed= (+document.getElementById('seedTok').value)|0;
-      var spr = (+document.getElementById('spare').value)|0;
-      // Clamp
-      day=Math.min(42,Math.max(1,day));
-      xo = Math.min(21,Math.max(-21,xo));
-      // map xo signed to unsigned 6-bit (bias 32 or 31). Use bias 32 for [-32..31]; but our range is ±21, pick bias 32 to avoid negatives
-      var xo_u = xo & 0x3F; // two's complement 6-bit
-      a1 = Math.min(127,Math.max(0,a1));
-      a2 = Math.min(127,Math.max(0,a2));
-      seed = Math.min(255,Math.max(0,seed));
-      spr = Math.min(255,Math.max(0,spr));
+  function packAndCRC(){
+    const desc = packDescriptor();
+    show('descBits', bitsStr(desc));
+    const crc = crc16_ccitt_bits(desc);
+    const crcBits = B.toBits(crc,16);
+    show('crcBits', bitsStr(crcBits));
+    const full = B.concat(desc, crcBits);
+    return full;
+  }
+  function symbolsFromBits(bits, kSymbols){
+    const padded = B.padToMultiple(bits,5);
+    const groups = B.group(padded,5);
+    const data = groups.map(g => B.fromBits(g));
+    // pad to kSymbols with zeros
+    while(data.length < kSymbols) data.push(0);
+    return data.slice(0, kSymbols);
+  }
+  function encodeRS(){
+    const full = packAndCRC();
+    const data = symbolsFromBits(full, 19);
+    const {parity} = RS.encode(data);
+    show('symData', data.map(x=>x.toString(2).padStart(5,'0')).join(' '));
+    show('symParity', Array.from(parity).map(x=>x.toString(2).padStart(5,'0')).join(' '));
+    const code = data.concat(Array.from(parity));
+    show('symAllHex', code.map(x=>x.toString(16).toUpperCase().padStart(2,'0')).join(' '));
+    updateLink();
+    return {data, parity, code};
+  }
+  document.getElementById('packDesc').addEventListener('click', packAndCRC);
+  document.getElementById('encodeRS').addEventListener('click', encodeRS);
+  document.getElementById('copyRS').addEventListener('click', ()=>B.copy('symAllHex'));
 
-      var bits = []
-        .concat(toBits(day,6))
-        .concat(toBits(xo_u,6))
-        .concat(toBits(a1,7))
-        .concat(toBits(a2,7))
-        .concat(toBits(seed,8))
-        .concat(toBits(spr,8));
-      // At this point we have 42 bits. Add padding fields to approach ~95 data bits if needed.
-      // Provide a small placeholder "Flags" (8) and "Tuple index" (16) and "Reserved" (15) as example:
-      var flags = 0;       // 8
-      var tuple = 0;       // 16 (e.g., index into (α, μ, Q, α_G) symbol table)
-      var reserved = 0;    // 15
-      bits = bits
-        .concat(toBits(flags,8))
-        .concat(toBits(tuple,16))
-        .concat(toBits(reserved,15));
-      // Now bits length = 42 + 8 + 16 + 15 = 81
-      // Add CRC-16 over the 81 bits:
-      var crc = crc16_ccitt_bits(bits);
-      var crcBits = toBits(crc,16);
-      var all = bits.concat(crcBits);
-      document.getElementById('dbits').textContent = 'bits('+all.length+'): '+all.join('')+'  · CRC16=0x'+crc.toString(16).toUpperCase().padStart(4,'0');
-      document.getElementById('dstat').textContent = all.length+' bits ready';
-      document.getElementById('copyDesc').onclick = function(){ copyText(all.join('')); };
-      return all;
-    }
-    document.getElementById('buildDesc').addEventListener('click', buildDescriptor);
-    var lastDesc = buildDescriptor();
+  // ===== 4) Assembly
+  function assemble(pre){ // pre=true => pre‑ECC; else include Golay + RS parity
+    const {bits:preBits} = preambleBuild();
+    const h12 = buildHeader12bits();
+    const descCRC = packAndCRC();
 
-    // 5) Assemble (pre-ECC)
-    function assemble(){
-      var preText = document.getElementById('preOut').textContent.trim();
-      var mode = document.querySelector('input[name="sym"]:checked').value;
-      var preBits = [];
-      if(mode==='pm'){
-        preBits = preText.split(/\s+/).map(function(x){ return (x==='+1')?1:0; });
-      }else{
-        preBits = preText.split('').map(function(c){ return c==='1'?1:0; });
+    let seq = [].concat(preBits, h12, descCRC);
+
+    if(!pre){
+      const g24 = golay24_encode(B.fromBits(h12));
+      seq = [].concat(preBits, Array.from(g24), descCRC); // Golay replaces raw header in the stream
+      const rs = encodeRS(); // ensures UI panels update too
+      // Append RS parity (symbol level -> 5 bits each)
+      const parBits = [];
+      for(const s of rs.parity){
+        const b = B.toBits(s,5);
+        parBits.push(...b);
       }
-      var hdrBits = bitstrToArray((document.getElementById('hbits').textContent.match(/bits:\s*([01]+)/)||['',''])[1]);
-      var descBits = bitstrToArray((document.getElementById('dbits').textContent.match(/bits\(\d+\):\s*([01]+)/)||['',''])[1]);
-      var out = preBits.concat(hdrBits).concat(descBits);
-      document.getElementById('asmOut').textContent = 'bits('+out.length+'): '+out.join('');
-      document.getElementById('astat').textContent = out.length+' bits (pre‑ECC)';
-      document.getElementById('copyAsm').onclick = function(){ copyText(out.join('')); };
-      return out;
+      seq = seq.concat(parBits);
     }
-    document.getElementById('assemble').addEventListener('click', assemble);
-  </script>
+    show('asmOut', bitsStr(seq));
+    return seq;
+  }
+  document.getElementById('assemblePre').addEventListener('click', ()=>assemble(true));
+  document.getElementById('assemblePost').addEventListener('click', ()=>assemble(false));
+  document.getElementById('copyAsm').addEventListener('click', ()=>B.copy('asmOut'));
+
+  // ===== 5) Audio plant
+  function gaussianNoise(sigma){
+    // Box-Muller
+    let u=0, v=0;
+    while(u===0) u=Math.random();
+    while(v===0) v=Math.random();
+    const z = Math.sqrt(-2.0*Math.log(u)) * Math.cos(2*Math.PI*v);
+    return z * sigma;
+  }
+  function makeWavBytes(samples, sr){
+    // 16-bit PCM mono
+    const numSamples = samples.length;
+    const bytesPerSample = 2;
+    const dataBytes = numSamples * bytesPerSample;
+    const header = new ArrayBuffer(44);
+    const dv = new DataView(header);
+    function wStr(o, s){ for(let i=0;i<s.length;i++) dv.setUint8(o+i, s.charCodeAt(i)); }
+    wStr(0, 'RIFF');
+    dv.setUint32(4, 36 + dataBytes, true);
+    wStr(8, 'WAVE');
+    wStr(12, 'fmt ');
+    dv.setUint32(16, 16, true); // PCM
+    dv.setUint16(20, 1, true);  // PCM
+    dv.setUint16(22, 1, true);  // mono
+    dv.setUint32(24, sr, true);
+    dv.setUint32(28, sr*bytesPerSample, true);
+    dv.setUint16(32, bytesPerSample, true);
+    dv.setUint16(34, 16, true);
+    wStr(36, 'data');
+    dv.setUint32(40, dataBytes, true);
+    const buf = new Uint8Array(44 + dataBytes);
+    buf.set(new Uint8Array(header), 0);
+    // write samples
+    const view = new DataView(buf.buffer);
+    let off=44;
+    for(let i=0;i<numSamples;i++){
+      let s = Math.max(-32768, Math.min(32767, Math.round(samples[i])));
+      view.setInt16(off, s, true); off+=2;
+    }
+    return buf;
+  }
+  function plantAudio(){
+    const plen = +document.getElementById('plen').value;
+    const {pm} = preambleBuild();
+    const repeat = (+document.getElementById('pRepeat').value)|0;
+    const chipRate = (+document.getElementById('chipRate').value)|0;
+    const tailMs = (+document.getElementById('tailMs').value)|0;
+    const A = (+document.getElementById('amp').value)|0;
+    const sigma = (+document.getElementById('sigma').value)|0;
+    const sr = (+document.getElementById('sr').value)|0;
+
+    const chips = [];
+    for(let r=0;r<repeat;r++) chips.push(...pm);
+    const chipsPerSecond = chipRate;
+    const spc = Math.max(1, Math.floor(sr / chipsPerSecond));
+    const total = chips.length * spc + Math.floor(sr * (tailMs/1000));
+    const samples = new Int16Array(total);
+    let idx=0;
+    for(let c=0;c<chips.length;c++){
+      const val = (chips[c] >= 0 ? +A : -A);
+      for(let k=0;k<spc;k++){
+        const noise = gaussianNoise(sigma);
+        samples[idx++] = val + noise;
+      }
+    }
+    while(idx<total){ samples[idx++] = gaussianNoise(sigma); }
+    const bytes = makeWavBytes(samples, sr);
+    const blob = new Blob([bytes], {type:'audio/wav'});
+    const url = URL.createObjectURL(blob);
+    const aud = document.getElementById('aud');
+    const dl = document.getElementById('dlWav');
+    aud.src = url; dl.href = url;
+  }
+  document.getElementById('makeWav').addEventListener('click', plantAudio);
+
+  // ===== Deep link
+  function updateLink(){
+    const q = new URLSearchParams();
+    q.set('plen', document.getElementById('plen').value);
+    q.set('ptype', document.getElementById('ptype').value);
+    q.set('psym', document.getElementById('psym').value);
+    q.set('v', document.getElementById('v').value);
+    q.set('topo', document.getElementById('topo').value);
+    q.set('tid', document.getElementById('tid').value);
+    q.set('lane', document.getElementById('lane').value);
+    q.set('dDay', document.getElementById('dDay').value);
+    q.set('dOff', document.getElementById('dOff').value);
+    q.set('dSeed', document.getElementById('dSeed').value);
+    q.set('dA1', document.getElementById('dA1').value);
+    q.set('dA2', document.getElementById('dA2').value);
+    q.set('dFlags', document.getElementById('dFlags').value);
+    q.set('dTuple', document.getElementById('dTuple').value);
+    q.set('dRsv', document.getElementById('dRsv').value);
+    const u = location.origin + location.pathname + '?' + q.toString();
+    history.replaceState(null,'',u);
+    return u;
+  }
+  function loadFromLink(){
+    const q = new URLSearchParams(location.search);
+    function set(id){ if(q.has(id)) document.getElementById(id).value = q.get(id); }
+    ['plen','ptype','psym','v','topo','tid','lane','dDay','dOff','dSeed','dA1','dA2','dFlags','dTuple','dRsv'].forEach(set);
+  }
+  document.getElementById('shareBtn').addEventListener('click', ()=>{
+    const u = updateLink();
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(u); }
+    const btn = document.getElementById('shareBtn'); const old=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=old,800);
+  });
+
+  // ===== Init
+  function init(){
+    loadFromLink();
+    preambleBuild();
+    renderHeader();
+    packAndCRC();
+  }
+  init();
+</script>
 </body>
 </html>
+
