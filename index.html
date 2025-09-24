@@ -12,6 +12,31 @@
     --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
     --r:14px;--pad:18px;--maxw:1100px;
   }
+  /* Honey theme (warm, journal) */
+  body.theme-honey{
+    --bg:#0C0A09;
+    --ink:#F8FAFC;
+    --muted:#D6D3D1;
+    --line:rgba(245, 158, 11, .18);
+    --gold:#F5D142; --amber:#F59E0B;
+  }
+  /* Neon theme (playful, club) */
+  body.theme-neon{
+    --bg:#080A12;
+    --ink:#EAF2FF;
+    --muted:#9CA3AF;
+    --line:rgba(58,199,255,.25);
+    --gold:#39FF14; --amber:#FF00EA;
+  }
+  /* Jupiter theme (beacon/astral) */
+  body.theme-jupiter{
+    --bg:#0B0F19;
+    --ink:#EAECEF;
+    --muted:#AAB2C0;
+    --line:rgba(236,120,56,.22);
+    --gold:#EC7838; --amber:#F2A359; /* banded orange tones */
+  }
+
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -28,7 +53,7 @@
   .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
   .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
-  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,209,66,.15),rgba(245,158,11,.12))}
+  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
   input[type="text"], select{
     padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);color:var(--ink);font:inherit;
   }
@@ -48,19 +73,21 @@
   .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
   footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
   .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
+
   /* Fixed player header */
   .playerbar{position:fixed;left:0;right:0;top:0;z-index:9999;background:rgba(11,15,25,.96);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid var(--line)}
   .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0 8px}
   .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
-  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 200px}}
+  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 240px}}
   .now{font-size:13px;color:var(--muted)}
   .now strong{color:#e9ecf3}
   .frame{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.03)}
   .frame #yt{position:absolute;inset:0}
   .controls{display:flex;gap:10px;justify-content:flex-end;align-items:center}
+
   /* Matched nav buttons (aligned arrows, high contrast) */
   .navbtn{display:inline-flex;align-items:center;gap:8px;line-height:1;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
-  .navbtn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,209,66,.15),rgba(245,158,11,.12))}
+  .navbtn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
   .navbtn .icon{display:inline-flex;width:16px;height:16px}
   .navbtn .icon svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style>
@@ -99,7 +126,14 @@
     <h1>Illumina 1 — Public Tunes</h1>
     <div class="bar">
       <span id="cycle" class="pill">Loading…</span>
-      <a class="btn" href="/tunes/beacon/index.html">Beacon</a>
+      <a class="btn" href="/beacon/index.html">Beacon</a>
+      <label class="pill" for="themeSel">Theme</label>
+      <select id="themeSel" aria-label="Choose theme">
+        <option value="">Default</option>
+        <option value="honey">Honey</option>
+        <option value="neon">Neon</option>
+        <option value="jupiter">Jupiter</option>
+      </select>
       <label class="pill" for="lane">Lane</label>
       <select id="lane" aria-label="Choose playlist lane">
         <option value="Explainer">Explainer</option>
@@ -120,7 +154,7 @@
   </footer>
 </div>
 
-<!-- Safe YouTube Iframe API loader -->
+<!-- YouTube Iframe API -->
 <script>
   (function(){
     if (window.YT && YT.Player) return;
@@ -149,11 +183,27 @@
   var elSearch = document.getElementById('search');
   var elDayJump = document.getElementById('dayJump');
   var elLaneSel = document.getElementById('lane');
-  var elLaneLabel = null; // removed from UI
   var elNowTitle = document.getElementById('nowTitle');
   var elNowMeta = document.getElementById('nowMeta');
   var prevBtn = document.getElementById('prevBtn');
   var nextBtn = document.getElementById('nextBtn');
+  var themeSel = document.getElementById('themeSel');
+
+  function applyTheme(name){
+    document.body.classList.remove('theme-honey','theme-neon','theme-jupiter');
+    if(name==='honey') document.body.classList.add('theme-honey');
+    else if(name==='neon') document.body.classList.add('theme-neon');
+    else if(name==='jupiter') document.body.classList.add('theme-jupiter');
+    try{ localStorage.setItem('tunes.theme', name||''); }catch(e){}
+  }
+  (function(){
+    try{
+      var saved = localStorage.getItem('tunes.theme')||'';
+      themeSel.value = saved;
+      applyTheme(saved);
+    }catch(e){}
+  })();
+  themeSel.addEventListener('change', function(){ applyTheme(this.value); });
 
   function syncHeaderHeight(){
     var bar = document.querySelector('.playerbar');
