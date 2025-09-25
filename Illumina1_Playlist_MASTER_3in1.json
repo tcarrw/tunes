@@ -6,7 +6,9 @@
       "Explainer",
       "AnchorPublic",
       "AnchorBuilt"
-    ]
+    ],
+    "Layout": "HexAnchors+HoneyCore",
+    "Version": "1.0.1"
   },
   "Cycle": {
     "Start": "2025-11-05",
@@ -331,16 +333,16 @@
         }
       },
       "AnchorPublic": {
-        "title": "Dang! (feat. Anderson .Paak)",
-        "artist": "Mac Miller",
+        "title": "Marina & the Diamonds - I Am Not a Robot",
+        "artist": "Marina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=LR3GQfryp9M"
+            "url": "https://youtu.be/S_oMD6-6q5Y?si=mBC8JU4E3OlVRN38"
           },
           "AppleMusic": {
-            "id": "1137966096",
-            "isrc": "USWB11601218",
-            "status": "exists"
+            "id": null,
+            "isrc": null,
+            "status": "coming_soon"
           },
           "Spotify": {
             "id": null,
@@ -469,7 +471,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Feather",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=kLbn61Z4LDI"
@@ -528,7 +530,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Nonsense",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ"
@@ -587,7 +589,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Please Please Please",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=cF1Na4AIecM"
@@ -646,7 +648,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - because i liked a boy",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=1YUBbF24H44"
@@ -705,7 +707,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Sue Me",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=7w4Udbys4O4"
@@ -764,7 +766,7 @@
       "AnchorBuilt": {
         "title": "“Vicious”",
         "artist": "Sabrina Carpenter",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=cZg3t5Nu1Lo"
@@ -823,7 +825,7 @@
       "AnchorBuilt": {
         "title": "La La Land (2016 Movie) Official Clip – “City Of Stars”",
         "artist": "Lionsgate Movies",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE"
@@ -2693,16 +2695,16 @@
         }
       },
       "AnchorPublic": {
-        "title": "Dang! (feat. Anderson .Paak)",
-        "artist": "Mac Miller",
+        "title": "Marina & the Diamonds - I Am Not a Robot",
+        "artist": "Marina",
         "Platforms": {
           "YouTube": {
-            "url": "https://www.youtube.com/watch?v=LR3GQfryp9M"
+            "url": "https://youtu.be/S_oMD6-6q5Y?si=mBC8JU4E3OlVRN38"
           },
           "AppleMusic": {
-            "id": "1137966096",
-            "isrc": "USWB11601218",
-            "status": "exists"
+            "id": null,
+            "isrc": null,
+            "status": "coming_soon"
           },
           "Spotify": {
             "id": null,
@@ -2831,7 +2833,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Feather",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=kLbn61Z4LDI"
@@ -2890,7 +2892,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Nonsense",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ"
@@ -2949,7 +2951,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Please Please Please",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=cF1Na4AIecM"
@@ -3008,7 +3010,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - because i liked a boy",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=1YUBbF24H44"
@@ -3067,7 +3069,7 @@
       "AnchorBuilt": {
         "title": "Sabrina Carpenter - Sue Me",
         "artist": "SabrinaCarpenterVEVO",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=7w4Udbys4O4"
@@ -3126,7 +3128,7 @@
       "AnchorBuilt": {
         "title": "“Vicious”",
         "artist": "Sabrina Carpenter",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=cZg3t5Nu1Lo"
@@ -3185,7 +3187,7 @@
       "AnchorBuilt": {
         "title": "La La Land (2016 Movie) Official Clip – “City Of Stars”",
         "artist": "Lionsgate Movies",
-        "anchor": "Sabrina",
+        "anchor": "Marina",
         "Platforms": {
           "YouTube": {
             "url": "https://www.youtube.com/watch?v=cZAw8qxn0ZE"
@@ -4736,5 +4738,47 @@
         }
       }
     }
-  ]
+  ],
+  "Pantheon": {
+    "AnchorsHex": [
+      {
+        "name": "Marina",
+        "alias": "Marina & the Diamonds",
+        "glyph": "⚓",
+        "role": "Anchor"
+      },
+      {
+        "name": "Janet Planet",
+        "glyph": "🌙",
+        "role": "Anchor"
+      },
+      {
+        "name": "Eminem",
+        "glyph": "⚡",
+        "role": "Anchor"
+      },
+      {
+        "name": "Emma Stone",
+        "glyph": "☀️",
+        "role": "Anchor"
+      },
+      {
+        "name": "Doechii",
+        "glyph": "🔥",
+        "role": "Anchor"
+      },
+      {
+        "name": "Hot To Go",
+        "glyph": "🐝",
+        "role": "Anchor"
+      }
+    ],
+    "HoneyCore": {
+      "name": "Sabrina",
+      "alias": "Sabrina Carpenter",
+      "glyph": "🍯",
+      "role": "Honey",
+      "notes": "Center resonance; not an edge anchor."
+    }
+  }
 }
