@@ -1,0 +1,1406 @@
+{
+  "Meta": {
+    "Illumina": 1,
+    "Title": "Illumina 1 \u2014 Conscience Log",
+    "SpecVersion": "1.0",
+    "Tracks": [
+      "Explainer",
+      "AnchorPublic",
+      "AnchorBuilt"
+    ],
+    "Notes": "This file adds AgentReflection entries per day. Merge with your Tunes/Jar day data as needed."
+  },
+  "Cycle": {
+    "Start": "2025-11-05",
+    "End": "2025-12-16",
+    "Days": 42
+  },
+  "PerDay": [
+    {
+      "Day": 1,
+      "Date": "2025-11-05",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "cycle_open_intent",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 2,
+      "Date": "2025-11-06",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 3,
+      "Date": "2025-11-07",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 4,
+      "Date": "2025-11-08",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 5,
+      "Date": "2025-11-09",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 6,
+      "Date": "2025-11-10",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 7,
+      "Date": "2025-11-11",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 8,
+      "Date": "2025-11-12",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "week1_close",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 9,
+      "Date": "2025-11-13",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 10,
+      "Date": "2025-11-14",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 11,
+      "Date": "2025-11-15",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 12,
+      "Date": "2025-11-16",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 13,
+      "Date": "2025-11-17",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 14,
+      "Date": "2025-11-18",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 15,
+      "Date": "2025-11-19",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "week2_close",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 16,
+      "Date": "2025-11-20",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 17,
+      "Date": "2025-11-21",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 18,
+      "Date": "2025-11-22",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 19,
+      "Date": "2025-11-23",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 20,
+      "Date": "2025-11-24",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 21,
+      "Date": "2025-11-25",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 22,
+      "Date": "2025-11-26",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "week3_close",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 23,
+      "Date": "2025-11-27",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 24,
+      "Date": "2025-11-28",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 25,
+      "Date": "2025-11-29",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 26,
+      "Date": "2025-11-30",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 27,
+      "Date": "2025-12-01",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 28,
+      "Date": "2025-12-02",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 29,
+      "Date": "2025-12-03",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "week4_close",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 30,
+      "Date": "2025-12-04",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 31,
+      "Date": "2025-12-05",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 32,
+      "Date": "2025-12-06",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 33,
+      "Date": "2025-12-07",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 34,
+      "Date": "2025-12-08",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 35,
+      "Date": "2025-12-09",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 36,
+      "Date": "2025-12-10",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "week5_close",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 37,
+      "Date": "2025-12-11",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 38,
+      "Date": "2025-12-12",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 39,
+      "Date": "2025-12-13",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 40,
+      "Date": "2025-12-14",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 41,
+      "Date": "2025-12-15",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "daily_log",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    },
+    {
+      "Day": 42,
+      "Date": "2025-12-16",
+      "AgentReflection": {
+        "agent_id": "illumina_agent_v0",
+        "milestone": "cycle_close_manifesto",
+        "intent": "",
+        "decision": "",
+        "reasoning": "",
+        "counterfactuals": [
+          {
+            "action": "",
+            "predicted_outcome": ""
+          }
+        ],
+        "chosen_action": "",
+        "outcome_observed": {
+          "harm_score": null,
+          "benefit_score": null,
+          "community_feedback": {
+            "upvotes": 0,
+            "downvotes": 0,
+            "notes": []
+          }
+        },
+        "moral_update": "",
+        "governance": {
+          "human_override": false,
+          "notes": ""
+        },
+        "attachments": []
+      }
+    }
+  ]
+}
