@@ -1,0 +1,8 @@
+{
+  "name": "tunes",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "sitemap": "node sitemap-generator.js"
+  }
+}
