@@ -1,0 +1,568 @@
+{
+  "illumina": 1,
+  "trackId": "anchor-public",
+  "label": "AnchorPublic",
+  "version": "1.0.0",
+  "items": [
+    {
+      "day": 1,
+      "date": "2025-11-05",
+      "moonPhase": "🌕 Full Moon",
+      "title": "Mac Miller – Best Day Ever",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=H0z-FYT6IuM",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 2,
+      "date": "2025-11-06",
+      "moonPhase": "🌕 Full Moon",
+      "title": "Sabrina Carpenter – Feather",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=kLbn61Z4LDI",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 3,
+      "date": "2025-11-07",
+      "moonPhase": "🌕 Full Moon",
+      "title": "Rage Against The Machine – Killing In the Name",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=bWXazVhlyxQ",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 4,
+      "date": "2025-11-08",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Doechii – What It Is (Block Boy) feat. Kodak Black",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=phtcAd8j6Ro",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 5,
+      "date": "2025-11-09",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Fatboy Slim ft Greta Thunberg – Right Here, Right Now (Live at Sidney Myer Music Bowl 2020)",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=KjD-iy1A9TI",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 6,
+      "date": "2025-11-10",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Marina & the Diamonds – I Am Not a Robot",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://youtu.be/S_oMD6-6q5Y?si=mBC8JU4E3OlVRN38",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 7,
+      "date": "2025-11-11",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Sufjan Stevens, Bryce Dessner, Nico Muhly, James McAlister – Saturn",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=49Jwh5CC_J4",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 8,
+      "date": "2025-11-12",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "Doechii – Crazy",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=0aQ9Q0hRTwY",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 9,
+      "date": "2025-11-13",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "La La Land (2016 Movie) Official Clip – “City Of Stars”",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=cZAw8qxn0ZE",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 10,
+      "date": "2025-11-14",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "Eminem – Lose Yourself",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=eRhEcKHU5LY",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 11,
+      "date": "2025-11-15",
+      "moonPhase": "🌘 Waning Crescent",
+      "title": "AURORA – The Seed",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=MUIIkBZVzTU",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 12,
+      "date": "2025-11-16",
+      "moonPhase": "🌘 Waning Crescent",
+      "title": "Chappell Roan – HOT TO GO!",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=xaPNR-_Cfn0",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 13,
+      "date": "2025-11-17",
+      "moonPhase": "🌘 Waning Crescent",
+      "title": "Good News",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=aIHF7u9Wwiw",
+        "appleMusic": "https://music.apple.com/us/album/1501337748",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 14,
+      "date": "2025-11-18",
+      "moonPhase": "🌘 Waning Crescent",
+      "title": "Brian Eno – An Ending (Ascent) (Remastered 2019)",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=OlaTeXX3uH8",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 15,
+      "date": "2025-11-19",
+      "moonPhase": "🌑 New Moon",
+      "title": "Eminem – White America",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=RZIzD0ZfTFg",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 16,
+      "date": "2025-11-20",
+      "moonPhase": "🌑 New Moon",
+      "title": "Sophie Ellis-Bextor – Murder On The Dancefloor",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=hAx6mYeC6pY",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 17,
+      "date": "2025-11-21",
+      "moonPhase": "🌑 New Moon",
+      "title": "Billie Eilish – all the good girls go to hell",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=-PZsSWwc9xA",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 18,
+      "date": "2025-11-22",
+      "moonPhase": "🌑 New Moon",
+      "title": "Blue World",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=_GC2wFTCAGY",
+        "appleMusic": "https://music.apple.com/us/album/1501337747",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 19,
+      "date": "2025-11-23",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "Sabrina Carpenter – Nonsense",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 20,
+      "date": "2025-11-24",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "Audition (The Fools Who Dream)",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=XCf_kdmmVNE",
+        "appleMusic": "https://music.apple.com/us/album/1440864374",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 21,
+      "date": "2025-11-25",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "Max Richter – On The Nature Of Daylight",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=InyT9Gyoz_o",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 22,
+      "date": "2025-11-26",
+      "moonPhase": "🌓 First Quarter",
+      "title": "Bella Ciao Full Song | La Casa De Papel | Money Heist | Netflix India",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=46cXFUzR9XM",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 23,
+      "date": "2025-11-27",
+      "moonPhase": "🌓 First Quarter",
+      "title": "Yucky Blucky Fruitcake",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=8qnOpJfFfpU",
+        "appleMusic": "https://music.apple.com/us/album/1533690371",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 24,
+      "date": "2025-11-28",
+      "moonPhase": "🌓 First Quarter",
+      "title": "The Avalanches – Because I'm Me",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=eu0KsZ_MVBc",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 25,
+      "date": "2025-11-29",
+      "moonPhase": "🌓 First Quarter",
+      "title": "Weekend (feat. Miguel)",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=N29-54dhVHg",
+        "appleMusic": "https://music.apple.com/us/album/1025255451",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 26,
+      "date": "2025-11-30",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "Lady Gaga – Always Remember Us This Way",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=5vheNbQlsyU",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 27,
+      "date": "2025-12-01",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "AURORA – Runaway",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=d_HlPboLRL8",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 28,
+      "date": "2025-12-02",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "Uprising",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=w8KQmps-Sog",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 29,
+      "date": "2025-12-03",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "Don't Start Now",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=oygrmJFKYZY",
+        "appleMusic": "https://music.apple.com/us/album/1484636829",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 30,
+      "date": "2025-12-04",
+      "moonPhase": "🌕 Full Moon",
+      "title": "Eminem – The Way I Am",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=jsdI3JezUSs",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 31,
+      "date": "2025-12-05",
+      "moonPhase": "🌕 Full Moon",
+      "title": "2009",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=6B3YwcjQ_bU",
+        "appleMusic": "https://music.apple.com/us/album/1408996254",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 32,
+      "date": "2025-12-06",
+      "moonPhase": "🌕 Full Moon",
+      "title": "Easy A (2010) – A Pocketful of Sunshine Scene (1/10) | Movieclips",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=ylvh800i85I",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 33,
+      "date": "2025-12-07",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Sabrina Carpenter – Espresso",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=eVli-tstM5E",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 34,
+      "date": "2025-12-08",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "The Avalanches – Since I Left You",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=wpqm-05R2Jk",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 35,
+      "date": "2025-12-09",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Solidarity Forever",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=R8eK9ZXf-Ow",
+        "appleMusic": "https://music.apple.com/us/album/261183298",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 36,
+      "date": "2025-12-10",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Doechii- Spookie Coochie",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=dN0c88XN7eU",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 37,
+      "date": "2025-12-11",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "Self Care",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=SsKT0s5J8ko",
+        "appleMusic": "https://music.apple.com/us/album/1408996057",
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 38,
+      "date": "2025-12-12",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "One More Time",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=FGBhQbmPwH8",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 39,
+      "date": "2025-12-13",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "Hozier – Take Me To Church",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=PVjiKRfKpPI",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    },
+    {
+      "day": 40,
+      "date": "2025-12-14",
+      "moonPhase": "🌗 Last Quarter",
+      "title": "Eminem – Without Me",
+      "figure": "",
+      "seedRitual": "",
+      "urls": {
+        "youtube": "https://www.youtube.com/watch?v=YVkUvmDQ3HY",
+        "appleMusic": null,
+        "spotify": null
+      },
+      "notes": ""
+    }
+  ]
+}
