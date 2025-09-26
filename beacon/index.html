@@ -1,367 +1,709 @@
-<!doctype html><html><head><meta charset='utf-8'><title>Beacon</title></head><body><h1>Beacon</h1>
-<!-- =========================
-     DECODER LAB (G24 + RS(31,19) + Preamble match)
-     ========================= -->
-<section id="decoder" style="margin:28px 0;padding:16px;border:1px solid rgba(255,255,255,.15);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent)">
-  <h2 style="margin:0 0 8px 0">Decoder Lab</h2>
-  <p style="margin:6px 0 14px;color:#aab2c0">Quick tools to validate and decode Beacon headers and payloads. Includes a matched-filter preamble locator, a <b>Golay&nbsp;[24,12,8]</b> header checker/corrector (up to 3 bit errors), and an <b>RS(31,19)</b> erasure decoder over GF(32). Everything runs locally in your browser.</p>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beacon · τ/31–47 Workbench</title>
+<meta name="theme-color" content="#0B0F19">
+<meta name="description" content="Prime-length preambles (31/47), 12-bit control header → Golay(24,12,8), descriptor → RS(31,19) over GF(32), CRC-16, deep-link + low-SNR audio plant.">
+<style>
+  :root{
+    --bg:#0B0F19;--ink:#E6EAF2;--muted:#94A3B8;--line:rgba(255,255,255,.12);
+    --card:#0F1524;--hi:#A4E8FF;--gold:#F7C948;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
+    --shadow:0 16px 40px rgba(0,0,0,.35);
+  }
+  /* Honey theme (warm) */
+  body.theme-honey{ --bg:#0C0A09; --ink:#F8FAFC; --muted:#D6D3D1; --line:rgba(245,158,11,.18); --card:#14110F; --hi:#FFD166; --gold:#F6C75C; }
+  /* Neon theme (club) */
+  body.theme-neon{ --bg:#080A12; --ink:#EAF2FF; --muted:#AEB6C7; --line:rgba(58,199,255,.25); --card:#0C1220; --hi:#3AC7FF; --gold:#39FF14; }
+  /* Jupiter theme (astral) */
+  body.theme-jupiter{ --bg:#0B0F19; --ink:#EAECEF; --muted:#AAB2C0; --line:rgba(236,120,56,.22); --card:#10182A; --hi:#EC7838; --gold:#EC7838; }
 
-  <!-- Preamble match -->
-  <details open>
-    <summary style="cursor:pointer;font-weight:700">1) Matched-filter preamble (p = 31 or 47)</summary>
-    <div style="margin-top:10px">
-      <label>Header bits (0/1): <br>
-        <textarea id="mf_bits" rows="3" style="width:100%;background:rgba(255,255,255,.04);color:#e6eaf2;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px" placeholder="e.g. 1011001..."></textarea>
-      </label>
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <label>Prime p
-          <select id="mf_p" style="margin-left:6px">
-            <option value="31">31</option>
-            <option value="47">47</option>
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Inter,Roboto,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+  a{color:#BBD7FF;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg) 70%,rgba(11,15,25,.88));border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(8px)}
+  .head{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 16px}
+  h1{margin:0;font-size:22px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%), var(--card);color:var(--ink);font-weight:650;cursor:pointer}
+  .btn:hover{border-color:rgba(164,232,255,.35);box-shadow:var(--shadow);transform:translateY(-1px)}
+  .btn.primary{border-color:rgba(247,201,72,.35);background:linear-gradient(180deg, rgba(247,201,72,.18), rgba(247,201,72,.08))}
+  .select, input[type="number"], input[type="text"], input[type="range"]{
+    appearance:none;background:var(--card);color:var(--ink);border:1px solid var(--line);
+    border-radius:10px;padding:8px 12px;font-size:14px;outline:none
+  }
+  .grid{display:grid;gap:14px;margin:14px 0;grid-template-columns:1fr 1fr}
+  @media (max-width:1000px){ .grid{grid-template-columns:1fr} }
+  .card{background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%), var(--card);
+        border:1px solid var(--line);border-radius:16px;padding:14px;position:relative;overflow:hidden}
+  .card h2{margin:0 0 6px;font-size:18px}
+  .muted{color:var(--muted)}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#CFE2FF}
+  .out{user-select:all;word-break:break-all}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .k{font:12px/1 ui-monospace,Menlo,Consolas,monospace;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+  .stat{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .badge{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .badge.hi{border-color:rgba(164,232,255,.35);color:#C8F1FF;background:rgba(164,232,255,.08)}
+  .badge.good{border-color:rgba(52,211,153,.35);color:#9ff1c9;background:rgba(52,211,153,.12)}
+  .badge.warn{border-color:rgba(251,191,36,.35);color:#ffde89;background:rgba(251,191,36,.12)}
+
+  .footer{margin:18px 0;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .hr{border:none;border-top:1px solid var(--line);margin:12px 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="head wrap">
+    <div>
+      <h1>Beacon · τ/31–47 Workbench</h1>
+      <div class="sub">Prime preambles · Golay(24,12,8) header · RS(31,19) descriptor · CRC‑16 · deep‑link · low‑SNR audio plant</div>
+      <div class="row" style="margin-top:6px">
+        <label class="pill">Theme
+          <select id="themeSel" class="select">
+            <option value="">Default</option>
+            <option value="honey">Honey</option>
+            <option value="neon">Neon</option>
+            <option value="jupiter">Jupiter</option>
           </select>
         </label>
-        <button id="mf_run" type="button">Run matched filter</button>
-        <span id="mf_out" style="margin-left:8px;color:#9ca3af">—</span>
+        <a class="btn" href="https://tunes.plnt.earth" target="_blank" rel="noopener">🎶 Back to Tunes</a>
+        <a class="btn" href="https://jar.plnt.earth/day/" target="_blank" rel="noopener">🍯 Jar Day</a>
+        <a class="btn" href="https://jar.plnt.earth/map/" target="_blank" rel="noopener">✨ Constellation</a>
+        <button id="shareBtn" class="btn">🔗 Copy Share Link</button>
       </div>
     </div>
-  </details>
+    <div class="row" style="justify-content:flex-end">
+      <span class="pill">31 ↔ 47 bridge ready</span>
+    </div>
+  </div>
+</header>
 
-  <!-- Golay 24 checker/corrector -->
-  <details>
-    <summary style="cursor:pointer;font-weight:700">2) Golay [24,12,8] header checker / corrector (≤3 bit errors)</summary>
-    <div style="margin-top:10px">
-      <div style="color:#9ca3af">Enter a 24-bit word (binary or hex like 0xABCDxx). We assume the 23-bit perfect Golay part uses the cyclic generator <code>g(x)=x^11+x^10+x^6+x^5+x^4+x^2+1</code>, and the 24th bit is an even-parity extension.</div>
-      <label>Codeword:
-        <input id="g24_word" type="text" placeholder="e.g. 1010... or 0xABCDE0" style="width:100%;margin-top:6px;background:rgba(255,255,255,.04);color:#e6eaf2;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px">
-      </label>
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <label>Parity bit position
-          <select id="g24_parpos" style="margin-left:6px">
-            <option value="end">bit 23 (LSB) is parity</option>
-            <option value="start">bit 0 (MSB) is parity</option>
-          </select>
-        </label>
-        <button id="g24_check" type="button">Check / Correct</button>
-        <span id="g24_out" style="margin-left:8px;color:#9ca3af">—</span>
-      </div>
-    </div>
-  </details>
+<div class="wrap">
 
-  <!-- RS(31,19) erasure decoder -->
-  <details>
-    <summary style="cursor:pointer;font-weight:700">3) RS(31,19) over GF(32) — erasure decoder (≤12 erasures)</summary>
-    <div style="margin-top:10px">
-      <div style="color:#9ca3af">Paste 31 symbols in hex (0..1F). Optional: comma-separated erasure indices (0..30, where index 0 is the first symbol). Uses GF(32) with primitive polynomial <code>x^5+x^2+1</code>. Generator has roots <code>α^1..α^12</code> (t=6).</div>
-      <label>Symbols (hex, space or comma separated):
-        <textarea id="rs_syms" rows="3" style="width:100%;margin-top:6px;background:rgba(255,255,255,.04);color:#e6eaf2;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px" placeholder="e.g. 0e 1a 03 ..."></textarea>
+  <!-- PREAMBLE -->
+  <section class="card">
+    <h2>1) Preamble · prime length</h2>
+    <div class="row">
+      <label class="pill">Length
+        <select id="plen" class="select">
+          <option value="31">31 (in‑cycle)</option>
+          <option value="47">47 (cross‑cycle)</option>
+        </select>
       </label>
-      <label style="display:block;margin-top:6px">Erasures (indices):
-        <input id="rs_eras" type="text" placeholder="e.g. 5,6,7" style="width:100%;background:rgba(255,255,255,.04);color:#e6eaf2;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px">
+      <label class="pill">Sequence
+        <select id="ptype" class="select">
+          <option value="auto">Auto (m‑seq for 31, Legendre for 47)</option>
+          <option value="mseq31">m‑sequence (x⁵+x²+1)</option>
+          <option value="legendre">Legendre (quadratic residues)</option>
+        </select>
       </label>
-      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <button id="rs_check" type="button">Syndrome</button>
-        <button id="rs_decode" type="button">Decode (erasures)</button>
-        <span id="rs_out" style="margin-left:8px;color:#9ca3af">—</span>
+      <label class="pill">Symbols
+        <select id="psym" class="select">
+          <option value="01">0/1</option>
+          <option value="pm">±1</option>
+        </select>
+      </label>
+      <button id="regenP" class="btn">Rebuild</button>
+      <button id="copyP" class="btn">Copy bits</button>
+    </div>
+    <div class="stat">
+      <span id="pStat" class="badge hi">—</span>
+      <span id="pAuto" class="badge">Auto: 31→mseq, 47→Legendre</span>
+      <span id="pCorr" class="badge">Corr: —</span>
+    </div>
+    <div id="pBits" class="mono out" style="margin-top:8px">—</div>
+    <div class="hint">Autocorrelation shown as max sidelobe (periodic). ±1 symbols recommended for BPSK audio plants.</div>
+  </section>
+
+  <!-- CONTROL HEADER + GOLAY -->
+  <section class="card">
+    <h2>2) Control Header → Golay(24,12,8)</h2>
+    <div class="three">
+      <label>Version (v, 3 bits) <input id="v" type="number" min="0" max="7" value="1" class="select"></label>
+      <label>Topology echo (1 bit) <input id="topo" type="number" min="0" max="1" value="0" class="select"></label>
+      <label>Template ID (6 bits) <input id="tid" type="number" min="0" max="63" value="0" class="select"></label>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label class="pill">Lane (2 bits)
+        <select id="lane" class="select">
+          <option value="0">Explainer (00)</option>
+          <option value="1">AnchorPublic (01)</option>
+          <option value="2">AnchorBuilt (10)</option>
+          <option value="3">Spare (11)</option>
+        </select>
+      </label>
+      <button id="encodeGolay" class="btn primary">Encode Golay(24,12)</button>
+      <button id="copyH12" class="btn">Copy 12 data bits</button>
+      <button id="copyG24" class="btn">Copy 24 code bits</button>
+    </div>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <div class="muted">Raw 12‑bit header (v|topo|tid|lane)</div>
+        <div id="h12" class="mono out">—</div>
+      </div>
+      <div>
+        <div class="muted">Golay(24,12,8) codeword (23b Golay + even parity)</div>
+        <div id="g24" class="mono out">—</div>
       </div>
     </div>
-  </details>
-</section>
+    <div class="hint">We implement the standard <span class="k">(23,12,7)</span> Golay by polynomial division, then append a single even parity bit to form <span class="k">(24,12,8)</span>.</div>
+  </section>
+
+  <!-- DESCRIPTOR + CRC + RS -->
+  <section class="card">
+    <h2>3) Descriptor → CRC‑16 → RS(31,19) over GF(32)</h2>
+    <div class="three">
+      <label>Day (0–63, 6b) <input id="dDay" type="number" min="0" max="63" value="31" class="select"></label>
+      <label>Cross‑cycle Δ (−32..31, 6b 2’s comp) <input id="dOff" type="number" min="-32" max="31" value="5" class="select"></label>
+      <label>Seed token (0–4095, 12b) <input id="dSeed" type="number" min="0" max="4095" value="777" class="select"></label>
+    </div>
+    <div class="three" style="margin-top:8px">
+      <label>Anchor A (0–63, 6b) <input id="dA1" type="number" min="0" max="63" value="7" class="select"></label>
+      <label>Anchor B (0–63, 6b) <input id="dA2" type="number" min="0" max="63" value="12" class="select"></label>
+      <label>Flags (0–15, 4b) <input id="dFlags" type="number" min="0" max="15" value="1" class="select"></label>
+    </div>
+    <div class="three" style="margin-top:8px">
+      <label>Tuple (α, me/mp, Q, Gℏ/c³) mask (8b) <input id="dTuple" type="number" min="0" max="255" value="9" class="select"></label>
+      <label>Reserved (4b) <input id="dRsv" type="number" min="0" max="15" value="0" class="select"></label>
+      <div class="row"><button id="packDesc" class="btn">Pack + CRC‑16</button></div>
+    </div>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <div class="muted">Descriptor bits (pre‑CRC)</div>
+        <div id="descBits" class="mono out">—</div>
+      </div>
+      <div>
+        <div class="muted">CRC‑16/CCITT (poly 0x1021), appended MSB→LSB</div>
+        <div id="crcBits" class="mono out">—</div>
+      </div>
+    </div>
+    <hr class="hr">
+    <div class="row">
+      <button id="encodeRS" class="btn primary">Encode RS(31,19)</button>
+      <button id="copyRS" class="btn">Copy RS codeword (31×5b)</button>
+    </div>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <div class="muted">Data symbols (5‑bit, padded to 19)</div>
+        <div id="symData" class="mono out">—</div>
+      </div>
+      <div>
+        <div class="muted">Parity symbols (12)</div>
+        <div id="symParity" class="mono out">—</div>
+      </div>
+    </div>
+    <div>
+      <div class="muted">Codeword (31 symbols) · hex</div>
+      <div id="symAllHex" class="mono out">—</div>
+    </div>
+    <div class="hint">GF(32) uses primitive polynomial <span class="k">x⁵+x²+1</span> and generator roots α¹…α¹². Data shorter than 19 symbols is zero‑padded.</div>
+  </section>
+
+  <!-- ASSEMBLY VIEW -->
+  <section class="card">
+    <h2>4) Assembly (pre‑/post‑ECC)</h2>
+    <div class="row">
+      <button id="assemblePre" class="btn">Assemble pre‑ECC (preamble + 12b header + desc+CRC bits)</button>
+      <button id="assemblePost" class="btn">Assemble with ECC (Golay24 + RS parity)</button>
+      <button id="copyAsm" class="btn">Copy assembled bits</button>
+    </div>
+    <div id="asmOut" class="mono out" style="margin-top:8px">—</div>
+    <div class="hint">Use pre‑ECC bits when testing symbolization; use post‑ECC when planting full frames in controlled channels.</div>
+  </section>
+
+  <!-- AUDIO PLANT -->
+  <section class="card">
+    <h2>5) Audio Plant (low‑SNR BPSK) · experimental</h2>
+    <div class="three">
+      <label>Chip rate (chips/s) <input id="chipRate" type="number" min="50" max="4000" value="480" class="select"></label>
+      <label>Repeat preamble <input id="pRepeat" type="number" min="1" max="8" value="2" class="select"></label>
+      <label>Payload tail (silence ms) <input id="tailMs" type="number" min="0" max="5000" value="250" class="select"></label>
+    </div>
+    <div class="three" style="margin-top:8px">
+      <label>Noise σ (16‑bit units) <input id="sigma" type="number" min="1" max="6000" value="1200" class="select"></label>
+      <label>BPSK amplitude (|A|) <input id="amp" type="number" min="1" max="30000" value="3000" class="select"></label>
+      <label>Sample rate (Hz) <input id="sr" type="number" min="8000" max="48000" value="48000" class="select"></label>
+    </div>
+    <div class="controls">
+      <button id="makeWav" class="btn primary">Render WAV</button>
+      <a id="dlWav" class="btn" href="#" download="beacon-plant.wav">Download</a>
+      <audio id="aud" controls style="width:100%"></audio>
+    </div>
+    <div class="hint">We BPSK‑map ±1 symbols to {−A,+A}, embed under white noise σ, and export 16‑bit PCM WAV. Defaults plant at &lt;5σ.</div>
+  </section>
+
+  <div class="footer">
+    <div>© <span id="yy"></span> PLNT.earth — Beacon</div>
+    <div class="muted">Roadmap: on‑page decoders, spectrum view, CSV/JSON export.</div>
+  </div>
+</div>
 
 <script>
-// ===== Matched filter (±1 correlation) =====
-function bitsFromText(s){
-  s = (s||'').trim();
-  if(!s) return [];
-  if(/^0x/i.test(s)){
-    var hex = s.replace(/^0x/i,'').replace(/[^0-9a-f]/gi,'');
-    var out = [];
-    for(var i=0;i<hex.length;i++){
-      var v = parseInt(hex[i],16);
-      for(var b=3;b>=0;b--) out.push((v>>b)&1);
+  // ===== Theme
+  (function initTheme(){
+    const sel = document.getElementById('themeSel');
+    function apply(name){
+      document.body.classList.remove('theme-honey','theme-neon','theme-jupiter');
+      if(name==='honey') document.body.classList.add('theme-honey');
+      else if(name==='neon') document.body.classList.add('theme-neon');
+      else if(name==='jupiter') document.body.classList.add('theme-jupiter');
+      try{ localStorage.setItem('beacon.theme', name||''); }catch(e){}
+    }
+    try{ const saved = localStorage.getItem('beacon.theme')||''; sel.value=saved; apply(saved);}catch(e){}
+    sel.addEventListener('change', ()=>apply(sel.value));
+  })();
+
+  document.getElementById('yy').textContent = new Date().getFullYear();
+
+  // ===== Bit utils
+  const B = {
+    toBits(num, len){
+      const out = new Array(len);
+      for(let i=len-1;i>=0;i--){ out[len-1-i] = (num>>i)&1; }
+      return out;
+    },
+    fromBits(bits){
+      let v=0; for(const b of bits){ v=(v<<1)|(b&1); } return v>>>0;
+    },
+    xor(a,b){ const out=[]; for(let i=0;i<Math.max(a.length,b.length);i++){ out[i]=(a[i]|0)^(b[i]|0); } return out; },
+    concat(a,b){ return (a||[]).concat(b||[]); },
+    padToMultiple(bits, m){ const r = bits.slice(); while(r.length % m) r.push(0); return r; },
+    group(bits, w){ const g=[]; for(let i=0;i<bits.length;i+=w){ g.push(bits.slice(i,i+w)); } return g; },
+    toHexSymbols(symbols){ return symbols.map(s=>s.toString(16).toUpperCase().padStart(2,'0')).join(' '); },
+    parity(x){ // parity of integer
+      x ^= x>>>16; x ^= x>>>8; x ^= x>>>4; x &= 0xF; return (0x6996>>>x)&1;
+    },
+    copy(id){
+      const el=document.getElementById(id);
+      if(!el) return;
+      const txt=el.textContent;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt); 
+      }
+    }
+  };
+
+  function bitsStr(bits){ return bits.map(b=>b?1:0).join(''); }
+  function show(id, val){ document.getElementById(id).textContent = val; }
+
+  // ===== 1) Preamble builders
+  function lfsr31(){
+    // 5-bit LFSR, polynomial x^5 + x^2 + 1, maximal length 31
+    let state = 0b11111; // non-zero seed
+    const out=[];
+    for(let i=0;i<31;i++){
+      const bit = state & 1;
+      out.push(bit);
+      // taps: bit0 ^ bit3 -> new bit at msb
+      const fb = ((state & 1) ^ ((state>>3)&1)) & 1; // taps at x^0 and x^3 (since x^5 + x^2 + 1 with right-shift LFSR)
+      state = (state>>>1) | (fb<<4);
     }
     return out;
   }
-  return s.replace(/[^01]/g,'').split('').map(ch=>ch==='1'?1:0);
-}
-function corr(a,b){
-  // map 0->-1, 1->+1 then compute sliding correlation max
-  var A = a.map(x=>x?1:-1), B = b.map(x=>x?1:-1);
-  var n=A.length, m=B.length, best=-1e9, bestk=0;
-  for(var k=0;k<=n-m;k++){
-    var s=0; for(var i=0;i<m;i++) s += A[k+i]*B[i];
-    if(s>best){ best=s; bestk=k; }
-  }
-  return {peak:best, offset:bestk};
-}
-function barkerLike(p){
-  // simple ±1 Legendre sequence mod p (p prime)
-  var seq = [];
-  for(var n=1;n<=p;n++){
-    // Legendre symbol (n|p) → {1,-1,0}; map to bits
-    var ls = 1;
-    // naive: n^{(p-1)/2} mod p
-    var pow = 1, a=n%p, e=(p-1)/2;
-    var base=a%p;
-    while(e>0){
-      if(e&1) pow = (pow*base)%p;
-      base = (base*base)%p;
-      e>>=1;
+  function legendre(p){
+    const res = new Array(p).fill(0);
+    const seen = new Set();
+    for(let k=1;k<=Math.floor((p-1)/2);k++){
+      const r = (k*k)%p;
+      seen.add(r);
     }
-    ls = (pow===1)?1:-1;
-    seq.push(ls===1?1:0);
-  }
-  return seq;
-}
-document.getElementById('mf_run').onclick = function(){
-  var bits = bitsFromText(document.getElementById('mf_bits').value);
-  var p = +document.getElementById('mf_p').value;
-  var pre = barkerLike(p);
-  if(bits.length < pre.length){ document.getElementById('mf_out').textContent = 'Need ≥ '+pre.length+' bits'; return; }
-  var r = corr(bits, pre);
-  document.getElementById('mf_out').textContent = 'Peak '+r.peak+' at offset '+r.offset+' (len '+pre.length+')';
-};
-
-// ===== Golay (24,12,8) checker/corrector =====
-// Perfect Golay (23,12,7) is cyclic with generator g(x)=x^11+x^10+x^6+x^5+x^4+x^2+1.
-// Extended Golay adds one even parity bit → [24,12,8].
-// Represent 23-bit words in an integer (bits 22..0).
-
-const G23_GEN = (1<<11)|(1<<10)|(1<<6)|(1<<5)|(1<<4)|(1<<2)|1; // 0b1100001110101 = 3189
-
-function parseBitWord(s){
-  s = (s||'').trim();
-  if(!s) return null;
-  if(/^0x/i.test(s)){
-    let v = parseInt(s,16)>>>0;
-    return v;
-  }
-  let bits = s.replace(/[^01]/g,''); if(bits.length===0) return null;
-  let v = 0; for(let i=0;i<bits.length;i++){ v = (v<<1)| (bits[i]==='1'?1:0); }
-  return v>>>0;
-}
-function popcnt(x){ x>>>=0; let c=0; while(x){ x&=x-1; c++; } return c; }
-function parity32(x){ return popcnt(x)&1; }
-
-function modDivGF2(dividend, gen){
-  // returns remainder of dividend / gen in GF(2) polynomials
-  // degrees: dividend up to e.g. 33 bits, gen degree 11
-  let degG = 31 - Math.clz32(gen);
-  let r = dividend>>>0;
-  for(let i=(31-Math.clz32(r)); i>=degG; i--){
-    if(((r>>>i)&1)===1){
-      r ^= (gen << (i-degG))>>>0;
+    for(let n=0;n<p;n++){
+      res[n] = seen.has(n) ? 1 : 0;
     }
+    // Common convention sets n=0 to 1; keep as-is, user can rotate if desired.
+    return res;
   }
-  return r>>>0;
-}
-function g23_encode12(msg12){
-  msg12 &= 0xFFF;
-  let shifted = (msg12<<11)>>>0;
-  let rem = modDivGF2(shifted, G23_GEN) & ((1<<11)-1);
-  return (shifted ^ rem) & ((1<<23)-1);
-}
-function g23_is_codeword(c23){
-  // valid if remainder is 0
-  let rem = modDivGF2(c23, G23_GEN) & ((1<<11)-1);
-  return rem===0;
-}
-function g24_check_correct(raw24, parityAtEnd=true){
-  // split into c23 + parity
-  let parity = parityAtEnd ? (raw24 & 1) : (raw24>>>23)&1;
-  let c23 = parityAtEnd ? (raw24>>>1) : (raw24 & ((1<<23)-1));
+  function autocorrMaxSidelobe(pm){ // periodic
+    const n=pm.length;
+    let maxSL=0;
+    for(let tau=1;tau<n;tau++){
+      let c=0;
+      for(let i=0;i<n;i++){
+        const j=(i+tau)%n;
+        c += pm[i]*pm[j];
+      }
+      maxSL = Math.max(maxSL, Math.abs(c));
+    }
+    return maxSL;
+  }
+  function preambleBuild(){
+    const plen = +document.getElementById('plen').value;
+    const ptype = document.getElementById('ptype').value;
+    const sym = document.getElementById('psym').value;
+    let bits;
+    if(ptype==='mseq31' || (ptype==='auto' && plen===31)){
+      bits = lfsr31();
+    }else{ // Legendre default for 47
+      bits = legendre(plen);
+    }
+    if(bits.length!==plen){
+      // simple truncate/extend for odd combos
+      const out = [];
+      for(let i=0;i<plen;i++){ out.push(bits[i % bits.length]); }
+      bits = out;
+    }
+    // mapping
+    let pm = bits.map(b => b? +1 : -1);
+    const maxSL = autocorrMaxSidelobe(pm);
+    document.getElementById('pCorr').textContent = 'Corr: max sidelobe '+maxSL.toFixed(0)+' (±1 periodic)';
+    const outStr = (sym==='01') ? bitsStr(bits) : pm.join(' ');
+    document.getElementById('pBits').textContent = outStr;
+    document.getElementById('pStat').textContent = 'Preamble length '+plen+' · '+(ptype==='auto' ? (plen===31?'m‑seq':'Legendre') : (ptype==='mseq31'?'m‑seq':'Legendre'));
+    updateLink();
+    return {bits, pm};
+  }
+  document.getElementById('regenP').addEventListener('click', preambleBuild);
+  document.getElementById('copyP').addEventListener('click', ()=>B.copy('pBits'));
 
-  // search up to 3 flips in the 23-bit part
-  let best = null;
-  // w=0
-  if(g23_is_codeword(c23)){
-    let needParity = parity32(c23) & 1; // even parity across 24 → parity == (popcnt(c23) mod 2)
-    let totErr = (parity!==needParity)?1:0;
-    if(totErr<=3) best = {c23, parity:needParity, flips:0 if totErr==0 else 1, corrected:true};
-  }
-  // w=1
-  if(!best){
-    for(let i=0;i<23;i++){
-      let c = c23 ^ (1<<i);
-      if(g23_is_codeword(c)){
-        let needParity = parity32(c)&1;
-        let totErr = 1 + ((parity!==needParity)?1:0);
-        if(totErr<=3){ best = {c23:c, parity:needParity, flips:totErr, corrected:true}; break; }
+  // ===== 2) Golay(24,12,8) encoder via (23,12,7)+parity
+  // Generator polynomial for Golay (23,12,7): g(x) = x^11 + x^9 + x^7 + x^6 + x^5 + x + 1
+  const GOLAY23_POLY = (1<<11)|(1<<9)|(1<<7)|(1<<6)|(1<<5)|(1<<1)|(1<<0); // 0b1_0101_1110_0011 ?;
+
+  function golay23_encode_12(u12){
+    // Create 23-bit code by appending remainder of (u(x) * x^11) / g(x)
+    let msg = u12 << 11;
+    let reg = msg;
+    for(let i=(12+11-1); i>=11; i--){
+      if((reg>>>i) & 1){
+        reg ^= GOLAY23_POLY << (i-11);
       }
     }
+    const parity11 = reg & ((1<<11)-1);
+    const n23 = msg | parity11;
+    return n23 >>> 0;
   }
-  // w=2
-  if(!best){
-    for(let i=0;i<23;i++){
-      for(let j=i+1;j<23;j++){
-        let c = c23 ^ (1<<i) ^ (1<<j);
-        if(g23_is_codeword(c)){
-          let needParity = parity32(c)&1;
-          let totErr = 2 + ((parity!==needParity)?1:0);
-          if(totErr<=3){ best = {c23:c, parity:needParity, flips:totErr, corrected:true}; break; }
-        }
-      }
-      if(best) break;
+  function golay24_encode(u12){
+    const n23 = golay23_encode_12(u12);
+    const p = B.parity(n23); // even parity -> append p so that total parity is even
+    const n24 = (n23<<1) | p;
+    // Present MSB→LSB string of 24 bits
+    const bits24 = B.toBits(n24,24);
+    return bits24;
+  }
+  function buildHeader12bits(){
+    const v = (+document.getElementById('v').value) & 0x7;
+    const topo = (+document.getElementById('topo').value) & 0x1;
+    const tid = (+document.getElementById('tid').value) & 0x3F;
+    const lane = (+document.getElementById('lane').value) & 0x3;
+    const bits = [].concat(B.toBits(v,3), B.toBits(topo,1), B.toBits(tid,6), B.toBits(lane,2));
+    return bits;
+  }
+  function renderHeader(){
+    const bits12 = buildHeader12bits();
+    show('h12', bitsStr(bits12));
+  }
+  document.getElementById('v').addEventListener('input', renderHeader);
+  document.getElementById('topo').addEventListener('input', renderHeader);
+  document.getElementById('tid').addEventListener('input', renderHeader);
+  document.getElementById('lane').addEventListener('change', renderHeader);
+  document.getElementById('copyH12').addEventListener('click', ()=>B.copy('h12'));
+  document.getElementById('encodeGolay').addEventListener('click', ()=>{
+    const bits12 = buildHeader12bits();
+    const u12 = B.fromBits(bits12);
+    const bits24 = golay24_encode(u12);
+    show('g24', bitsStr(bits24));
+    updateLink();
+  });
+  document.getElementById('copyG24').addEventListener('click', ()=>B.copy('g24'));
+
+  // ===== 3) Descriptor pack + CRC16/CCITT + RS(31,19)
+  function toTwosComplement(val, bits){
+    if(val<0){ return ((1<<bits)+val) & ((1<<bits)-1); }
+    return val & ((1<<bits)-1);
+  }
+  function packDescriptor(){
+    const day   = (+document.getElementById('dDay').value)|0;
+    const off   = toTwosComplement((+document.getElementById('dOff').value)|0, 6);
+    const seed  = (+document.getElementById('dSeed').value)|0;
+    const a1    = (+document.getElementById('dA1').value)|0;
+    const a2    = (+document.getElementById('dA2').value)|0;
+    const flags = (+document.getElementById('dFlags').value)&0xF;
+    const tuple = (+document.getElementById('dTuple').value)&0xFF;
+    const rsv   = (+document.getElementById('dRsv').value)&0xF;
+
+    let bits = [];
+    bits = bits.concat(B.toBits(day,6));
+    bits = bits.concat(B.toBits(off,6));
+    bits = bits.concat(B.toBits(a1,6));
+    bits = bits.concat(B.toBits(a2,6));
+    bits = bits.concat(B.toBits(seed,12));
+    bits = bits.concat(B.toBits(flags,4));
+    bits = bits.concat(B.toBits(tuple,8));
+    bits = bits.concat(B.toBits(rsv,4));
+    return bits;
+  }
+  // CRC16-CCITT (0x1021), init 0xFFFF, no reflect, bit-by-bit over MSB-first bits
+  function crc16_ccitt_bits(bits){
+    let crc = 0xFFFF;
+    for (let i=0;i<bits.length;i++){
+      const bit = bits[i]&1;             // MSB-first bits
+      const msb = (crc>>>15)&1;
+      const x = msb ^ bit;
+      crc = ((crc<<1)&0xFFFF);
+      if (x){ crc ^= 0x1021; }
     }
+    return crc & 0xFFFF;
   }
-  // w=3
-  if(!best){
-    for(let i=0;i<23;i++){
-      for(let j=i+1;j<23;j++){
-        for(let k=j+1;k<23;k++){
-          let c = c23 ^ (1<<i) ^ (1<<j) ^ (1<<k);
-          if(g23_is_codeword(c)){
-            let needParity = parity32(c)&1;
-            let totErr = 3 + ((parity!==needParity)?1:0);
-            if(totErr<=3){ best = {c23:c, parity:needParity, flips:totErr, corrected:true}; break; }
-          }
-        }
-        if(best) break;
-      }
-      if(best) break;
-    }
-  }
-  if(best){
-    // combine back
-    let cw24 = parityAtEnd ? ((best.c23<<1)|best.parity) : ((best.parity<<23)|(best.c23&((1<<23)-1)));
-    return {ok:true, corrected:true, flips:best.flips, code24:cw24>>>0, msg12: (best.c23>>>11)&0xFFF };
-  }
-  return {ok:false, corrected:false, error:"Could not correct with ≤3 flips"};
-}
-
-document.getElementById('g24_check').onclick = function(){
-  const s = document.getElementById('g24_word').value;
-  const pos = document.getElementById('g24_parpos').value;
-  const v = parseBitWord(s);
-  if(v==null){ document.getElementById('g24_out').textContent = 'Please enter 24-bit binary or hex.'; return; }
-  const parityAtEnd = (pos==='end');
-  // If input wider than 24 bits, mask
-  const raw24 = v & 0xFFFFFF;
-  const res = g24_check_correct(raw24, parityAtEnd);
-  if(res.ok){
-    const hex = '0x'+(res.code24>>>0).toString(16).padStart(6,'0');
-    document.getElementById('g24_out').textContent = 'OK: corrected='+res.corrected+' · flips='+res.flips+' · msg12=0x'+((res.msg12>>>0).toString(16))+' · code24='+hex;
-  }else{
-    document.getElementById('g24_out').textContent = 'Fail: '+res.error;
-  }
-};
-
-// small helper
-Number.prototype.zfill=function(n){ let s=this.toString(16); while(s.length<n)s='0'+s; return s; }
-
-// ===== RS(31,19) over GF(32) — erasure decoder =====
-const PRIM = 0x25; // x^5 + x^2 + 1
-let gf_exp = new Array(62);
-let gf_log = new Array(32);
-(function gfInit(){
-  let x = 1;
-  for(let i=0;i<31;i++){
-    gf_exp[i] = x;
-    gf_log[x] = i;
-    x <<= 1;
-    if(x & 0x20){ x ^= PRIM; }
-  }
-  for(let i=31;i<62;i++) gf_exp[i] = gf_exp[i-31];
-})();
-function gadd(a,b){ return a^b; }
-function gmul(a,b){ if(a===0||b===0) return 0; return gf_exp[(gf_log[a]+gf_log[b])%31]; }
-function gpow(a,e){ if(a===0) return 0; return gf_exp[(gf_log[a]*e)%31]; }
-function ginv(a){ if(a===0) throw new Error('inv(0)'); return gf_exp[(31-gf_log[a])%31]; }
-
-function parseSyms(s){
-  let arr = s.replace(/[^0-9a-f, 	
-]/gi,' ').trim().split(/[\s,]+/).filter(Boolean).map(x=>int(x));
-  function int(x){ return parseInt(x,16)&31; }
-  return arr;
-}
-function parseEras(s){
-  if(!s.trim()) return [];
-  return s.split(/[\s,]+/).filter(Boolean).map(x=>+x).filter(i=>i>=0 && i<31);
-}
-function syndromes31(r){
-  // S_j = sum r_i * α^{j*i} for j=1..12
-  let S = new Array(12).fill(0);
-  for(let j=1;j<=12;j++){
-    let s = 0;
+  // GF(32) arithmetic with primitive poly x^5 + x^2 + 1 (0x25)
+  const GF = (function(){
+    const prim = 0x25;
+    const exp = new Uint8Array(62); // 2*31
+    const log = new Int16Array(32).fill(-1);
+    let x=1;
     for(let i=0;i<31;i++){
-      let term = r[i] ? gmul(r[i], gf_exp[(j*i)%31]) : 0;
-      s = gadd(s, term);
+      exp[i]=x; log[x]=i;
+      x <<= 1;
+      if(x & 0x20) x ^= prim;
+      x &= 0x1F;
     }
-    S[j-1] = s;
-  }
-  return S;
-}
-function allZero(arr){ for(let i=0;i<arr.length;i++) if(arr[i]) return false; return true; }
+    for(let i=31;i<62;i++) exp[i]=exp[i-31];
+    function mul(a,b){
+      if(a===0 || b===0) return 0;
+      return exp[(log[a]+log[b])%31];
+    }
+    function div(a,b){
+      if(a===0) return 0;
+      if(b===0) throw new Error('GF divide by zero');
+      let d = log[a]-log[b];
+      if(d<0) d+=31;
+      return exp[d];
+    }
+    function pow(a,k){
+      if(a===0) return 0;
+      let e = (log[a]*k)%31;
+      return exp[e];
+    }
+    return {exp,log,mul,div,pow};
+  })();
+  // Build RS generator g(x) = Π_{i=1..12} (x + α^i)
+  const RS = (function(){
+    const t2 = 12;
+    function genPoly(){
+      let g = new Uint8Array([1]); // degree 0
+      for(let i=1;i<=t2;i++){
+        const root = GF.exp[i]; // α^i
+        // g = conv(g, [1, root])
+        const ng = new Uint8Array(g.length+1);
+        for(let j=0;j<g.length;j++){
+          // x*g
+          ng[j] ^= 0; // implicit
+          ng[j+1] ^= g[j];
+        }
+        for(let j=0;j<g.length;j++){
+          const prod = GF.mul(g[j], root);
+          ng[j] ^= prod;
+        }
+        g = ng;
+      }
+      return g; // length 13 (degree 12)
+    }
+    const G = genPoly();
+    function encode(dataSyms){ // returns {parity:Uint8Array(12)}
+      const k=19, n=31, p=12;
+      const reg = new Uint8Array(p); // all zeros
+      for(let i=0;i<k;i++){
+        const d = dataSyms[i]||0;
+        const feedback = d ^ reg[0];
+        // shift + add feedback*G[j+1]
+        for(let j=0;j<p-1;j++){
+          reg[j] = reg[j+1] ^ GF.mul(feedback, G[j+1]);
+        }
+        reg[p-1] = GF.mul(feedback, G[p]);
+      }
+      return {parity: reg};
+    }
+    return {G, encode};
+  })();
 
-
-function solveErasures(r, eras){
-  // Build m×m Vandermonde: A[j-1,c] = α^{j*e_c}, using first m equations j=1..m
-  const m = eras.length;
-  if(m===0) return {ok:false, msg:'No erasures provided'};
-  if(m>12) return {ok:false, msg:'Too many erasures (max 12)'};
-  // Right-hand side b_j = sum_{i not in E} r_i α^{j*i}
-  const b = new Array(m).fill(0);
-  const A = new Array(m); for(let j=0;j<m;j++){ A[j]=new Array(m).fill(0); }
-  for(let j=1;j<=m;j++){
-    let s = 0;
-    for(let i=0;i<31;i++){
-      if(eras.indexOf(i)>=0) continue;
-      if(r[i]) s = gadd(s, gmul(r[i], gf_exp[(j*i)%31]));
-    }
-    b[j-1] = s;
-    for(let c=0;c<m;c++){
-      A[j-1][c] = gf_exp[(j*eras[c])%31];
-    }
+  function packAndCRC(){
+    const desc = packDescriptor();
+    show('descBits', bitsStr(desc));
+    const crc = crc16_ccitt_bits(desc);
+    const crcBits = B.toBits(crc,16);
+    show('crcBits', bitsStr(crcBits));
+    const full = B.concat(desc, crcBits);
+    return full;
   }
-  // Solve A x = (-b); over GF(2^m), -b == b
-  // Augment
-  for(let i=0;i<m;i++){ A[i].push(b[i]); }
-  // Gauss-Jordan
-  let row = 0;
-  for(let col=0; col<m && row<m; col++){
-    // pivot
-    let piv = -1;
-    for(let r2=row;r2<m;r2++){ if(A[r2][col]){ piv=r2; break; } }
-    if(piv===-1) continue; // skip zero column (should not happen for distinct erasures)
-    if(piv!==row){ let tmp=A[row]; A[row]=A[piv]; A[piv]=tmp; }
-    // scale to 1
-    let inv = ginv(A[row][col]);
-    for(let c=col;c<=m;c++){ A[row][c] = gmul(A[row][c], inv); }
-    // eliminate
-    for(let r2=0;r2<m;r2++){
-      if(r2===row) continue;
-      let f = A[r2][col];
-      if(f){
-        for(let c=col;c<=m;c++){ A[r2][c] = gadd(A[r2][c], gmul(f, A[row][c])); }
+  function symbolsFromBits(bits, kSymbols){
+    const padded = B.padToMultiple(bits,5);
+    const groups = B.group(padded,5);
+    const data = groups.map(g => B.fromBits(g));
+    // pad to kSymbols with zeros
+    while(data.length < kSymbols) data.push(0);
+    return data.slice(0, kSymbols);
+  }
+  function encodeRS(){
+    const full = packAndCRC();
+    const data = symbolsFromBits(full, 19);
+    const {parity} = RS.encode(data);
+    show('symData', data.map(x=>x.toString(2).padStart(5,'0')).join(' '));
+    show('symParity', Array.from(parity).map(x=>x.toString(2).padStart(5,'0')).join(' '));
+    const code = data.concat(Array.from(parity));
+    show('symAllHex', code.map(x=>x.toString(16).toUpperCase().padStart(2,'0')).join(' '));
+    updateLink();
+    return {data, parity, code};
+  }
+  document.getElementById('packDesc').addEventListener('click', packAndCRC);
+  document.getElementById('encodeRS').addEventListener('click', encodeRS);
+  document.getElementById('copyRS').addEventListener('click', ()=>B.copy('symAllHex'));
+
+  // ===== 4) Assembly
+  function assemble(pre){ // pre=true => pre‑ECC; else include Golay + RS parity
+    const {bits:preBits} = preambleBuild();
+    const h12 = buildHeader12bits();
+    const descCRC = packAndCRC();
+
+    let seq = [].concat(preBits, h12, descCRC);
+
+    if(!pre){
+      const g24 = golay24_encode(B.fromBits(h12));
+      seq = [].concat(preBits, Array.from(g24), descCRC); // Golay replaces raw header in the stream
+      const rs = encodeRS(); // ensures UI panels update too
+      // Append RS parity (symbol level -> 5 bits each)
+      const parBits = [];
+      for(const s of rs.parity){
+        const b = B.toBits(s,5);
+        parBits.push(...b);
+      }
+      seq = seq.concat(parBits);
+    }
+    show('asmOut', bitsStr(seq));
+    return seq;
+  }
+  document.getElementById('assemblePre').addEventListener('click', ()=>assemble(true));
+  document.getElementById('assemblePost').addEventListener('click', ()=>assemble(false));
+  document.getElementById('copyAsm').addEventListener('click', ()=>B.copy('asmOut'));
+
+  // ===== 5) Audio plant
+  function gaussianNoise(sigma){
+    // Box-Muller
+    let u=0, v=0;
+    while(u===0) u=Math.random();
+    while(v===0) v=Math.random();
+    const z = Math.sqrt(-2.0*Math.log(u)) * Math.cos(2*Math.PI*v);
+    return z * sigma;
+  }
+  function makeWavBytes(samples, sr){
+    // 16-bit PCM mono
+    const numSamples = samples.length;
+    const bytesPerSample = 2;
+    const dataBytes = numSamples * bytesPerSample;
+    const header = new ArrayBuffer(44);
+    const dv = new DataView(header);
+    function wStr(o, s){ for(let i=0;i<s.length;i++) dv.setUint8(o+i, s.charCodeAt(i)); }
+    wStr(0, 'RIFF');
+    dv.setUint32(4, 36 + dataBytes, true);
+    wStr(8, 'WAVE');
+    wStr(12, 'fmt ');
+    dv.setUint32(16, 16, true); // PCM
+    dv.setUint16(20, 1, true);  // PCM
+    dv.setUint16(22, 1, true);  // mono
+    dv.setUint32(24, sr, true);
+    dv.setUint32(28, sr*bytesPerSample, true);
+    dv.setUint16(32, bytesPerSample, true);
+    dv.setUint16(34, 16, true);
+    wStr(36, 'data');
+    dv.setUint32(40, dataBytes, true);
+    const buf = new Uint8Array(44 + dataBytes);
+    buf.set(new Uint8Array(header), 0);
+    // write samples
+    const view = new DataView(buf.buffer);
+    let off=44;
+    for(let i=0;i<numSamples;i++){
+      let s = Math.max(-32768, Math.min(32767, Math.round(samples[i])));
+      view.setInt16(off, s, true); off+=2;
+    }
+    return buf;
+  }
+  function plantAudio(){
+    const plen = +document.getElementById('plen').value;
+    const {pm} = preambleBuild();
+    const repeat = (+document.getElementById('pRepeat').value)|0;
+    const chipRate = (+document.getElementById('chipRate').value)|0;
+    const tailMs = (+document.getElementById('tailMs').value)|0;
+    const A = (+document.getElementById('amp').value)|0;
+    const sigma = (+document.getElementById('sigma').value)|0;
+    const sr = (+document.getElementById('sr').value)|0;
+
+    const chips = [];
+    for(let r=0;r<repeat;r++) chips.push(...pm);
+    const chipsPerSecond = chipRate;
+    const spc = Math.max(1, Math.floor(sr / chipsPerSecond));
+    const total = chips.length * spc + Math.floor(sr * (tailMs/1000));
+    const samples = new Int16Array(total);
+    let idx=0;
+    for(let c=0;c<chips.length;c++){
+      const val = (chips[c] >= 0 ? +A : -A);
+      for(let k=0;k<spc;k++){
+        const noise = gaussianNoise(sigma);
+        samples[idx++] = val + noise;
       }
     }
-    row++;
+    while(idx<total){ samples[idx++] = gaussianNoise(sigma); }
+    const bytes = makeWavBytes(samples, sr);
+    const blob = new Blob([bytes], {type:'audio/wav'});
+    const url = URL.createObjectURL(blob);
+    const aud = document.getElementById('aud');
+    const dl = document.getElementById('dlWav');
+    aud.src = url; dl.href = url;
   }
-  if(row<m) return {ok:false, msg:'Singular matrix (duplicate erasure indices?)'};
-  const x = new Array(m);
-  for(let i=0;i<m;i++){ x[i] = A[i][m] & 31; }
-  const out = r.slice();
-  for(let i=0;i<m;i++){ out[eras[i]] = x[i]; }
-  const S = syndromes31(out);
-  if(!allZero(S)) return {ok:false, msg:'Decode failed: residual syndromes '+S.map(v=>v.toString(16).padStart(2,'0')).join(' ')};
-  return {ok:true, code:out};
-}
-}
+  document.getElementById('makeWav').addEventListener('click', plantAudio);
 
-document.getElementById('rs_check').onclick = function(){
-  const r = parseSyms(document.getElementById('rs_syms').value);
-  if(r.length!==31){ document.getElementById('rs_out').textContent='Need exactly 31 symbols (hex 00..1F).'; return; }
-  const S = syndromes31(r);
-  const zero = allZero(S);
-  document.getElementById('rs_out').textContent = zero ? 'Syndromes all zero — codeword is valid' : ('S: '+S.map(v=>v.toString(16).padStart(2,'0')).join(' '));
-};
-document.getElementById('rs_decode').onclick = function(){
-  const r = parseSyms(document.getElementById('rs_syms').value);
-  const eras = parseEras(document.getElementById('rs_eras').value);
-  if(r.length!==31){ document.getElementById('rs_out').textContent='Need exactly 31 symbols.'; return; }
-  const res = solveErasures(r, eras);
-  if(!res.ok){ document.getElementById('rs_out').textContent = 'Fail: '+res.msg; return; }
-  document.getElementById('rs_out').textContent = 'Decoded: '+res.code.map(v=>v.toString(16).padStart(2,'0')).join(' ')+' (first 19 symbols are payload)';
-};
+  // ===== Deep link
+  function updateLink(){
+    const q = new URLSearchParams();
+    q.set('plen', document.getElementById('plen').value);
+    q.set('ptype', document.getElementById('ptype').value);
+    q.set('psym', document.getElementById('psym').value);
+    q.set('v', document.getElementById('v').value);
+    q.set('topo', document.getElementById('topo').value);
+    q.set('tid', document.getElementById('tid').value);
+    q.set('lane', document.getElementById('lane').value);
+    q.set('dDay', document.getElementById('dDay').value);
+    q.set('dOff', document.getElementById('dOff').value);
+    q.set('dSeed', document.getElementById('dSeed').value);
+    q.set('dA1', document.getElementById('dA1').value);
+    q.set('dA2', document.getElementById('dA2').value);
+    q.set('dFlags', document.getElementById('dFlags').value);
+    q.set('dTuple', document.getElementById('dTuple').value);
+    q.set('dRsv', document.getElementById('dRsv').value);
+    const u = location.origin + location.pathname + '?' + q.toString();
+    history.replaceState(null,'',u);
+    return u;
+  }
+  function loadFromLink(){
+    const q = new URLSearchParams(location.search);
+    function set(id){ if(q.has(id)) document.getElementById(id).value = q.get(id); }
+    ['plen','ptype','psym','v','topo','tid','lane','dDay','dOff','dSeed','dA1','dA2','dFlags','dTuple','dRsv'].forEach(set);
+  }
+  document.getElementById('shareBtn').addEventListener('click', ()=>{
+    const u = updateLink();
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(u); }
+    const btn = document.getElementById('shareBtn'); const old=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=old,800);
+  });
+
+  // ===== Init
+  function init(){
+    loadFromLink();
+    preambleBuild();
+    renderHeader();
+    packAndCRC();
+  }
+  init();
 </script>
-
-</body></html>
+</body>
+</html>
