@@ -1,330 +1,437 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PLNT Constellation Map</title>
-<meta name="description" content="A living constellation of PLNT.earth tracks orbiting Jar, with Illumina timeline tags.">
+<title>Tunes · Illumina 1</title>
+<meta name="theme-color" content="#0B0F19">
+<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify links included. Fixed header player, auto‑next or loop current.">
 <style>
-  /* ===== Theme (Jar/Honey dark) ===== */
   :root{
-    --bg:#0B0F19;           /* pepper-black */
-    --ink:#E6EAF2;          /* soft off-white */
-    --muted:#94A3B8;        /* slate */
-    --line:rgba(255,255,255,.12);
-    --card:#0F1524;         /* deep ink */
-    --accent:#A4E8FF;       /* ice blue */
-    --ok:#34D399;           /* green */
-    --tbd:#FBBF24;          /* amber */
-    --shadow:0 16px 40px rgba(0,0,0,.35);
-    --hi: rgba(164,232,255,.35); /* highlight border */
+    --bg:#0B0F19;--ink:#EAECEF;--muted:#B7BECF;--line:rgba(234,236,239,.16);
+    --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
+    --r:14px;--pad:18px;--maxw:1100px;
+    --playerH: clamp(220px, 28vw, 420px);
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+       padding-top: calc(var(--playerH) + 110px);}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
+  header{display:grid;gap:8px;margin:6px 0 18px}
+  h1{margin:0;font-size:clamp(22px,4.5vw,34px);line-height:1.2}
+  .muted{color:var(--muted)}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--ink);font-size:13px;background:rgba(255,255,255,.03)}
+  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
+  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
+  input[type="text"], select{
+    padding:10px 12px;border:1px solid rgba(200,210,230,.38);border-radius:999px;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--ink);font:inherit
   }
-  a{color:inherit;text-decoration:none}
+  select:focus, input[type="text"]:focus{outline:2px solid rgba(164,232,255,.45);outline-offset:2px}
+  .grid{display:grid;gap:12px}
+  .cards{grid-template-columns:1fr}
+  @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
+  .card{border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  .tag{font-size:12px;border:1px dashed var(--line);border-radius:8px;padding:2px 8px;color:#cfd3db}
+  .title{font-size:17px;font-weight:700;line-height:1.25}
+  .artist{opacity:.9}
+  .meta{display:grid;gap:6px;margin-top:8px}
+  .platforms{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .play{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:rgba(255,255,255,.03)}
+  .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
+  footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
 
-  .wrap{max-width:1200px;margin:0 auto;padding:28px}
-  header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  h1{font-size:28px;margin:0;letter-spacing:.2px}
-  .sub{color:var(--muted)}
-  .controls{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .select{appearance:none;background:var(--card);color:var(--ink);border:1px solid var(--line);
-          border-radius:10px;padding:8px 12px;font-size:14px}
-  .legend{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
-  .legend .badge{border:1px solid var(--line)}
-
-  .group{margin:22px 0 10px;color:#BBD7FF;font-weight:700;font-size:12px;
-         letter-spacing:.08em;text-transform:uppercase}
-  .grid{
-    display:grid;gap:14px;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-  }
-  @media (max-width:1024px){ .grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
-  @media (max-width:768px){  .grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
-  @media (max-width:520px){  .grid{grid-template-columns:repeat(1,minmax(0,1fr));} }
-
-  .card{
-    background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%) , var(--card);
-    border:1px solid var(--line);border-radius:16px;padding:14px 14px 54px;position:relative;
-    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease;
-    overflow:hidden; isolation:isolate; min-height:138px;
-  }
-  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--hi)}
-  .card.disabled{opacity:.58;pointer-events:none}
-  .row{display:flex;align-items:center;gap:10px}
-  .emoji{font-size:22px;line-height:1}
-  .title{font-weight:750;letter-spacing:.2px}
-  .tag{margin-top:4px;font-size:11px;padding:4px 8px;border-radius:999px;
-       border:1px solid var(--line);color:var(--muted);display:inline-block}
-  .url{margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--muted);
-       font-size:12px;word-break:break-all;opacity:.85}
-  .badges{position:absolute;top:10px;right:10px;display:flex;gap:6px;flex-wrap:wrap;max-width:70%}
-  .badge{font-size:10px;padding:3px 7px;border-radius:999px;white-space:nowrap}
-  .live{background:rgba(52,211,153,.15);color:var(--ok);border:1px solid rgba(52,211,153,.35)}
-  .tbd{background:rgba(251,191,36,.12);color:var(--tbd);border:1px solid rgba(251,191,36,.35)}
-  .i-chip{background:rgba(164,232,255,.10);color:#C8F1FF;border:1px solid var(--hi);display:none}
-  .legend .i-chip{display:inline-block}
-  body.filtering .i-chip{display:inline-block}
-  .desc{
-    position:absolute;left:0;right:0;bottom:0;padding:10px 14px 12px;
-    background:linear-gradient(0deg, rgba(10,14,24,.9), rgba(10,14,24,.0));
-    color:#D7E6FF;font-size:12.5px;line-height:1.4;opacity:.0;transform:translateY(8px);
-    transition:opacity .18s ease, transform .18s ease;border-top:1px solid rgba(255,255,255,.06)
-  }
-  .card:hover .desc{opacity:1;transform:translateY(0)}
-  .note{color:var(--muted);font-size:13px;margin-top:18px}
-  hr{border:none;border-top:1px solid var(--line);margin:24px 0}
-
-  /* Highlight cards matching Illumina filter */
-  .match{border-color:var(--hi); box-shadow:0 0 0 1px var(--hi) inset;}
-  .dim{opacity:.55}
+  /* Fixed player header */
+  .playerbar{position:fixed;left:0;right:0;top:0;z-index:9999;background:rgba(11,15,25,.96);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid var(--line)}
+  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0}
+  .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
+  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 260px}}
+  .now{font-size:13px;color:var(--muted)}
+  .now strong{color:#e9ecf3}
+  .frame{position:relative;height:var(--playerH);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
+  .frame #yt{position:absolute;inset:0;width:100%;height:100%}
+  .controls{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
+  .navbtn{display:inline-flex;align-items:center;gap:8px;line-height:1;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
+  .navbtn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
+  .switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--ink)}
+  .switch input{accent-color:#34D399}
 </style>
 </head>
 <body>
+<!-- Fixed player (always on top; no minimize/fill/full controls) -->
+<div class="playerbar" aria-label="Player">
+  <div class="playerwrap">
+    <div class="player-row">
+      <div>
+        <div class="now">Now Playing</div>
+        <div id="nowTitle" class="mono" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+        <div id="nowMeta" class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
+      </div>
+      <div class="frame"><div id="yt"></div></div>
+      <div class="controls">
+        <label class="switch" title="ON: loop current video · OFF: auto-next">
+          <input id="loopToggle" type="checkbox"> Loop
+        </label>
+        <button class="navbtn" id="prevBtn" type="button" aria-label="Previous">Prev</button>
+        <button class="navbtn primary" id="nextBtn" type="button" aria-label="Next">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
   <header>
-    <h1>PLNT Constellation Map</h1>
-    <span class="sub">Jar is the hub — explore the tracks that orbit it.</span>
-    <div class="controls">
-      <label for="ill" class="sub">Highlight by Illumina:</label>
-      <select id="ill" class="select" aria-label="Highlight by Illumina">
-        <option value="all">All (no highlight)</option>
-        <option value="1">Illumina 1</option>
-        <option value="2">Illumina 2</option>
-        <option value="3">Illumina 3</option>
-        <option value="4">Illumina 4</option>
-        <option value="5">Illumina 5</option>
-        <option value="6">Illumina 6</option>
-        <option value="7">Illumina 7</option>
-        <option value="8">Illumina 8</option>
-        <option value="9">Illumina 9</option>
-        <option value="10">Illumina 10</option>
-        <option value="11">Illumina 11</option>
-        <option value="12">Illumina 12</option>
-        <option value="13">Illumina 13</option>
-        <option value="14">Illumina 14</option>
+    <h1>Illumina 1 — Tunes</h1>
+    <div class="bar">
+      <span id="cycle" class="pill">Loading…</span>
+      <a class="btn" href="/beacon/index.html">Beacon</a>
+      <a class="btn" href="https://mirrorhoney.plnt.earth" target="_blank" rel="noopener">🪞🦋 Mirror Honey</a>
+      <label class="pill" for="lane">Lane</label>
+      <select id="lane" aria-label="Choose playlist lane">
+        <option value="AnchorPublic">AnchorPublic</option>
+        <option value="Explainer">Explainer</option>
+        <option value="AnchorBuilt">AnchorBuilt</option>
       </select>
+      <label class="pill" for="search">Search</label>
+      <input id="search" type="text" placeholder="Title, artist, figure, seed…">
+      <select id="dayJump" aria-label="Jump to day"><option value="">Jump to day…</option></select>
     </div>
   </header>
 
-  <div class="legend">
-    <span class="badge live">Live</span>
-    <span class="badge tbd">TBD (placeholder)</span>
-    <span class="badge i-chip">Appears in selected Illumina</span>
-    <span class="sub" style="font-size:12px">I‑chips (I1… I14) show only when you pick an Illumina in the dropdown.</span>
-  </div>
+  <section id="cards" class="grid cards" aria-live="polite"></section>
 
-  <!-- CORE -->
-  <div class="group">Core Hub</div>
-  <div class="grid" id="core"></div>
-
-  <!-- PRIMARY TRACKS -->
-  <div class="group">Primary Tracks</div>
-  <div class="grid" id="primary"></div>
-
-  <!-- SECONDARY / NARRATIVE -->
-  <div class="group">Secondary / Narrative</div>
-  <div class="grid" id="secondary"></div>
-
-  <!-- FUTURE (TBD) -->
-  <div class="group">Future / TBD</div>
-  <div class="grid" id="future"></div>
-
-  <hr>
-  <p class="note">
-    Pages marked <b>TBD</b> are storyboarded but not linked yet. Hover cards for short descriptions.
-    Use the dropdown to highlight which sites surface in each Illumina’s theme arc.
-    Edit the lists in the script to add/remove sites or change Illumina appearances.
-  </p>
+  <footer>
+    <p>PLNT Earth · Illumina — Tunes</p>
+  </footer>
 </div>
 
+<!-- YouTube Iframe API -->
 <script>
-/* ========= Data =========
-   Only include what you want surfaced. Everything here is Live unless exists:false.
-   Removed per your note: beta, blue, cats, comet, float, groweggs, hack, red, shop, yt, mollid, prime, room, my, imoon, hash
-   "ills" = array of Illumina numbers (1..14) when this page shows up as a main theme.
-*/
+  (function(){
+    if (window.YT && YT.Player) return;
+    var s = document.createElement('script');
+    s.src = "https://www.youtube.com/iframe_api";
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+</script>
 
-const CORE = [
-  {name:"Jar (hub)", emoji:"🍯", url:"https://jar.plnt.earth", exists:true, tag:"ritual • archive",
-   desc:"The honeycomb. Days, seeds, interludes, and cycle archives — everything flows back here.",
-   ills:[1,2,3,4,5,6,7,8,9,10,11,12,13,14]},
-  {name:"Honey", emoji:"🐝", url:"https://honey.plnt.earth", exists:true, tag:"taste • notes",
-   desc:"Taste log + explainer — the Bee in the Illumina triad.",
-   ills:[1,5,11]},
-  {name:"Tunes", emoji:"🎶", url:"https://tunes.plnt.earth", exists:true, tag:"playlist",
-   desc:"Music engine for cycles — anchors, interludes, and overlays.",
-   ills:[1,5,11]}
-];
+<script>
+(function(){
+  var JAR_DAY_BASE = 'https://jar.plnt.earth/day/?date=';
 
-const PRIMARY = [
-  {name:"Time", emoji:"⏳", url:"https://time.plnt.earth", exists:true, tag:"physics",
-   desc:"Equations & constants. Public fits, visuals, and forecasts tied to Illumina.",
-   ills:[2,12]},
-  {name:"Zeta", emoji:"🌀", url:"https://zeta.plnt.earth", exists:true, tag:"math • infinity",
-   desc:"Counting games → formal proofs. Experimental math & visuals on infinity.",
-   ills:[6,9,12]},
-  {name:"DNA", emoji:"🧬", url:"https://dna.plnt.earth", exists:true, tag:"biology",
-   desc:"Replication, growth, and living systems as Illumina mirrors.",
-   ills:[3,8]},
-  {name:"Intelligence", emoji:"🧠", url:"https://intelligence.plnt.earth", exists:true, tag:"ai • cognition",
-   desc:"Thinking about thinking. Human/AI co-creation, cognition experiments.",
-   ills:[4,10]},
-  {name:"42", emoji:"❖", url:"https://42.plnt.earth", exists:true, tag:"meta",
-   desc:"Meaning of 42. Meta-layer tying cycles, science, and culture.",
-   ills:[7,9,13]},
-  {name:"Lighthouse", emoji:"🗼", url:"https://lighthouse.plnt.earth", exists:true, tag:"guidance",
-   desc:"Signal vs noise. Navigation notes, heuristics, and gentle beacons.",
-   ills:[7,10]},
-  {name:"Boiled Peanuts", emoji:"🥜", url:"https://boiledpeanuts.plnt.earth", exists:true, tag:"culture • play",
-   desc:"Playful ritual & taste anchor — southern snack as cultural spark.",
-   ills:[5,11]},
-  {name:"Beacon", emoji:"📡", url:"https://tunes.plnt.earth/beacon/index.html", exists:true, tag:"signal • ECC",
-   desc:"Signal spec, 31/47 headers, ECC, and the Decoder Lab.",
-   ills:[1,7,13]}
-];
+  var q = new URLSearchParams(location.search);
+  var src = q.get('src') || '/Illumina1_Playlist_MASTER_3in1.json';
+  var data = null, term = '';
+  var curLane = q.get('lane') || 'AnchorPublic';   /* AnchorPublic is featured by default */
+  var startDay = parseInt(q.get('day')||'',10);
+  var playOrder = [];
+  var currentIndex = -1;
+  var player, playerReady = false, queuedId = null;
+  var loopMode = false;
 
-const SECONDARY = [
-  {name:"Big Bang", emoji:"💥", url:"https://bigbang.plnt.earth", exists:true, tag:"origin",
-   desc:"Genesis page. First sparks, origin notes, and cosmology metaphors.",
-   ills:[1,8]},
-  {name:"Brain", emoji:"🧩", url:"https://brain.plnt.earth", exists:true, tag:"mind map",
-   desc:"Scratchpad of ideas — nodes that later become full tracks.",
-   ills:[2,10]},
-  {name:"Constellation", emoji:"✨", url:"https://constellation.plnt.earth", exists:true, tag:"map",
-   desc:"Alternate star map / experiments in layout.",
-   ills:[1,7,13]},
-  {name:"Dimensions", emoji:"📐", url:"https://dimensions.plnt.earth", exists:true, tag:"space • scale",
-   desc:"How size, scale, and perspective change meaning.",
-   ills:[6,12]},
-  {name:"Heat Death", emoji:"🧊", url:"https://heatdeath.plnt.earth", exists:true, tag:"limits",
-   desc:"Far-future metaphors. What happens when the lights go out.",
-   ills:[12,13]},
-  {name:"Hello World", emoji:"👋", url:"https://helloworld.plnt.earth", exists:true, tag:"onboarding",
-   desc:"Start here. A soft hello for new explorers.",
-   ills:[1]},
-  {name:"Illumina", emoji:"🌕", url:"https://illumina.plnt.earth", exists:true, tag:"cycles",
-   desc:"The 42-day lunar rhythm. Anchors, interludes, and archives.",
-   ills:[1,7,13]},
-  {name:"Manifold Dynamics", emoji:"🧭", url:"https://manifolddynamics.plnt.earth", exists:true, tag:"flows",
-   desc:"Flows on curved spaces. Gentle dynamical systems playground.",
-   ills:[10,12]},
-  {name:"Predictions", emoji:"📈", url:"https://predictions.plnt.earth", exists:true, tag:"forecasts",
-   desc:"Timestamped forecasts, calibration charts, and scoring (log‑loss, Brier).",
-   ills:[2,10,12]},
-  {name:"Return", emoji:"↩️", url:"https://return.plnt.earth", exists:true, tag:"recurrence",
-   desc:"Recurrence & closure — where cycles loop back and feed forward.",
-   ills:[7,13]},
-  {name:"Rock", emoji:"🪨", url:"https://rock.plnt.earth", exists:true, tag:"ground",
-   desc:"Grounding pages — materiality, weight, and presence.",
-   ills:[11]},
-  {name:"Save Cooper", emoji:"🚀", url:"https://savecooper.plnt.earth", exists:true, tag:"myth • story",
-   desc:"Narrative arc: rescue the explorer. A mythic thread.",
-   ills:[9,13]},
-  {name:"Storage", emoji:"🗄️", url:"https://storage.plnt.earth", exists:true, tag:"assets",
-   desc:"Public assets & datasets — the static file store for PLNT (read‑only).",
-   ills:[1,8]},
-  {name:"Time (alt)", emoji:"⏱️", url:"https://time.plnt.earth", exists:true, tag:"physics (mirror)",
-   desc:"Mirror link in case visitors discover it here first.",
-   ills:[2,12]},
-  {name:"Travel", emoji:"✈️", url:"https://travel.plnt.earth", exists:true, tag:"journey",
-   desc:"Journeys literal and symbolic — field notes, routes, and time‑dilations.",
-   ills:[9,11]},
-  {name:"Tunes (alt)", emoji:"🎧", url:"https://tunes.plnt.earth", exists:true, tag:"music (mirror)",
-   desc:"Mirror link — quick jump back to the player.",
-   ills:[1,11]},
-  {name:"Virus", emoji:"🧬", url:"https://virus.plnt.earth", exists:true, tag:"memes",
-   desc:"How ideas spread; memetics and culture drift.",
-   ills:[11]},
-  {name:"Weight Loss", emoji:"⚖️", url:"https://weightloss.plnt.earth", exists:true, tag:"health",
-   desc:"Protocols and experiments around body metrics.",
-   ills:[8]}
-];
+  var elCards = document.getElementById('cards');
+  var elCycle = document.getElementById('cycle');
+  var elSearch = document.getElementById('search');
+  var elDayJump = document.getElementById('dayJump');
+  var elLaneSel = document.getElementById('lane');
+  var elNowTitle = document.getElementById('nowTitle');
+  var elNowMeta = document.getElementById('nowMeta');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var loopToggle = document.getElementById('loopToggle');
 
-const FUTURE = [
-  {name:"Fire", emoji:"🔥", url:"https://fire.plnt.earth", exists:false, tag:"tbd",
-   desc:"Transformation, energy, risk — a second-orbit anchor in waiting.",
-   ills:[14]},
-  {name:"Mycelium", emoji:"🍄", url:"https://mycelium.plnt.earth", exists:false, tag:"tbd",
-   desc:"Hidden networks, collaboration, and underground exchange.",
-   ills:[14]},
-  {name:"Aether", emoji:"💨", url:"https://aether.plnt.earth", exists:false, tag:"tbd",
-   desc:"Unseen fields. Breath, space between, subtle mediums.",
-   ills:[14]},
-  {name:"Ocean", emoji:"🌊", url:"https://ocean.plnt.earth", exists:false, tag:"tbd",
-   desc:"Depth, flow, tides, and planetary time.",
-   ills:[14]},
-  {name:"Echo", emoji:"📼", url:"https://echo.plnt.earth", exists:false, tag:"tbd",
-   desc:"Memory & resonance — how signals persist across cycles.",
-   ills:[14]}
-];
-
-/* ========= Render ========= */
-function el(tag, cls, text){ const n=document.createElement(tag); if(cls)n.className=cls; if(text!=null)n.textContent=text; return n; }
-
-function chipIll(n){
-  const s = el('span','badge i-chip', `I${n}`);
-  s.dataset.ill = n;
-  return s;
-}
-
-function card(item){
-  const clickable = item.exists;
-  const root = document.createElement(clickable ? 'a' : 'div');
-  if(clickable){ root.href=item.url; root.target="_blank"; root.rel="noopener"; }
-  root.className = 'card';
-  root.dataset.ills = (item.ills||[]).join(',');
-
-  const badges = el('div','badges');
-  badges.appendChild(el('span','badge '+(item.exists?'live':'tbd'), item.exists?'Live':'TBD'));
-  (item.ills||[]).slice(0,3).forEach(n => badges.appendChild(chipIll(n))); // show up to 3 chips
-
-  const row = el('div','row');
-  row.appendChild(el('div','emoji',item.emoji));
-  row.appendChild(el('div','title',item.name));
-
-  const tag = el('div','tag', item.tag);
-  const url = el('div','url', item.url);
-  const desc = el('div','desc', item.desc || '');
-
-  root.appendChild(badges);
-  root.appendChild(row);
-  root.appendChild(tag);
-  root.appendChild(url);
-  if(item.desc) root.appendChild(desc);
-  return root;
-}
-
-function mount(list, id){
-  const root = document.getElementById(id);
-  list.forEach(x => root.appendChild(card(x)));
-}
-
-mount(CORE,'core');
-mount(PRIMARY,'primary');
-mount(SECONDARY,'secondary');
-mount(FUTURE,'future');
-
-/* ========= Filter by Illumina ========= */
-const sel = document.getElementById('ill');
-sel.addEventListener('change', () => { document.body.classList.toggle('filtering', sel.value!=='all');
-  const v = sel.value;
-  const allCards = Array.from(document.querySelectorAll('.card'));
-  if(v === 'all'){
-    allCards.forEach(c => { c.classList.remove('match','dim'); });
-    return;
+  /* keep header height in sync (prevents off-screen overflow on rotate) */
+  function syncHeaderHeight(){
+    var bar = document.querySelector('.playerbar');
+    if(!bar) return;
+    var h = bar.getBoundingClientRect().height;
+    document.body.style.paddingTop = Math.ceil(h+8) + 'px';
   }
-  allCards.forEach(c => {
-    const arr = (c.dataset.ills||'').split(',').filter(Boolean);
-    const isMatch = arr.includes(v);
-    c.classList.toggle('match', isMatch);
-    c.classList.toggle('dim', !isMatch);
+  window.addEventListener('resize', syncHeaderHeight, {passive:true});
+  window.addEventListener('orientationchange', syncHeaderHeight, {passive:true});
+  setTimeout(syncHeaderHeight, 60);
+
+  function safe(v){ return v==null ? "" : String(v); }
+
+  /* Clean up channel-like artist strings (e.g., SabrinaCarpenterVEVO → Sabrina Carpenter) */
+  function humanArtist(a){
+    var s = safe(a);
+    s = s.replace(/VEVO$/i,'').replace(/VEVO/i,'');
+    s = s.replace(/Official\s*Channel$/i,'').replace(/Official$/i,'').replace(/Topic$/i,'');
+    s = s.replace(/([a-z])([A-Z])/g,'$1 $2'); /* split camelcase */
+    s = s.replace(/[_\-]+/g,' ').replace(/\s{2,}/g,' ').trim();
+    return s || a;
+  }
+  function cleanTitle(t){
+    var s = safe(t);
+    s = s.replace(/\s*\((Official( Music)? Video|Lyric Video|Audio|Visualizer)\)\s*$/i,'').trim();
+    return s || t;
+  }
+
+  function moonEmoji(dateStr){
+    var d = new Date(dateStr+'T00:00:00Z');
+    var syn = 29.53058867;
+    var base = Date.UTC(2025,0,29);
+    var days = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - base)/86400000;
+    var phase = ((days % syn) + syn) % syn;
+    var idx = Math.floor((phase/syn)*8+0.5)%8;
+    return ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][idx];
+  }
+
+  function extractYouTubeID(u){
+    if(!u) return "";
+    var s = String(u);
+    var m = s.match(/[?&]v=([^&]+)/) || s.match(/youtu\.be\/([^?&]+)/) || s.match(/embed\/([^?&]+)/);
+    return m ? m[1] : "";
+  }
+  function validYT(u){
+    if(!u) return false;
+    var s = String(u).trim();
+    return /^https?:\/\//i.test(s) && /youtube\.com|youtu\.be/i.test(s);
+  }
+  function appleHref(platforms, title, artist){
+    var p = platforms && platforms.AppleMusic;
+    if(p && p.id){ return 'https://music.apple.com/us/album/'+encodeURIComponent(p.id); }
+    var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
+    return 'https://music.apple.com/us/search?term='+qq;
+  }
+  function spotifyHref(platforms, title, artist){
+    var p = platforms && platforms.Spotify;
+    if(p && p.id){ return 'https://open.spotify.com/track/'+encodeURIComponent(p.id); }
+    var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
+    return 'https://open.spotify.com/search/'+qq;
+  }
+
+  function matchRow(row, fig, seed){
+    if(!term) return true;
+    var t = term.toLowerCase();
+    return (
+      (safe(row.title).toLowerCase().indexOf(t)>-1) ||
+      (safe(row.artist).toLowerCase().indexOf(t)>-1) ||
+      (safe(fig).toLowerCase().indexOf(t)>-1) ||
+      (safe(seed).toLowerCase().indexOf(t)>-1)
+    );
+  }
+
+  function buildOrder(){
+    playOrder = [];
+    if(!data || !data.PerDay) return;
+    for (var i=0;i<data.PerDay.length;i++){
+      var base = data.PerDay[i];
+      var laneRow = base[curLane] || {};
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      if(!yt) continue;
+      if(matchRow(laneRow, base.Figure, base.SeedRitual)){
+        playOrder.push(base.Day);
+      }
+    }
+  }
+
+  function updateNow(day, laneRow, dateStr){
+    var t = cleanTitle(safe(laneRow.title));
+    var a = humanArtist(safe(laneRow.artist));
+    elNowTitle.textContent = t;
+    elNowMeta.textContent  = a + ' · Day '+day+' · '+(dateStr||'')+' · '+moonEmoji(dateStr||'');
+  }
+
+  function playByDay(day){
+    if(!data || !data.PerDay) return;
+    var base = data.PerDay[day-1] || {};
+    var laneRow = base[curLane] || {};
+    var pf = laneRow.Platforms || {};
+    var yt = safe(pf.YouTube && pf.YouTube.url);
+    var id = extractYouTubeID(yt);
+    if(!id) return;
+
+    updateNow(day, laneRow, base.Date || '');
+    currentIndex = playOrder.indexOf(day);
+
+    if (player && playerReady){
+      player.loadVideoById(id);
+    } else {
+      queuedId = id;
+    }
+
+    var el = document.getElementById('day-'+day);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
+
+  function playNext(){
+    if(playOrder.length===0) return;
+    currentIndex = (currentIndex + 1) % playOrder.length;       /* wrap to Day 1 */
+    playByDay(playOrder[currentIndex]);
+  }
+  function playPrev(){
+    if(playOrder.length===0) return;
+    currentIndex = (currentIndex - 1 + playOrder.length) % playOrder.length; /* wrap backwards */
+    playByDay(playOrder[currentIndex]);
+  }
+
+  function render(){
+    if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
+    var list = data.PerDay.slice();
+    var rows = [];
+
+    for(var i=0;i<list.length;i++){
+      var base = list[i];
+      var laneRow = base[curLane] || {};
+      if(!laneRow || (!laneRow.title && !laneRow.artist)){ continue; } /* show only days with an entry for this lane */
+      var fig = safe(base.Figure);
+      var seed = safe(base.SeedRitual);
+      if(!matchRow(laneRow, fig, seed)) continue;
+
+      var day = base.Day, date = base.Date;
+      var title = cleanTitle(safe(laneRow.title));
+      var artist = humanArtist(safe(laneRow.artist));
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      var ytOk = validYT(yt);
+
+      var jarHref = JAR_DAY_BASE + encodeURIComponent(date || '');
+
+      rows.push(
+        '<article class="card" id="day-'+day+'">'+
+          '<div class="row">'+
+            '<span class="tag">Day '+day+'</span>'+
+            '<span class="tag mono">'+date+'</span>'+
+            '<span class="tag">'+curLane+'</span>'+
+            '<span class="tag">'+(date?moonEmoji(date):"")+'</span>'+
+            '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
+            '<a class="btn" href="'+jarHref+'" target="_blank" rel="noopener">Jar Day</a>'+
+            '<button class="btn" type="button" data-share="'+day+'">Share</button>'+
+          '</div>'+
+          '<div class="meta">'+
+            '<div class="title">'+title+'</div>'+
+            '<div class="artist">'+artist+'</div>'+
+            (fig?'<div class="muted">Figure: '+fig+'</div>':'')+
+            (seed?'<div class="muted">Seed: '+seed+'</div>':'')+
+            '<div class="platforms">'+
+              (yt ? '<span class="badge ok">YouTube ready</span>' :
+                    '<span class="badge err">YouTube link missing</span>')+
+              '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music</a>'+
+              '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify</a>'+
+            '</div>'+
+            (yt && !ytOk ? '<div class="warn">Please check this YouTube URL.</div>':'')+
+          '</div>'+
+        '</article>'
+      );
+    }
+    elCards.innerHTML = rows.join('');
+    var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
+    var end = data.Cycle && data.Cycle.End ? data.Cycle.End : '—';
+    elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—');
+
+    buildOrder();
+
+    elCards.querySelectorAll('button[data-play]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = +this.getAttribute('data-play');
+        playByDay(d);
+      });
+    });
+    elCards.querySelectorAll('button[data-share]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var d = this.getAttribute('data-share');
+        var u = new URL(location.href);
+        u.searchParams.set('lane', curLane);
+        u.searchParams.set('day', d);
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(u.toString()); }
+        this.textContent = 'Copied!';
+        var self = this; setTimeout(function(){ self.textContent='Share'; }, 1000);
+      });
+    });
+
+    if(startDay && document.getElementById('day-'+startDay)){
+      playByDay(startDay);
+      startDay = null;
+    }
+  }
+
+  function buildDayJump(){
+    if(!data || !data.PerDay) return;
+    var opts = ['<option value="">Jump to day…</option>'];
+    for(var i=0;i<data.PerDay.length;i++){
+      var d = data.PerDay[i].Day || (i+1);
+      opts.push('<option value="'+d+'">Day '+d+'</option>');
+    }
+    elDayJump.innerHTML = opts.join('');
+  }
+  function jumpTo(day){
+    var el = document.getElementById('day-'+day);
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function load(){
+    fetch(src, {cache:'no-store'}).then(function(r){
+      if(!r.ok) throw new Error('Load failed');
+      return r.json();
+    }).then(function(json){
+      data = json;
+      buildDayJump();
+      render();
+      syncHeaderHeight();
+    }).catch(function(){
+      elCards.innerHTML = '';
+      elCycle.textContent = 'Load error';
+    });
+  }
+
+  /* Loop mode (persist) */
+  try{
+    loopMode = localStorage.getItem('tunes.loop') === '1';
+    loopToggle.checked = loopMode;
+  }catch(e){}
+  loopToggle.addEventListener('change', function(){
+    loopMode = !!this.checked;
+    try{ localStorage.setItem('tunes.loop', loopMode ? '1' : '0'); }catch(e){}
   });
-});
+
+  /* YouTube API callback */
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('yt', {
+      width: '100%', height: '100%',
+      playerVars: { rel:0, modestbranding:1, playsinline:1 },
+      events: {
+        onReady: function(){
+          playerReady = true;
+          if(queuedId){ player.loadVideoById(queuedId); queuedId = null; }
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.ENDED){
+            if(loopMode){
+              try{ player.seekTo(0, true); player.playVideo(); }catch(err){}
+            } else {
+              playNext();
+            }
+          }
+        }
+      }
+    });
+  };
+
+  /* Controls */
+  elLaneSel.value = curLane;
+  elSearch.addEventListener('input', function(){ term = this.value.trim(); render(); });
+  elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
+  elLaneSel.addEventListener('change', function(){ curLane = this.value; render(); });
+  prevBtn.addEventListener('click', playPrev);
+  nextBtn.addEventListener('click', playNext);
+  window.addEventListener('keydown', function(e){
+    if(e.altKey && e.key === 'ArrowLeft'){ playPrev(); }
+    if(e.altKey && e.key === 'ArrowRight'){ playNext(); }
+  });
+
+  load();
+})();
 </script>
 </body>
 </html>
