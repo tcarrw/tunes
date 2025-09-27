@@ -1,63 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tunes · Illumina 1</title>
 <meta name="theme-color" content="#0B0F19">
-<meta name="description" content="Illumina 1 playlists with fixed header player. Loads tracks from /data/illumina/1 via manifest.json.">
+<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify links included. Fixed header player, auto‑next or loop current.">
 <style>
   :root{
-    --bg:#0B0F19;--ink:#EAECEF;--muted:#AAB2C0;--line:rgba(234,236,239,.16);
+    --bg:#0B0F19;--ink:#EAECEF;--muted:#B7BECF;--line:rgba(234,236,239,.16);
     --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
     --r:14px;--pad:18px;--maxw:1100px;
     --playerH: clamp(220px, 28vw, 420px);
-    --card:#0F1524;
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;padding-top:calc(var(--playerH) + 110px)}
-  a{color:var(--gold);text-decoration:none} a:hover{text-decoration:underline}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+       padding-top: calc(var(--playerH) + 110px);}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{text-decoration:underline}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
   header{display:grid;gap:8px;margin:6px 0 18px}
   h1{margin:0;font-size:clamp(22px,4.5vw,34px);line-height:1.2}
   .muted{color:var(--muted)}
   .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px;background:rgba(255,255,255,.02)}
-  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
-  select,input[type="text"]{padding:10px 12px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)),var(--card);color:var(--ink);font:inherit}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--ink);font-size:13px;background:rgba(255,255,255,.03)}
+  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
+  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
+  input[type="text"], select{
+    padding:10px 12px;border:1px solid rgba(200,210,230,.38);border-radius:999px;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--ink);font:inherit
+  }
+  select:focus, input[type="text"]:focus{outline:2px solid rgba(164,232,255,.45);outline-offset:2px}
   .grid{display:grid;gap:12px}
   .cards{grid-template-columns:1fr}
   @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
   .card{border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .mono{font-family:ui-monospace,Menlo,Consolas,monaco,Consolas,monospace}
-  .tag{font-size:12px;color:#cfd3db;border:1px dashed var(--line);border-radius:8px;padding:2px 8px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  .tag{font-size:12px;border:1px dashed var(--line);border-radius:8px;padding:2px 8px;color:#cfd3db}
   .title{font-size:17px;font-weight:700;line-height:1.25}
+  .artist{opacity:.9}
   .meta{display:grid;gap:6px;margin-top:8px}
   .platforms{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .play{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:rgba(255,255,255,.03)}
   .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
   .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
   footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
-  .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
 
+  /* Fixed player header */
   .playerbar{position:fixed;left:0;right:0;top:0;z-index:9999;background:rgba(11,15,25,.96);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid var(--line)}
   .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0}
   .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
   @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 260px}}
-  .now{font-size:13px;color:var(--muted)} .now strong{color:#e9ecf3}
+  .now{font-size:13px;color:var(--muted)}
+  .now strong{color:#e9ecf3}
   .frame{position:relative;height:var(--playerH);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
   .frame #yt{position:absolute;inset:0;width:100%;height:100%}
   .controls{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
   .navbtn{display:inline-flex;align-items:center;gap:8px;line-height:1;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
   .navbtn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
-  .switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted)}
+  .switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--ink)}
   .switch input{accent-color:#34D399}
 </style>
 </head>
 <body>
-<script src="/api/config.js"></script>
-
+<!-- Fixed player (always on top; no minimize/fill/full controls) -->
 <div class="playerbar" aria-label="Player">
   <div class="playerwrap">
     <div class="player-row">
@@ -84,31 +91,50 @@
     <div class="bar">
       <span id="cycle" class="pill">Loading…</span>
       <a class="btn" href="/beacon/index.html">Beacon</a>
+      <a class="btn" href="https://mirrorhoney.plnt.earth" target="_blank" rel="noopener">🪞🦋 Mirror Honey</a>
       <label class="pill" for="lane">Lane</label>
-      <select id="lane" aria-label="Choose playlist lane"></select>
+      <select id="lane" aria-label="Choose playlist lane">
+        <option value="AnchorPublic">AnchorPublic</option>
+        <option value="Explainer">Explainer</option>
+        <option value="AnchorBuilt">AnchorBuilt</option>
+      </select>
       <label class="pill" for="search">Search</label>
-      <input id="search" type="text" placeholder="Title, figure, seed…">
+      <input id="search" type="text" placeholder="Title, artist, figure, seed…">
       <select id="dayJump" aria-label="Jump to day"><option value="">Jump to day…</option></select>
     </div>
   </header>
 
   <section id="cards" class="grid cards" aria-live="polite"></section>
 
-  <footer><p>PLNT Earth · Illumina — Tunes</p></footer>
+  <footer>
+    <p>PLNT Earth · Illumina — Tunes</p>
+  </footer>
 </div>
+
+<!-- YouTube Iframe API -->
+<script>
+  (function(){
+    if (window.YT && YT.Player) return;
+    var s = document.createElement('script');
+    s.src = "https://www.youtube.com/iframe_api";
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+</script>
 
 <script>
 (function(){
-  var cfg = (window.ILLUMINA_CONFIG) || {
-    baseUrl:"/data",
-    activeIllumina:1,
-    routes:{ manifest:function(n){return "/data/illumina/"+n+"/manifest.json";}, anchors:"/data/anchors", pollen:"/pollen/index.json" }
-  };
+  var JAR_DAY_BASE = 'https://jar.plnt.earth/day/?date=';
+
   var q = new URLSearchParams(location.search);
-  var prefLane = (q.get('lane')||'anchor-public').toLowerCase();
-  var manifestUrl = (cfg.routes && cfg.routes.manifest) ? cfg.routes.manifest(cfg.activeIllumina) : (cfg.baseUrl+"/illumina/"+cfg.activeIllumina+"/manifest.json");
-  var manifest=null, tracks={}, laneList=[], laneId=prefLane;
-  var data=null, items=[], playOrder=[], currentIndex=-1, player, playerReady=false, queuedId=null, loopMode=false;
+  var src = q.get('src') || '/Illumina1_Playlist_MASTER_3in1.json';
+  var data = null, term = '';
+  var curLane = q.get('lane') || 'AnchorPublic';   /* AnchorPublic is featured by default */
+  var startDay = parseInt(q.get('day')||'',10);
+  var playOrder = [];
+  var currentIndex = -1;
+  var player, playerReady = false, queuedId = null;
+  var loopMode = false;
 
   var elCards = document.getElementById('cards');
   var elCycle = document.getElementById('cycle');
@@ -121,143 +147,290 @@
   var nextBtn = document.getElementById('nextBtn');
   var loopToggle = document.getElementById('loopToggle');
 
-  function ujoin(base, rel){ try{ return new URL(rel, base).href; }catch(e){ return rel; } }
-  function extractYouTubeID(u){ if(!u) return ""; var s=String(u); var m=s.match(/[?&]v=([^&]+)/)||s.match(/youtu\.be\/([^?&]+)/)||s.match(/embed\/([^?&]+)/); return m?m[1]:""; }
-  function validYT(u){ return !!(u && /youtube\.com|youtu\.be/i.test(String(u))); }
-  function moonEmoji(dateStr){ var d=new Date((dateStr||'')+'T00:00:00Z'); var syn=29.53058867; var base=Date.UTC(2025,0,29); var days=(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-base)/86400000; var ph=((days%syn)+syn)%syn; var idx=Math.floor((ph/syn)*8+0.5)%8; return ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][idx]; }
+  /* keep header height in sync (prevents off-screen overflow on rotate) */
+  function syncHeaderHeight(){
+    var bar = document.querySelector('.playerbar');
+    if(!bar) return;
+    var h = bar.getBoundingClientRect().height;
+    document.body.style.paddingTop = Math.ceil(h+8) + 'px';
+  }
+  window.addEventListener('resize', syncHeaderHeight, {passive:true});
+  window.addEventListener('orientationchange', syncHeaderHeight, {passive:true});
+  setTimeout(syncHeaderHeight, 60);
 
-  function renderLaneOptions(){
-    elLaneSel.innerHTML = laneList.map(function(t){ return '<option value="'+t.id+'">'+t.label+'</option>'; }).join('');
-    elLaneSel.value = laneId;
+  function safe(v){ return v==null ? "" : String(v); }
+
+  /* Clean up channel-like artist strings (e.g., SabrinaCarpenterVEVO → Sabrina Carpenter) */
+  function humanArtist(a){
+    var s = safe(a);
+    s = s.replace(/VEVO$/i,'').replace(/VEVO/i,'');
+    s = s.replace(/Official\s*Channel$/i,'').replace(/Official$/i,'').replace(/Topic$/i,'');
+    s = s.replace(/([a-z])([A-Z])/g,'$1 $2'); /* split camelcase */
+    s = s.replace(/[_\-]+/g,' ').replace(/\s{2,}/g,' ').trim();
+    return s || a;
+  }
+  function cleanTitle(t){
+    var s = safe(t);
+    s = s.replace(/\s*\((Official( Music)? Video|Lyric Video|Audio|Visualizer)\)\s*$/i,'').trim();
+    return s || t;
+  }
+
+  function moonEmoji(dateStr){
+    var d = new Date(dateStr+'T00:00:00Z');
+    var syn = 29.53058867;
+    var base = Date.UTC(2025,0,29);
+    var days = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - base)/86400000;
+    var phase = ((days % syn) + syn) % syn;
+    var idx = Math.floor((phase/syn)*8+0.5)%8;
+    return ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][idx];
+  }
+
+  function extractYouTubeID(u){
+    if(!u) return "";
+    var s = String(u);
+    var m = s.match(/[?&]v=([^&]+)/) || s.match(/youtu\.be\/([^?&]+)/) || s.match(/embed\/([^?&]+)/);
+    return m ? m[1] : "";
+  }
+  function validYT(u){
+    if(!u) return false;
+    var s = String(u).trim();
+    return /^https?:\/\//i.test(s) && /youtube\.com|youtu\.be/i.test(s);
+  }
+  function appleHref(platforms, title, artist){
+    var p = platforms && platforms.AppleMusic;
+    if(p && p.id){ return 'https://music.apple.com/us/album/'+encodeURIComponent(p.id); }
+    var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
+    return 'https://music.apple.com/us/search?term='+qq;
+  }
+  function spotifyHref(platforms, title, artist){
+    var p = platforms && platforms.Spotify;
+    if(p && p.id){ return 'https://open.spotify.com/track/'+encodeURIComponent(p.id); }
+    var qq = encodeURIComponent((title||'') + ' ' + (artist||''));
+    return 'https://open.spotify.com/search/'+qq;
+  }
+
+  function matchRow(row, fig, seed){
+    if(!term) return true;
+    var t = term.toLowerCase();
+    return (
+      (safe(row.title).toLowerCase().indexOf(t)>-1) ||
+      (safe(row.artist).toLowerCase().indexOf(t)>-1) ||
+      (safe(fig).toLowerCase().indexOf(t)>-1) ||
+      (safe(seed).toLowerCase().indexOf(t)>-1)
+    );
   }
 
   function buildOrder(){
     playOrder = [];
-    for(var i=0;i<items.length;i++){
-      var it = items[i]||{};
-      var yt = it.urls && it.urls.youtube;
-      if(validYT(yt)) playOrder.push(it.day);
+    if(!data || !data.PerDay) return;
+    for (var i=0;i<data.PerDay.length;i++){
+      var base = data.PerDay[i];
+      var laneRow = base[curLane] || {};
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      if(!yt) continue;
+      if(matchRow(laneRow, base.Figure, base.SeedRitual)){
+        playOrder.push(base.Day);
+      }
     }
   }
 
-  function updateNow(it){
-    elNowTitle.textContent = it.title||'—';
-    elNowMeta.textContent  = 'Day '+(it.day||'–')+' · '+(it.date||'')+' · '+(it.moonPhase||'');
+  function updateNow(day, laneRow, dateStr){
+    var t = cleanTitle(safe(laneRow.title));
+    var a = humanArtist(safe(laneRow.artist));
+    elNowTitle.textContent = t;
+    elNowMeta.textContent  = a + ' · Day '+day+' · '+(dateStr||'')+' · '+moonEmoji(dateStr||'');
   }
 
   function playByDay(day){
-    var it = items.find(function(x){return x.day===day;});
-    if(!it) return;
-    var yt = it.urls && it.urls.youtube || '';
+    if(!data || !data.PerDay) return;
+    var base = data.PerDay[day-1] || {};
+    var laneRow = base[curLane] || {};
+    var pf = laneRow.Platforms || {};
+    var yt = safe(pf.YouTube && pf.YouTube.url);
     var id = extractYouTubeID(yt);
     if(!id) return;
+
+    updateNow(day, laneRow, base.Date || '');
     currentIndex = playOrder.indexOf(day);
-    updateNow(it);
-    if(player && playerReady){ player.loadVideoById(id); } else { queuedId = id; }
+
+    if (player && playerReady){
+      player.loadVideoById(id);
+    } else {
+      queuedId = id;
+    }
+
     var el = document.getElementById('day-'+day);
     if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
   }
-  function playNext(){ if(playOrder.length===0) return; if(currentIndex<0){ currentIndex=0; } else { currentIndex = (currentIndex+1)%playOrder.length; } playByDay(playOrder[currentIndex]); }
-  function playPrev(){ if(playOrder.length===0) return; if(currentIndex<=0){ currentIndex = (playOrder.length-1); } else { currentIndex -= 1; } playByDay(playOrder[currentIndex]); }
 
-  window.onYouTubeIframeAPIReady = function(){
-    player = new YT.Player('yt', {
-      width:'100%', height:'100%', playerVars:{rel:0,modestbranding:1,playsinline:1},
-      events:{
-        onReady:function(){ playerReady=true; if(queuedId){ player.loadVideoById(queuedId); queuedId=null; } },
-        onStateChange:function(e){ if(e.data===YT.PlayerState.ENDED){ if(loopMode){ try{player.seekTo(0,true); player.playVideo();}catch(_){}} else { playNext(); } } }
-      }
-    });
-  };
-
-  (function(){ if(!(window.YT&&YT.Player)){ var s=document.createElement('script'); s.src="https://www.youtube.com/iframe_api"; s.async=true; document.head.appendChild(s);} })();
-
-  try{ loopMode = localStorage.getItem('tunes.loop')==='1'; loopToggle.checked = loopMode; }catch(e){}
-  loopToggle.addEventListener('change', function(){ loopMode = !!this.checked; try{ localStorage.setItem('tunes.loop', loopMode?'1':'0'); }catch(e){} });
+  function playNext(){
+    if(playOrder.length===0) return;
+    currentIndex = (currentIndex + 1) % playOrder.length;       /* wrap to Day 1 */
+    playByDay(playOrder[currentIndex]);
+  }
+  function playPrev(){
+    if(playOrder.length===0) return;
+    currentIndex = (currentIndex - 1 + playOrder.length) % playOrder.length; /* wrap backwards */
+    playByDay(playOrder[currentIndex]);
+  }
 
   function render(){
-    var rows=[], term=(elSearch.value||'').toLowerCase();
-    for(var i=0;i<items.length;i++){
-      var it = items[i];
-      var match = !term || (String(it.title||'').toLowerCase().indexOf(term)>-1) || (String(it.figure||'').toLowerCase().indexOf(term)>-1) || (String(it.seedRitual||'').toLowerCase().indexOf(term)>-1);
-      if(!match) continue;
-      var yt = it.urls && it.urls.youtube;
-      var jar = 'https://jar.plnt.earth/day/?date='+encodeURIComponent(it.date||'')+'&playlist='+encodeURIComponent(laneId);
+    if(!data || !data.PerDay){ elCards.innerHTML=''; elCycle.textContent='No data'; return; }
+    var list = data.PerDay.slice();
+    var rows = [];
+
+    for(var i=0;i<list.length;i++){
+      var base = list[i];
+      var laneRow = base[curLane] || {};
+      if(!laneRow || (!laneRow.title && !laneRow.artist)){ continue; } /* show only days with an entry for this lane */
+      var fig = safe(base.Figure);
+      var seed = safe(base.SeedRitual);
+      if(!matchRow(laneRow, fig, seed)) continue;
+
+      var day = base.Day, date = base.Date;
+      var title = cleanTitle(safe(laneRow.title));
+      var artist = humanArtist(safe(laneRow.artist));
+      var pf = laneRow.Platforms || {};
+      var yt = safe(pf.YouTube && pf.YouTube.url);
+      var ytOk = validYT(yt);
+
+      var jarHref = JAR_DAY_BASE + encodeURIComponent(date || '');
+
       rows.push(
-        '<article class="card" id="day-'+it.day+'">'+
+        '<article class="card" id="day-'+day+'">'+
           '<div class="row">'+
-            '<span class="tag">Day '+it.day+'</span>'+
-            '<span class="tag mono">'+(it.date||'')+'</span>'+
-            '<span class="tag">'+(it.moonPhase||'')+'</span>'+
-            '<button class="btn" type="button" data-play="'+it.day+'">Play</button>'+
-            '<a class="btn" href="'+jar+'" target="_blank" rel="noopener">Jar Day</a>'+
-            '<button class="btn" type="button" data-share="'+it.day+'">Share</button>'+
+            '<span class="tag">Day '+day+'</span>'+
+            '<span class="tag mono">'+date+'</span>'+
+            '<span class="tag">'+curLane+'</span>'+
+            '<span class="tag">'+(date?moonEmoji(date):"")+'</span>'+
+            '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
+            '<a class="btn" href="'+jarHref+'" target="_blank" rel="noopener">Jar Day</a>'+
+            '<button class="btn" type="button" data-share="'+day+'">Share</button>'+
           '</div>'+
           '<div class="meta">'+
-            '<div class="title">'+(it.title||'—')+'</div>'+
-            (it.figure?'<div class="muted">Figure: '+it.figure+'</div>':'')+
-            (it.seedRitual?'<div class="muted">Seed: '+it.seedRitual+'</div>':'')+
+            '<div class="title">'+title+'</div>'+
+            '<div class="artist">'+artist+'</div>'+
+            (fig?'<div class="muted">Figure: '+fig+'</div>':'')+
+            (seed?'<div class="muted">Seed: '+seed+'</div>':'')+
             '<div class="platforms">'+
-              (yt?'<span class="badge ok">YouTube ready</span>':'<span class="badge err">YouTube missing</span>')+
-              '</div>'+
+              (yt ? '<span class="badge ok">YouTube ready</span>' :
+                    '<span class="badge err">YouTube link missing</span>')+
+              '<a class="play" href="'+appleHref(pf, title, artist)+'" target="_blank" rel="noopener"> Apple Music</a>'+
+              '<a class="play" href="'+spotifyHref(pf, title, artist)+'" target="_blank" rel="noopener">Spotify</a>'+
+            '</div>'+
+            (yt && !ytOk ? '<div class="warn">Please check this YouTube URL.</div>':'')+
           '</div>'+
         '</article>'
       );
     }
     elCards.innerHTML = rows.join('');
-    var total = items.length||0;
-    elCycle.textContent = 'Cycle: '+(manifest.dates.start||'—')+' → '+(manifest.dates.end||'—')+' · Days: '+total+'/42';
+    var start = data.Cycle && data.Cycle.Start ? data.Cycle.Start : '—';
+    var end = data.Cycle && data.Cycle.End ? data.Cycle.End : '—';
+    elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+(data.PerDay?data.PerDay.length:'—');
+
     buildOrder();
 
     elCards.querySelectorAll('button[data-play]').forEach(function(b){
-      b.addEventListener('click', function(){ var d=+this.getAttribute('data-play'); playByDay(d); });
+      b.addEventListener('click', function(){
+        var d = +this.getAttribute('data-play');
+        playByDay(d);
+      });
     });
     elCards.querySelectorAll('button[data-share]').forEach(function(b){
       b.addEventListener('click', function(){
-        var d=this.getAttribute('data-share');
-        var u=new URL(location.href); u.searchParams.set('lane', laneId); u.searchParams.set('day', d);
+        var d = this.getAttribute('data-share');
+        var u = new URL(location.href);
+        u.searchParams.set('lane', curLane);
+        u.searchParams.set('day', d);
         if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(u.toString()); }
-        var self=this; this.textContent='Copied!'; setTimeout(function(){ self.textContent='Share'; }, 900);
+        this.textContent = 'Copied!';
+        var self = this; setTimeout(function(){ self.textContent='Share'; }, 1000);
       });
     });
 
-    var startDay = parseInt((new URLSearchParams(location.search)).get('day')||'',10);
-    if(!isNaN(startDay) && document.getElementById('day-'+startDay)){ playByDay(startDay); }
+    if(startDay && document.getElementById('day-'+startDay)){
+      playByDay(startDay);
+      startDay = null;
+    }
   }
 
   function buildDayJump(){
-    var opts=['<option value="">Jump to day…</option>'];
-    for(var i=1;i<=Math.max(42, items.length||0);i++){ opts.push('<option value="'+i+'">Day '+i+'</option>'); }
+    if(!data || !data.PerDay) return;
+    var opts = ['<option value="">Jump to day…</option>'];
+    for(var i=0;i<data.PerDay.length;i++){
+      var d = data.PerDay[i].Day || (i+1);
+      opts.push('<option value="'+d+'">Day '+d+'</option>');
+    }
     elDayJump.innerHTML = opts.join('');
   }
-
-  elSearch.addEventListener('input', render);
-  elDayJump.addEventListener('change', function(){ var v=parseInt(this.value||'',10); var el=document.getElementById('day-'+v); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); });
-  elLaneSel.addEventListener('change', function(){ laneId=this.value; loadLane(); });
-  prevBtn.addEventListener('click', playPrev);
-  nextBtn.addEventListener('click', playNext);
-  window.addEventListener('keydown', function(e){ if(e.altKey && e.key==='ArrowLeft') playPrev(); if(e.altKey && e.key==='ArrowRight') playNext(); });
-  window.addEventListener('resize', function(){ var bar=document.querySelector('.playerbar'); if(!bar) return; document.body.style.paddingTop=Math.ceil(bar.getBoundingClientRect().height+8)+'px'; }, {passive:true});
-  window.addEventListener('orientationchange', function(){ var bar=document.querySelector('.playerbar'); if(!bar) return; document.body.style.paddingTop=Math.ceil(bar.getBoundingClientRect().height+8)+'px'; }, {passive:true});
-
-  function findTrack(id){ var t=(manifest.tracks||[]).find(function(x){return x.id===id;}); return t? ujoin(manifestUrl, t.path) : null; }
-
-  function loadLane(){
-    var url = findTrack(laneId);
-    if(!url){ items=[]; render(); return; }
-    fetch(url,{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){
-      data=j||{}; items=Array.isArray(data.items)?data.items.slice(0):[]; buildDayJump(); render();
-    }).catch(function(){ items=[]; render(); });
+  function jumpTo(day){
+    var el = document.getElementById('day-'+day);
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
-  fetch(manifestUrl,{cache:'no-store'}).then(function(r){return r.json()}).then(function(m){
-    manifest=m||{dates:{start:'',end:'',days:42},tracks:[]};
-    laneList=(manifest.tracks||[]).map(function(t){ return {id:t.id,label:(t.label||t.id)}; });
-    if(!laneList.length){ laneList=[{id:'anchor-public',label:'AnchorPublic'}]; }
-    if(!laneList.some(function(t){return t.id===laneId;})){ laneId=(laneList.find(function(t){return t.id==='anchor-public';})||laneList[0]).id; }
-    renderLaneOptions();
-    loadLane();
+  function load(){
+    fetch(src, {cache:'no-store'}).then(function(r){
+      if(!r.ok) throw new Error('Load failed');
+      return r.json();
+    }).then(function(json){
+      data = json;
+      buildDayJump();
+      render();
+      syncHeaderHeight();
+    }).catch(function(){
+      elCards.innerHTML = '';
+      elCycle.textContent = 'Load error';
+    });
+  }
+
+  /* Loop mode (persist) */
+  try{
+    loopMode = localStorage.getItem('tunes.loop') === '1';
+    loopToggle.checked = loopMode;
+  }catch(e){}
+  loopToggle.addEventListener('change', function(){
+    loopMode = !!this.checked;
+    try{ localStorage.setItem('tunes.loop', loopMode ? '1' : '0'); }catch(e){}
   });
+
+  /* YouTube API callback */
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('yt', {
+      width: '100%', height: '100%',
+      playerVars: { rel:0, modestbranding:1, playsinline:1 },
+      events: {
+        onReady: function(){
+          playerReady = true;
+          if(queuedId){ player.loadVideoById(queuedId); queuedId = null; }
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.ENDED){
+            if(loopMode){
+              try{ player.seekTo(0, true); player.playVideo(); }catch(err){}
+            } else {
+              playNext();
+            }
+          }
+        }
+      }
+    });
+  };
+
+  /* Controls */
+  elLaneSel.value = curLane;
+  elSearch.addEventListener('input', function(){ term = this.value.trim(); render(); });
+  elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
+  elLaneSel.addEventListener('change', function(){ curLane = this.value; render(); });
+  prevBtn.addEventListener('click', playPrev);
+  nextBtn.addEventListener('click', playNext);
+  window.addEventListener('keydown', function(e){
+    if(e.altKey && e.key === 'ArrowLeft'){ playPrev(); }
+    if(e.altKey && e.key === 'ArrowRight'){ playNext(); }
+  });
+
+  load();
 })();
 </script>
 </body>
