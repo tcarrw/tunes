@@ -2,7 +2,7 @@
   "illumina": 1,
   "trackId": "anchor-public",
   "label": "AnchorPublic",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "items": [
     {
       "day": 1,
@@ -21,7 +21,7 @@
     {
       "day": 2,
       "date": "2025-11-06",
-      "moonPhase": "🌖 Waning Gibbous",
+      "moonPhase": "🌕 Full Moon",
       "title": "Sabrina Carpenter - Feather (Official Video)",
       "figure": "",
       "seedRitual": "",
@@ -77,12 +77,12 @@
     {
       "day": 6,
       "date": "2025-11-10",
-      "moonPhase": "🌗 Last Quarter",
-      "title": "Mac Miller - Dang! (feat. Anderson .Paak)",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Marina & the Diamonds - I Am Not a Robot",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=LR3GQfryp9M",
+        "youtube": "https://www.youtube.com/watch?v=S_oMD6-6q5Y",
         "appleMusic": null,
         "spotify": null
       },
@@ -105,7 +105,7 @@
     {
       "day": 8,
       "date": "2025-11-12",
-      "moonPhase": "🌘 Waning Crescent",
+      "moonPhase": "🌗 Last Quarter",
       "title": "Doechii - Crazy (Official Video)",
       "figure": "",
       "seedRitual": "",
@@ -119,7 +119,7 @@
     {
       "day": 9,
       "date": "2025-11-13",
-      "moonPhase": "🌘 Waning Crescent",
+      "moonPhase": "🌗 Last Quarter",
       "title": "La La Land (2016 Movie) Official Clip – “City Of Stars”",
       "figure": "",
       "seedRitual": "",
@@ -147,7 +147,7 @@
     {
       "day": 11,
       "date": "2025-11-15",
-      "moonPhase": "🌑 New Moon",
+      "moonPhase": "🌘 Waning Crescent",
       "title": "AURORA - The Seed (Audio)",
       "figure": "",
       "seedRitual": "",
@@ -161,7 +161,7 @@
     {
       "day": 12,
       "date": "2025-11-16",
-      "moonPhase": "🌒 Waxing Crescent",
+      "moonPhase": "🌘 Waning Crescent",
       "title": "Chappell Roan - HOT TO GO! (Official Music Video)",
       "figure": "",
       "seedRitual": "",
@@ -175,7 +175,7 @@
     {
       "day": 13,
       "date": "2025-11-17",
-      "moonPhase": "🌒 Waxing Crescent",
+      "moonPhase": "🌘 Waning Crescent",
       "title": "Mac Miller - Good News",
       "figure": "",
       "seedRitual": "",
@@ -189,7 +189,7 @@
     {
       "day": 14,
       "date": "2025-11-18",
-      "moonPhase": "🌒 Waxing Crescent",
+      "moonPhase": "🌑 New Moon",
       "title": "Brian Eno - An Ending (Ascent) (Remastered 2019)",
       "figure": "",
       "seedRitual": "",
@@ -203,7 +203,7 @@
     {
       "day": 15,
       "date": "2025-11-19",
-      "moonPhase": "🌓 First Quarter",
+      "moonPhase": "🌑 New Moon",
       "title": "Eminem - White America (Official Music Video)",
       "figure": "",
       "seedRitual": "",
@@ -217,7 +217,7 @@
     {
       "day": 16,
       "date": "2025-11-20",
-      "moonPhase": "🌔 Waxing Gibbous",
+      "moonPhase": "🌑 New Moon",
       "title": "Sophie Ellis-Bextor - Murder On The Dancefloor",
       "figure": "",
       "seedRitual": "",
@@ -231,12 +231,12 @@
     {
       "day": 17,
       "date": "2025-11-21",
-      "moonPhase": "🌔 Waxing Gibbous",
-      "title": "Billie Eilish - all the good girls go to hell (Official Music Video)",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "Oasis - Wonderwall (Official Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=-PZsSWwc9xA",
+        "youtube": "https://www.youtube.com/watch?v=bx1Bh8ZvH84",
         "appleMusic": null,
         "spotify": null
       },
@@ -245,12 +245,12 @@
     {
       "day": 18,
       "date": "2025-11-22",
-      "moonPhase": "🌔 Waxing Gibbous",
-      "title": "Mac Miller - Blue World",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "Coldplay - Fix You (Official Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=_GC2wFTCAGY",
+        "youtube": "https://www.youtube.com/watch?v=k4V3Mo61fJM",
         "appleMusic": null,
         "spotify": null
       },
@@ -259,12 +259,12 @@
     {
       "day": 19,
       "date": "2025-11-23",
-      "moonPhase": "🌔 Waxing Gibbous",
-      "title": "Sabrina Carpenter - Nonsense (Official Video)",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "Beyoncé - Halo (Official Music Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=YcSP1ZUf1eQ",
+        "youtube": "https://www.youtube.com/watch?v=bnVUHWCynig",
         "appleMusic": null,
         "spotify": null
       },
@@ -273,12 +273,12 @@
     {
       "day": 20,
       "date": "2025-11-24",
-      "moonPhase": "🌕 Full Moon",
-      "title": "Audition (The Fools Who Dream)",
+      "moonPhase": "🌒 Waxing Crescent",
+      "title": "The Beatles - Here Comes The Sun (2019 Mix)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=XCf_kdmmVNE",
+        "youtube": "https://www.youtube.com/watch?v=KQetemT1sWc",
         "appleMusic": null,
         "spotify": null
       },
@@ -287,12 +287,12 @@
     {
       "day": 21,
       "date": "2025-11-25",
-      "moonPhase": "🌕 Full Moon",
-      "title": "Max Richter - On The Nature Of Daylight (Official Video)",
+      "moonPhase": "🌓 First Quarter",
+      "title": "David Bowie - Starman (Official Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=InyT9Gyoz_o",
+        "youtube": "https://www.youtube.com/watch?v=t365MuktYQs",
         "appleMusic": null,
         "spotify": null
       },
@@ -301,12 +301,12 @@
     {
       "day": 22,
       "date": "2025-11-26",
-      "moonPhase": "🌖 Waning Gibbous",
-      "title": "Bella Ciao Full Song | La Casa De Papel | Money Heist | Netflix India",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "David Bowie – Space Oddity (Official Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=46cXFUzR9XM",
+        "youtube": "https://www.youtube.com/watch?v=iYYRH4apXDo",
         "appleMusic": null,
         "spotify": null
       },
@@ -315,12 +315,12 @@
     {
       "day": 23,
       "date": "2025-11-27",
-      "moonPhase": "🌖 Waning Gibbous",
-      "title": "Doechii - Yucky Blucky Fruitcake (Official Music Video)",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "The Beatles - Across The Universe (Official Music Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=8qnOpJfFfpU",
+        "youtube": "https://www.youtube.com/watch?v=jfVOmE1yoRo",
         "appleMusic": null,
         "spotify": null
       },
@@ -329,12 +329,12 @@
     {
       "day": 24,
       "date": "2025-11-28",
-      "moonPhase": "🌖 Waning Gibbous",
-      "title": "The Avalanches - Because I'm Me (Official Video)",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "Sleeping At Last - \"Saturn\" (Official Music Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=eu0KsZ_MVBc",
+        "youtube": "https://www.youtube.com/watch?v=dzNvk80XY9s",
         "appleMusic": null,
         "spotify": null
       },
@@ -343,12 +343,12 @@
     {
       "day": 25,
       "date": "2025-11-29",
-      "moonPhase": "🌖 Waning Gibbous",
-      "title": "Mac Miller - Weekend (feat. Miguel)",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "David Bowie – Life On Mars? (Official Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
-        "youtube": "https://www.youtube.com/watch?v=N29-54dhVHg",
+        "youtube": "https://www.youtube.com/watch?v=AZKcl4-tcuo",
         "appleMusic": null,
         "spotify": null
       },
@@ -357,8 +357,8 @@
     {
       "day": 26,
       "date": "2025-11-30",
-      "moonPhase": "🌖 Waning Gibbous",
-      "title": "Lady Gaga - Always Remember Us This Way (from A Star Is Born) (Official Music Video)",
+      "moonPhase": "🌔 Waxing Gibbous",
+      "title": "Lady Gaga - Always Remember Us This Way",
       "figure": "",
       "seedRitual": "",
       "urls": {
@@ -385,7 +385,7 @@
     {
       "day": 28,
       "date": "2025-12-02",
-      "moonPhase": "🌘 Waning Crescent",
+      "moonPhase": "🌔 Waxing Gibbous",
       "title": "Muse - Uprising [Official Video]",
       "figure": "",
       "seedRitual": "",
@@ -399,7 +399,7 @@
     {
       "day": 29,
       "date": "2025-12-03",
-      "moonPhase": "🌘 Waning Crescent",
+      "moonPhase": "🌕 Full Moon",
       "title": "Dua Lipa - Don't Start Now (Official Music Video)",
       "figure": "",
       "seedRitual": "",
@@ -413,8 +413,8 @@
     {
       "day": 30,
       "date": "2025-12-04",
-      "moonPhase": "🌘 Waning Crescent",
-      "title": "Eminem - The Way I Am (Official Video) | #VEVOCertified",
+      "moonPhase": "🌕 Full Moon",
+      "title": "Eminem - The Way I Am (Official Video)",
       "figure": "",
       "seedRitual": "",
       "urls": {
@@ -427,7 +427,7 @@
     {
       "day": 31,
       "date": "2025-12-05",
-      "moonPhase": "🌑 New Moon",
+      "moonPhase": "🌕 Full Moon",
       "title": "Mac Miller - 2009",
       "figure": "",
       "seedRitual": "",
@@ -441,8 +441,8 @@
     {
       "day": 32,
       "date": "2025-12-06",
-      "moonPhase": "🌒 Waxing Crescent",
-      "title": "Easy A (2010) - A Pocketful of Sunshine Scene (1/10) | Movieclips",
+      "moonPhase": "🌖 Waning Gibbous",
+      "title": "Easy A (2010) - A Pocketful of Sunshine Scene (1/10)",
       "figure": "",
       "seedRitual": "",
       "urls": {
@@ -455,7 +455,7 @@
     {
       "day": 33,
       "date": "2025-12-07",
-      "moonPhase": "🌒 Waxing Crescent",
+      "moonPhase": "🌖 Waning Gibbous",
       "title": "Sabrina Carpenter - Espresso",
       "figure": "",
       "seedRitual": "",
@@ -469,7 +469,7 @@
     {
       "day": 34,
       "date": "2025-12-08",
-      "moonPhase": "🌒 Waxing Crescent",
+      "moonPhase": "🌖 Waning Gibbous",
       "title": "The Avalanches - Since I Left You",
       "figure": "",
       "seedRitual": "",
@@ -483,7 +483,7 @@
     {
       "day": 35,
       "date": "2025-12-09",
-      "moonPhase": "🌓 First Quarter",
+      "moonPhase": "🌖 Waning Gibbous",
       "title": "Solidarity Forever",
       "figure": "",
       "seedRitual": "",
@@ -497,7 +497,7 @@
     {
       "day": 36,
       "date": "2025-12-10",
-      "moonPhase": "🌔 Waxing Gibbous",
+      "moonPhase": "🌗 Last Quarter",
       "title": "Doechii- Spookie Coochie (Official Music Video)",
       "figure": "",
       "seedRitual": "",
@@ -511,7 +511,7 @@
     {
       "day": 37,
       "date": "2025-12-11",
-      "moonPhase": "🌔 Waxing Gibbous",
+      "moonPhase": "🌗 Last Quarter",
       "title": "Mac Miller - Self Care",
       "figure": "",
       "seedRitual": "",
@@ -525,7 +525,7 @@
     {
       "day": 38,
       "date": "2025-12-12",
-      "moonPhase": "🌔 Waxing Gibbous",
+      "moonPhase": "🌗 Last Quarter",
       "title": "Daft Punk - One More Time (Official Video)",
       "figure": "",
       "seedRitual": "",
@@ -539,7 +539,7 @@
     {
       "day": 39,
       "date": "2025-12-13",
-      "moonPhase": "🌕 Full Moon",
+      "moonPhase": "🌗 Last Quarter",
       "title": "Hozier - Take Me To Church",
       "figure": "",
       "seedRitual": "",
@@ -553,7 +553,7 @@
     {
       "day": 40,
       "date": "2025-12-14",
-      "moonPhase": "🌕 Full Moon",
+      "moonPhase": "🌘 Waning Crescent",
       "title": "Eminem - Without Me (Official Music Video)",
       "figure": "",
       "seedRitual": "",
