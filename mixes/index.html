@@ -11,20 +11,40 @@
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui}
   .wrap{max-width:760px;margin:0 auto;padding:24px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  ul{list-style:none;padding:0;margin:1rem 0} li{margin:.5rem 0}
+  ul{list-style:none;padding:0;margin:1rem 0} li{margin:.75rem 0}
+  small{color:var(--muted)}
   .pill{display:inline-block;margin-bottom:8px;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;color:var(--muted);font-size:13px}
+  .meta{display:block;margin-top:4px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>🎧 Mixes</h1>
   <div class="pill" id="seedChip">Seed: —</div>
+
   <ul>
-    <li><a id="nk" href="/mixes/nokings/">☀️ No Kings Day</a> <small>— Marina × Sabrina × Doechii</small></li>
-    <li><a id="ap" href="/mixes/anchorpublic/">Anchor Public</a></li>
-    <li><a id="ab" href="/mixes/anchorbuilt/">Anchor Built</a></li>
-    <li><a id="ex" href="/mixes/explainer/">Explainer</a></li>
+    <li>
+      <a id="nk" href="/mixes/nokings/">☀️ No Kings Day</a>
+      <small class="meta">Marina × Sabrina × Doechii</small>
+      <!-- No JSON for concept mix -->
+    </li>
+
+    <li>
+      <a id="ex" href="/mixes/explainer/">Explainer</a>
+      <small class="meta">Data: <a href="https://tunes.plnt.earth/data/illumina/1/tracks/explainer.json" target="_blank" rel="noopener">explainer.json</a></small>
+    </li>
+
+    <li>
+      <a id="ap" href="/mixes/anchorpublic/">Anchor Public</a>
+      <small class="meta">Data: <a href="https://tunes.plnt.earth/data/illumina/1/tracks/anchor-public.json" target="_blank" rel="noopener">anchor-public.json</a></small>
+    </li>
+
+    <li>
+      <a id="ab" href="/mixes/anchorbuilt/">Anchor Built</a>
+      <small class="meta">Data: <a href="https://tunes.plnt.earth/data/illumina/1/tracks/anchor-built.json" target="_blank" rel="noopener">anchor-built.json</a></small>
+    </li>
   </ul>
+
   <p><a href="/">← Back to Tunes</a></p>
 </div>
 <script>
@@ -32,9 +52,10 @@
   var map={apple:"#FAD02C",pumpkin:"#FF8A3D",cumin:"#D0A15F",cinnamon:"#D66A4E",clove:"#B55B3A",fennel:"#7DE2A7",cardamom:"#C7B3FF"};
   var key=(localStorage.getItem("tunes_seed")||"apple").toLowerCase(); if(!map[key]) key="apple";
   document.documentElement.style.setProperty("--accent", map[key]);
-  var q="?seed="+encodeURIComponent(key);
-  var ids=["nk","ap","ab","ex"]; for(var i=0;i<ids.length;i++){ var a=document.getElementById(ids[i]); if(a){ a.href=a.pathname+q; } }
   var chip=document.getElementById("seedChip"); if(chip){ chip.textContent="Seed: "+key.charAt(0).toUpperCase()+key.slice(1); }
+  // keep seed param on internal links
+  var q="?seed="+encodeURIComponent(key);
+  ["nk","ex","ap","ab"].forEach(function(id){var a=document.getElementById(id); if(a){ a.href=a.pathname+q; }});
 })();
 </script>
 </body>
