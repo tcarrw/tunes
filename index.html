@@ -3,56 +3,369 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tunes — Sonic Layer</title>
-<meta name="description" content="Tunes pairs music with training. New: blend hum layers (A2→A3→E3) under your pop tracks for Voice & Resonance.">
-<link rel="canonical" href="https://tunes.plnt.earth/">
-<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
-<meta property="og:title" content="Tunes — Sonic Layer">
-<meta property="og:description" content="Blend hum layers with Marina/Sabrina/Doechii tracks to stabilize your voice.">
-<meta property="og:url" content="https://tunes.plnt.earth/">
-<meta property="og:type" content="website">
+<title>Tunes — Illumina Day Player</title>
+<meta name="description" content="Day-indexed player for Illumina playlists. Inhale the day, exhale the song.">
 <meta name="theme-color" content="#0B0F19">
 <style>
-  :root{--bg:#0B0F19;--ink:#E6EAF2;--muted:#A7B0C2;--card:#101728;--line:rgba(230,234,242,.14);--hi:#A4E8FF}
-  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto}
-  .wrap{max-width:900px;margin:0 auto;padding:24px} a{color:var(--hi);text-decoration:none}
-  header h1{margin:0 0 6px;font-size:22px} .sub{color:var(--muted)}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
-  .grid{display:grid;gap:12px} @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
-  footer{margin-top:24px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
-  .cta{display:inline-flex;gap:8px;align-items:center;background:#0E1423;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  :root{
+    --bg:#0B0F19;--ink:#E6EAF2;--muted:#9BA7BD;--line:rgba(255,255,255,.12);--card:#0F1524;--hi:#A4E8FF;--accent:#34D399;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg) 70%,rgba(11,15,25,0.8));border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+  .player{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px}
+  .btn{appearance:none;border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px 12px;border-radius:12px;cursor:pointer}
+  .btn:hover{border-color:var(--muted)}
+  .btn.primary{border-color:var(--accent);color:#0B0F19;background:var(--accent)}
+  .title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+  .controls{display:flex;gap:8px;align-items:center}
+  .now{display:flex;gap:12px;align-items:center;min-width:0}
+  .thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#222}
+  .ui{display:flex;flex-wrap:wrap;gap:10px;padding:8px 16px 16px}
+  .chip{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);padding:6px 10px;border-radius:999px}
+  select, input[type="number"]{background:#0c1220;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+  label{color:var(--muted);font-size:13px}
+  main{padding:18px 16px}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  @media (max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:640px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center}
+  .card .t{font-weight:600;line-height:1.35}
+  .card .meta{color:var(--muted);font-size:13px;margin-top:2px}
+  .card .go{justify-self:end}
+  .empty{opacity:.8;color:var(--muted);text-align:center;padding:40px 0;border:1px dashed var(--line);border-radius:16px}
+  .iframeWrap{display:none}
+  .audioWrap{display:none}
+  .hidden{display:none}
+  .badge{font-size:12px;color:#0B0F19;background:var(--hi);padding:2px 8px;border-radius:999px;margin-left:8px}
+  .sectionTitle{font-weight:700;margin:6px 0 10px}
 </style>
-<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Tunes — Sonic Layer</h1>
-    <div class="sub">Curated playlists for Illumina skills. Blend guided hums under pop to train body and voice.</div>
-  </header>
+<header>
+  <div class="player wrap">
+    <div class="controls">
+      <button class="btn" id="prev" aria-label="Previous">◀</button>
+      <button class="btn primary" id="play" aria-label="Play/Pause">▶</button>
+      <button class="btn" id="next" aria-label="Next">▶▶</button>
+    </div>
+    <div class="now">
+      <img class="thumb" id="nowThumb" alt="">
+      <div class="title" id="nowTitle">Select a track…</div>
+      <span class="badge" id="nowBadge">Day ?</span>
+    </div>
+    <div class="controls">
+      <button class="btn" id="todayBtn" title="Jump to today">Today</button>
+    </div>
+  </div>
+  <div class="ui wrap">
+    <div class="chip">
+      <label for="daySel">Day</label>
+      <input id="daySel" type="number" min="1" max="42" value="1" style="width:68px">
+    </div>
+    <div class="chip">
+      <label><input id="autoDay" type="checkbox" checked> Auto-day</label>
+    </div>
+    <div class="chip">
+      <label><input id="useExplainer" type="checkbox" checked> Explainer</label>
+    </div>
+    <div class="chip">
+      <label><input id="useAnchorPublic" type="checkbox" checked> Anchor Public</label>
+    </div>
+    <div class="chip">
+      <label><input id="useAnchorBuilt" type="checkbox" checked> Anchor Built</label>
+    </div>
+    <div class="chip">
+      <label><input id="autoplay" type="checkbox" checked> Autoplay</label>
+    </div>
+  </div>
+</header>
 
-  <main class="grid">
-    <section class="card">
-      <h2>Voice &amp; Resonance — Dual Mix</h2>
-      <p>Listen while you practice. Keep your songs in <strong>key A</strong> where possible; layer hums A2→A3→E3 quietly under the track.</p>
-      <p><a class="cta" href="https://froot.plnt.earth/voice/">Open the Voice skill →</a></p>
-      <p class="sub">Tip: Start the tonic (A2) around −20 dB, add A3 lightly, then the fifth (E3). If the song clashes, lower or mute the fifth.</p>
-    </section>
+<main class="wrap">
+  <div class="sectionTitle">Today’s Queue</div>
+  <div id="list" class="grid"></div>
+  <div id="empty" class="empty hidden">No tracks for this day with the current filters.</div>
 
-    <section class="card">
-      <h2>Playlists</h2>
-      <ul>
-        <li>Illumina 1 — Explainer</li>
-        <li>Illumina 1 — Anchor Public</li>
-        <li>Illumina 1 — Anchor Built</li>
-      </ul>
-      <p class="sub">We don’t embed third-party players here; open your service in a separate tab and use the hums on the Voice page to mix.</p>
-    </section>
-  </main>
+  <div class="iframeWrap" id="ytWrap">
+    <iframe id="yt" width="100%" height="420" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <div class="audioWrap" id="audioWrap">
+    <audio id="audio" controls style="width:100%"></audio>
+  </div>
+</main>
 
-  <footer>
-    Network: <a href="https://jar.plnt.earth/">Jar</a> • <a href="https://froot.plnt.earth/">Froot</a> • <a href="https://quietmoon.plnt.earth/">Quiet Moon</a>
-  </footer>
-</div>
+<script>
+(function(){
+  var START_ISO = '2025-11-05T00:00:00-05:00';
+  var CYCLE_DAYS = 42;
+  var sources = [
+    { key:'explainer', label:'Explainer', path:'/data/illumina/1/tracks/explainer.json', toggleId:'useExplainer', order:1 },
+    { key:'anchor-public', label:'Anchor Public', path:'/data/illumina/1/tracks/anchor-public.json', toggleId:'useAnchorPublic', order:2 },
+    { key:'anchor-built', label:'Anchor Built', path:'/data/illumina/1/tracks/anchor-built.json', toggleId:'useAnchorBuilt', order:3 }
+  ];
+  var state = {
+    day: 1,
+    autoDay: true,
+    autoplay: true,
+    data: {},
+    queue: [],
+    idx: -1
+  };
+
+  var daySel = document.getElementById('daySel');
+  var autoDay = document.getElementById('autoDay');
+  var autoplay = document.getElementById('autoplay');
+  var todayBtn = document.getElementById('todayBtn');
+  var list = document.getElementById('list');
+  var empty = document.getElementById('empty');
+  var nowTitle = document.getElementById('nowTitle');
+  var nowThumb = document.getElementById('nowThumb');
+  var nowBadge = document.getElementById('nowBadge');
+  var prevBtn = document.getElementById('prev');
+  var playBtn = document.getElementById('play');
+  var nextBtn = document.getElementById('next');
+  var ytWrap = document.getElementById('ytWrap');
+  var yt = document.getElementById('yt');
+  var audioWrap = document.getElementById('audioWrap');
+  var audio = document.getElementById('audio');
+
+  function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
+  function todayIlluminaDay(){
+    var start = new Date(START_ISO).getTime();
+    var now = new Date().getTime();
+    var d = Math.floor((now - start)/86400000)+1;
+    return clamp(d,1,CYCLE_DAYS);
+  }
+
+  function hrefIsYouTube(u){return /youtube\.com|youtu\.be/i.test(u||'')}
+  function ytVideoId(u){
+    if(!u) return '';
+    var m1 = u.match(/[?&]v=([^&]+)/); if(m1) return m1[1];
+    var m2 = u.match(/youtu\.be\/([^?&]+)/); if(m2) return m2[1];
+    var m3 = u.match(/embed\/([^?&]+)/); if(m3) return m3[1];
+    return '';
+  }
+
+  function norm(x){
+    var o = {
+      day: Number(x.day || x.Day || x.index || x.d || 0),
+      title: (x.title || x.name || '').toString(),
+      artist: (x.artist || x.by || '').toString(),
+      url: (x.url || x.link || x.src || '').toString(),
+      thumb: (x.thumb || x.thumbnail || x.image || ''),
+      source: (x.source || x.playlist || ''),
+      desc: (x.description || x.desc || '')
+    };
+    return o;
+  }
+
+  function fetchJSON(path){
+    return fetch(path,{headers:{'Accept':'application/json'}}).then(function(r){
+      if(!r.ok) return [];
+      return r.json();
+    }).catch(function(){ return []; });
+  }
+
+  function loadAll(){
+    var ps = sources.map(function(s){
+      return fetchJSON(s.path).then(function(arr){ state.data[s.key] = Array.isArray(arr)?arr.map(norm):[]; });
+    });
+    Promise.all(ps).then(function(){
+      initDayFromMode();
+      rebuildQueue();
+      renderQueue();
+      if(state.queue.length){ selectIndex(0,true); }
+    });
+  }
+
+  function initDayFromMode(){
+    if(state.autoDay){ state.day = todayIlluminaDay(); }
+    state.day = clamp(state.day,1,CYCLE_DAYS);
+    daySel.value = state.day;
+    nowBadge.textContent = 'Day ' + state.day;
+  }
+
+  function activeSources(){
+    return sources.filter(function(s){
+      var el = document.getElementById(s.toggleId);
+      return el && el.checked;
+    });
+  }
+
+  function rebuildQueue(){
+    var day = state.day;
+    var active = activeSources().sort(function(a,b){ return a.order - b.order; });
+    var seen = {};
+    var q = [];
+    active.forEach(function(s){
+      var arr = state.data[s.key] || [];
+      arr.forEach(function(t){
+        if(Number(t.day)===Number(day)){
+          var key = (t.url||'') + '|' + (t.title||'');
+          if(!seen[key]){ seen[key]=1; q.push({track:t, sourceKey:s.key, order:s.order}); }
+        }
+      });
+    });
+    state.queue = q;
+    state.idx = q.length?0:-1;
+  }
+
+  function cleanTitle(t){
+    var x = t.trim();
+    x = x.replace(/\s*\|\s*.*$/,'');
+    x = x.replace(/\s*—\s*Channel:.*/i,'');
+    x = x.replace(/\s*\(Official Video\)/i,'');
+    return x;
+  }
+
+  function renderQueue(){
+    list.innerHTML = '';
+    if(!state.queue.length){
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+    state.queue.forEach(function(q, i){
+      var t = q.track;
+      var card = document.createElement('div');
+      card.className = 'card';
+      var img = document.createElement('img');
+      img.className = 'thumb';
+      img.alt = '';
+      img.src = t.thumb || (hrefIsYouTube(t.url) && ytVideoId(t.url) ? 'https://i.ytimg.com/vi/'+ytVideoId(t.url)+'/hqdefault.jpg' : '');
+      var box = document.createElement('div');
+      var title = document.createElement('div');
+      title.className = 't';
+      var displayTitle = cleanTitle(t.title || '');
+      var artist = t.artist ? (' — ' + t.artist) : '';
+      title.textContent = displayTitle + artist;
+      var meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = 'Day ' + (t.day||'?') + ' • ' + (q.sourceKey.replace('-', ' '));
+      var go = document.createElement('button');
+      go.className = 'btn go';
+      go.textContent = 'Play';
+      go.onclick = function(){ selectIndex(i,true); };
+      box.appendChild(title);
+      box.appendChild(meta);
+      card.appendChild(img);
+      card.appendChild(box);
+      card.appendChild(go);
+      list.appendChild(card);
+    });
+  }
+
+  function showYouTube(id, auto){
+    audioWrap.style.display = 'none';
+    audio.pause();
+    ytWrap.style.display = 'block';
+    var url = 'https://www.youtube.com/embed/'+id+'?rel=0&modestbranding=1&playsinline=1' + (auto?'&autoplay=1':'');
+    yt.src = url;
+  }
+
+  function showAudio(src, auto){
+    ytWrap.style.display = 'none';
+    yt.src = '';
+    audioWrap.style.display = 'block';
+    audio.src = src;
+    if(auto){ audio.play().catch(function(){}); }
+  }
+
+  function updateNowUI(t){
+    var imgSrc = t.thumb || (hrefIsYouTube(t.url) && ytVideoId(t.url) ? 'https://i.ytimg.com/vi/'+ytVideoId(t.url)+'/hqdefault.jpg' : '');
+    nowThumb.src = imgSrc || '';
+    var displayTitle = cleanTitle(t.title || '');
+    var artist = t.artist ? (' — ' + t.artist) : '';
+    nowTitle.textContent = displayTitle + artist;
+    nowBadge.textContent = 'Day ' + (t.day||'?');
+  }
+
+  function selectIndex(i, auto){
+    if(i<0 || i>=state.queue.length) return;
+    state.idx = i;
+    var t = state.queue[i].track;
+    updateNowUI(t);
+    if(hrefIsYouTube(t.url)){
+      var id = ytVideoId(t.url);
+      showYouTube(id, auto && state.autoplay);
+      playBtn.textContent = '⏸';
+    }else{
+      showAudio(t.url, auto && state.autoplay);
+      playBtn.textContent = '⏸';
+    }
+  }
+
+  function playPause(){
+    var cur = state.queue[state.idx]; if(!cur) return;
+    var t = cur.track;
+    if(hrefIsYouTube(t.url)){
+      var src = yt.src || '';
+      if(src.indexOf('autoplay=1')>-1){
+        yt.src = yt.src.replace('autoplay=1','autoplay=0');
+        playBtn.textContent = '▶';
+      }else{
+        yt.src = yt.src + (yt.src.indexOf('?')>-1?'&':'?') + 'autoplay=1';
+        playBtn.textContent = '⏸';
+      }
+    }else{
+      if(audio.paused){ audio.play().catch(function(){}); playBtn.textContent='⏸'; }
+      else { audio.pause(); playBtn.textContent='▶'; }
+    }
+  }
+
+  function next(){ if(state.queue.length){ var ni = (state.idx+1)%state.queue.length; selectIndex(ni,true); } }
+  function prev(){ if(state.queue.length){ var pi = (state.idx-1+state.queue.length)%state.queue.length; selectIndex(pi,true); } }
+
+  daySel.addEventListener('change', function(){
+    state.day = clamp(Number(daySel.value||1),1,CYCLE_DAYS);
+    state.autoDay = false;
+    autoDay.checked = false;
+    nowBadge.textContent = 'Day ' + state.day;
+    rebuildQueue(); renderQueue();
+    if(state.queue.length){ selectIndex(0,true); } else { yt.src=''; audio.pause(); nowTitle.textContent='No selection'; }
+  });
+
+  autoDay.addEventListener('change', function(){
+    state.autoDay = !!autoDay.checked;
+    if(state.autoDay){
+      initDayFromMode();
+      rebuildQueue(); renderQueue();
+      if(state.queue.length){ selectIndex(0,false); }
+    }
+  });
+
+  autoplay.addEventListener('change', function(){ state.autoplay = !!autoplay.checked; });
+
+  todayBtn.addEventListener('click', function(){
+    state.autoDay = true; autoDay.checked = true;
+    initDayFromMode();
+    rebuildQueue(); renderQueue();
+    if(state.queue.length){ selectIndex(0,true); }
+  });
+
+  sources.forEach(function(s){
+    var el = document.getElementById(s.toggleId);
+    if(el){
+      el.addEventListener('change', function(){
+        rebuildQueue(); renderQueue();
+        if(state.queue.length){ selectIndex(0,false); }
+        else { yt.src=''; audio.pause(); nowTitle.textContent='No selection'; }
+      });
+    }
+  });
+
+  playBtn.addEventListener('click', playPause);
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+  if(audio){
+    audio.addEventListener('ended', next);
+  }
+
+  loadAll();
+})();
+</script>
 </body>
 </html>
