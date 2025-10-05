@@ -7,21 +7,35 @@
 <meta name="description" content="Directory of Illumina mixes.">
 <style>
   :root{--bg:#0B0F19;--ink:#E6EAF2;--accent:#A4E8FF;--muted:#94A3B8}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui;
-       max-width:760px;padding:24px;margin:auto}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui}
+  .wrap{max-width:760px;margin:0 auto;padding:24px}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   ul{list-style:none;padding:0;margin:1rem 0} li{margin:.5rem 0}
-  small{color:var(--muted)}
+  .pill{display:inline-block;margin-bottom:8px;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
-<h1>Mixes</h1>
-<ul>
-  <li><a href="/mixes/nokings/">☀️ No Kings Day</a><br><small>Marina × Sabrina × Doechii</small></li>
-  <li><a href="/mixes/anchorpublic/">Anchor Public</a></li>
-  <li><a href="/mixes/anchorbuilt/">Anchor Built</a></li>
-  <li><a href="/mixes/explainer/">Explainer</a></li>
-</ul>
-<p><a href="/">← Back to Tunes</a></p>
+<div class="wrap">
+  <h1>🎧 Mixes</h1>
+  <div class="pill" id="seedChip">Seed: —</div>
+  <ul>
+    <li><a id="nk" href="/mixes/nokings/">☀️ No Kings Day</a> <small>— Marina × Sabrina × Doechii</small></li>
+    <li><a id="ap" href="/mixes/anchorpublic/">Anchor Public</a></li>
+    <li><a id="ab" href="/mixes/anchorbuilt/">Anchor Built</a></li>
+    <li><a id="ex" href="/mixes/explainer/">Explainer</a></li>
+  </ul>
+  <p><a href="/">← Back to Tunes</a></p>
+</div>
+<script>
+(function(){
+  var map={apple:"#FAD02C",pumpkin:"#FF8A3D",cumin:"#D0A15F",cinnamon:"#D66A4E",clove:"#B55B3A",fennel:"#7DE2A7",cardamom:"#C7B3FF"};
+  var key=(localStorage.getItem("tunes_seed")||"apple").toLowerCase(); if(!map[key]) key="apple";
+  document.documentElement.style.setProperty("--accent", map[key]);
+  var q="?seed="+encodeURIComponent(key);
+  var ids=["nk","ap","ab","ex"]; for(var i=0;i<ids.length;i++){ var a=document.getElementById(ids[i]); if(a){ a.href=a.pathname+q; } }
+  var chip=document.getElementById("seedChip"); if(chip){ chip.textContent="Seed: "+key.charAt(0).toUpperCase()+key.slice(1); }
+})();
+</script>
 </body>
 </html>
