@@ -7,17 +7,33 @@
 <meta name="description" content="Tunes — playlists and mixes for the Illumina cycles.">
 <style>
   :root{--bg:#0B0F19;--ink:#E6EAF2;--accent:#A4E8FF;--muted:#94A3B8}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui;
-       max-width:760px;padding:24px;margin:auto;text-align:center}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui}
+  .wrap{max-width:760px;margin:0 auto;padding:24px;text-align:center}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .pill{display:inline-block;margin-top:8px;padding:.25rem .6rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;color:var(--muted);font-size:13px}
   footer{margin-top:2rem;color:var(--muted);font-size:.9rem}
 </style>
 </head>
 <body>
-<h1>🎧 Tunes</h1>
-<p>Illumina’s sound tower — mixes that hum across the 42-day rhythm.</p>
-<p><a href="/mixes/">Browse mixes</a> · <a href="/about/">About</a></p>
-<footer>Connected · <a href="https://jar.plnt.earth/">Jar</a> · <a href="https://froot.plnt.earth/">Froot</a></footer>
+<div class="wrap">
+  <h1>🎧 Tunes</h1>
+  <div class="pill" id="seedChip">Seed: —</div>
+  <p>Illumina’s sound tower — mixes that hum across the 42-day rhythm.</p>
+  <p><a href="/mixes/">Browse mixes</a> · <a href="/about/">About</a></p>
+  <footer>Connected · <a href="https://jar.plnt.earth/">Jar</a> · <a href="https://froot.plnt.earth/">Froot</a></footer>
+</div>
+<script>
+(function(){
+  var map={apple:"#FAD02C",pumpkin:"#FF8A3D",cumin:"#D0A15F",cinnamon:"#D66A4E",clove:"#B55B3A",fennel:"#7DE2A7",cardamom:"#C7B3FF"};
+  function getParam(k){var u=new URL(location.href);return (u.searchParams.get(k)||"").toLowerCase();}
+  var p=getParam("seed");
+  var key=p && map[p]? p : (localStorage.getItem("tunes_seed")||"").toLowerCase();
+  if(!map[key]) key="apple";
+  localStorage.setItem("tunes_seed",key);
+  document.documentElement.style.setProperty("--accent", map[key]);
+  var chip=document.getElementById("seedChip"); if(chip){ chip.textContent="Seed: "+key.charAt(0).toUpperCase()+key.slice(1); }
+})();
+</script>
 </body>
 </html>
