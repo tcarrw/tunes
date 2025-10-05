@@ -3,384 +3,56 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tunes · Illumina 1</title>
+<title>Tunes — Sonic Layer</title>
+<meta name="description" content="Tunes pairs music with training. New: blend hum layers (A2→A3→E3) under your pop tracks for Voice & Resonance.">
+<link rel="canonical" href="https://tunes.plnt.earth/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta property="og:title" content="Tunes — Sonic Layer">
+<meta property="og:description" content="Blend hum layers with Marina/Sabrina/Doechii tracks to stabilize your voice.">
+<meta property="og:url" content="https://tunes.plnt.earth/">
+<meta property="og:type" content="website">
 <meta name="theme-color" content="#0B0F19">
-<meta name="description" content="Illumina 1 playlist with an embedded player. YouTube is canonical; Apple Music and Spotify links included. Fixed-size player, auto-next or loop current.">
 <style>
-  :root{
-    --bg:#0B0F19;--ink:#EAECEF;--muted:#AAB2C0;--line:rgba(234,236,239,.16);
-    --gold:#F5D142;--amber:#F59E0B;--ok:#34D399;--warn:#FBBF24;--err:#F87171;
-    --r:14px;--pad:18px;--maxw:1100px;
-    --playerH: clamp(220px, 28vw, 420px);
-  }
-  body.theme-honey{ --bg:#0C0A09; --ink:#F8FAFC; --muted:#E7E5E4; --line:rgba(245,158,11,.22); --gold:#F5D142; --amber:#F59E0B; }
-  body.theme-neon{ --bg:#080A12; --ink:#EAF2FF; --muted:#B8C0CC; --line:rgba(58,199,255,.25); --gold:#39FF14; --amber:#FF00EA; }
-  body.theme-jupiter{ --bg:#0B0F19; --ink:#EAECEF; --muted:#AAB2C0; --line:rgba(236,120,56,.22); --gold:#EC7838; --amber:#F2A359; }
-
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);
-       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-       padding-top: calc(var(--playerH) + 110px);}
-  a{color:var(--gold);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(14px,3.5vw,28px)}
-  header{display:grid;gap:8px;margin:6px 0 18px}
-  h1{margin:0;font-size:clamp(22px,4.5vw,34px);line-height:1.2}
-  .muted{color:var(--muted)}
-  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
-  .btn{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
-  .btn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
-  input[type="text"], select{
-    padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--ink);font:inherit;
-  }
-  select:focus{outline:2px solid rgba(164,232,255,.65);outline-offset:2px}
-  .grid{display:grid;gap:12px}
-  .cards{grid-template-columns:1fr}
-  @media (min-width:840px){.cards{grid-template-columns:1fr 1fr}}
-  .card{border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0))}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-  .tag{font-size:12px;color:#cfd3db;border:1px dashed var(--line);border-radius:8px;padding:2px 8px}
-  .title{font-size:17px;font-weight:700;line-height:1.25}
-  .meta{display:grid;gap:6px;margin-top:8px}
-  .platforms{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-  .play{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:rgba(255,255,255,.03)}
-  .badge{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
-  .ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
-  footer{margin:24px 0 8px;color:var(--muted);font-size:13px;text-align:center}
-  .lane{border:1px dashed var(--line);border-radius:999px;padding:6px 10px;color:#cfd3db}
-
-  .playerbar{position:fixed;left:0;right:0;top:0;z-index:9999;background:rgba(11,15,25,.96);backdrop-filter:saturate(120%) blur(10px);border-bottom:1px solid var(--line)}
-  .playerwrap{max-width:var(--maxw);margin:0 auto;padding:8px 0}
-  .player-row{display:grid;gap:10px;grid-template-columns:1fr;align-items:center;padding:0 clamp(14px,3.5vw,28px)}
-  @media (min-width:860px){.player-row{grid-template-columns:360px 1fr 260px}}
-  .now{font-size:13px;color:var(--muted)}
-  .now strong{color:#e9ecf3}
-  .frame{position:relative;height:var(--playerH);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
-  .frame #yt{position:absolute;inset:0}
-  .controls{display:flex;gap:8px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
-  .navbtn{display:inline-flex;align-items:center;gap:8px;line-height:1;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.02);color:var(--ink)}
-  .navbtn.primary{border-color:var(--amber);background:linear-gradient(180deg,rgba(245,158,11,.16),rgba(245,158,11,.1))}
-  .navbtn .icon{display:inline-flex;width:16px;height:16px}
-  .navbtn .icon svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted)}
-  .switch input{accent-color:#34D399}
+  :root{--bg:#0B0F19;--ink:#E6EAF2;--muted:#A7B0C2;--card:#101728;--line:rgba(230,234,242,.14);--hi:#A4E8FF}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto}
+  .wrap{max-width:900px;margin:0 auto;padding:24px} a{color:var(--hi);text-decoration:none}
+  header h1{margin:0 0 6px;font-size:22px} .sub{color:var(--muted)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+  .grid{display:grid;gap:12px} @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+  footer{margin-top:24px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+  .cta{display:inline-flex;gap:8px;align-items:center;background:#0E1423;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 </style>
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 </head>
 <body>
-<div class="playerbar" aria-label="Player">
-  <div class="playerwrap">
-    <div class="player-row">
-      <div>
-        <div class="now">Now Playing</div>
-        <div id="nowTitle" class="mono" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
-        <div id="nowMeta" class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</div>
-      </div>
-      <div class="frame"><div id="yt"></div></div>
-      <div class="controls">
-        <label class="switch" title="ON: loop current video · OFF: auto-next">
-          <input id="loopToggle" type="checkbox"> Loop
-        </label>
-        <button class="navbtn" id="prevBtn" type="button" aria-label="Previous">
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M12.5 3.5L6 10l6.5 6.5"/></svg></span>
-          <span class="label">Prev</span>
-        </button>
-        <button class="navbtn primary" id="nextBtn" type="button" aria-label="Next">
-          <span class="label">Next</span>
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M7.5 3.5L14 10l-6.5 6.5"/></svg></span>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="wrap">
   <header>
-    <h1>Illumina 1 — Tunes</h1>
-    <div class="bar">
-      <span id="cycle" class="pill">Loading…</span>
-      <a class="btn" href="/beacon/index.html">Beacon</a>
-      <label class="pill" for="themeSel">Theme</label>
-      <select id="themeSel" aria-label="Choose theme">
-        <option value="">Default</option>
-        <option value="honey">Honey</option>
-        <option value="neon">Neon</option>
-        <option value="jupiter">Jupiter</option>
-      </select>
-      <label class="pill" for="lane">Lane</label>
-      <select id="lane" aria-label="Choose playlist lane">
-        <option value="anchor-public">AnchorPublic</option>
-        <option value="explainer">Explainer</option>
-        <option value="anchor-built">AnchorBuilt</option>
-      </select>
-      <label class="pill" for="search">Search</label>
-      <input id="search" type="text" placeholder="Title, figure, seed…">
-      <select id="dayJump" aria-label="Jump to day"><option value="">Jump to day…</option></select>
-    </div>
-    <p class="muted">YouTube plays inline. Apple Music / Spotify shown when available.</p>
+    <h1>Tunes — Sonic Layer</h1>
+    <div class="sub">Curated playlists for Illumina skills. Blend guided hums under pop to train body and voice.</div>
   </header>
 
-  <section id="cards" class="grid cards" aria-live="polite"></section>
+  <main class="grid">
+    <section class="card">
+      <h2>Voice &amp; Resonance — Dual Mix</h2>
+      <p>Listen while you practice. Keep your songs in <strong>key A</strong> where possible; layer hums A2→A3→E3 quietly under the track.</p>
+      <p><a class="cta" href="https://froot.plnt.earth/voice/">Open the Voice skill →</a></p>
+      <p class="sub">Tip: Start the tonic (A2) around −20 dB, add A3 lightly, then the fifth (E3). If the song clashes, lower or mute the fifth.</p>
+    </section>
 
-  <footer><p>PLNT Earth · Illumina — Tunes</p></footer>
+    <section class="card">
+      <h2>Playlists</h2>
+      <ul>
+        <li>Illumina 1 — Explainer</li>
+        <li>Illumina 1 — Anchor Public</li>
+        <li>Illumina 1 — Anchor Built</li>
+      </ul>
+      <p class="sub">We don’t embed third-party players here; open your service in a separate tab and use the hums on the Voice page to mix.</p>
+    </section>
+  </main>
+
+  <footer>
+    Network: <a href="https://jar.plnt.earth/">Jar</a> • <a href="https://froot.plnt.earth/">Froot</a> • <a href="https://quietmoon.plnt.earth/">Quiet Moon</a>
+  </footer>
 </div>
-
-<script>
-  (function(){
-    if (window.YT && YT.Player) return;
-    var s = document.createElement('script');
-    s.src = "https://www.youtube.com/iframe_api";
-    s.async = true;
-    document.head.appendChild(s);
-  })();
-</script>
-
-<script>
-(function(){
-  var BASE = '/data/illumina/1/tracks';
-  var FILES = {'explainer':'explainer.json','anchor-public':'anchor-public.json','anchor-built':'anchor-built.json'};
-
-  var q = new URLSearchParams(location.search);
-  var laneQ = (q.get('lane')||'anchor-public').toLowerCase().replace('anchorpublic','anchor-public').replace('anchorbuilt','anchor-built');
-  if(!FILES[laneQ]) laneQ='anchor-public';
-  var startDay = parseInt(q.get('day')||'',10);
-  var term = '';
-
-  var cache = {};
-  var items = [];
-  var playOrder = [];
-  var currentIndex = -1;
-  var player, playerReady = false, queuedId = null;
-  var loopMode = false;
-
-  var elCards = document.getElementById('cards');
-  var elCycle = document.getElementById('cycle');
-  var elSearch = document.getElementById('search');
-  var elDayJump = document.getElementById('dayJump');
-  var elLaneSel = document.getElementById('lane');
-  var elNowTitle = document.getElementById('nowTitle');
-  var elNowMeta = document.getElementById('nowMeta');
-  var prevBtn = document.getElementById('prevBtn');
-  var nextBtn = document.getElementById('nextBtn');
-  var loopToggle = document.getElementById('loopToggle');
-  var themeSel = document.getElementById('themeSel');
-
-  function applyTheme(name){
-    document.body.classList.remove('theme-honey','theme-neon','theme-jupiter');
-    if(name==='honey') document.body.classList.add('theme-honey');
-    else if(name==='neon') document.body.classList.add('theme-neon');
-    else if(name==='jupiter') document.body.classList.add('theme-jupiter');
-    try{ localStorage.setItem('tunes.theme', name||''); }catch(e){}
-  }
-  (function(){ try{ var t=localStorage.getItem('tunes.theme')||''; themeSel.value=t; applyTheme(t); }catch(e){} })();
-  themeSel.addEventListener('change', function(){ applyTheme(this.value); });
-
-  function syncHeaderHeight(){
-    var bar = document.querySelector('.playerbar');
-    if(!bar) return;
-    var h = bar.getBoundingClientRect().height;
-    document.body.style.paddingTop = Math.ceil(h+8) + 'px';
-  }
-  window.addEventListener('resize', syncHeaderHeight, {passive:true});
-  window.addEventListener('orientationchange', syncHeaderHeight, {passive:true});
-  setTimeout(syncHeaderHeight, 60);
-
-  function safe(v){ return v==null ? "" : String(v); }
-  function fixMojibake(s){
-    if(!s) return s;
-    var map = {"BeyoncÃ©":"Beyoncé","MÃ¥neskin":"Måneskin","ChloÃ«":"Chloë","ZoÃ«":"Zoë",
-               "â€“":"–","â€”":"—","â€˜":"‘","â€™":"’","â€œ":"“","â€":"”"};
-    var out = String(s); for(var k in map){ out = out.split(k).join(map[k]); } return out;
-  }
-  function moonEmoji(dateStr){
-    var d = new Date((dateStr||'')+'T00:00:00Z');
-    if(isNaN(d)) return '';
-    var syn = 29.53058867;
-    var base = Date.UTC(2025,0,29);
-    var days = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - base)/86400000;
-    var phase = ((days % syn) + syn) % syn;
-    var idx = Math.floor((phase/syn)*8+0.5)%8;
-    return ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][idx];
-  }
-  function extractYouTubeID(u){
-    if(!u) return "";
-    var s = String(u);
-    var m = s.match(/[?&]v=([^&]+)/) || s.match(/youtu\.be\/([^?&]+)/) || s.match(/embed\/([^?&]+)/);
-    return m ? m[1] : "";
-  }
-  function appleHref(url, title){ if(url) return url; return 'https://music.apple.com/us/search?term='+encodeURIComponent(title||''); }
-  function spotifyHref(url, title){ if(url) return url; return 'https://open.spotify.com/search/'+encodeURIComponent(title||''); }
-
-  function loadLane(key){
-    if(cache[key]) return Promise.resolve(cache[key]);
-    var u = BASE + '/' + FILES[key];
-    return fetch(u, {cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
-      .then(function(j){ cache[key] = Array.isArray(j.items) ? j.items.slice() : []; return cache[key]; });
-  }
-
-  function buildOrder(){
-    playOrder = [];
-    for(var i=0;i<items.length;i++){
-      var it = items[i]||{};
-      var yt = it.urls && it.urls.youtube;
-      if(yt) playOrder.push(it.day||i+1);
-    }
-  }
-
-  function updateCycle(){
-    var d0 = items[0]||{}, dN = items[items.length-1]||{};
-    var start = d0.date||'—', end = dN.date||'—';
-    elCycle.textContent = 'Cycle: '+start+' → '+end+' · Days: '+items.length;
-  }
-
-  function updateNow(it){
-    var title = fixMojibake(safe(it.title));
-    elNowTitle.textContent = title || '—';
-    elNowMeta.textContent  = 'Day '+(it.day||'')+' · '+(it.date||'')+' · '+moonEmoji(it.date||'');
-  }
-
-  function playByDay(day){
-    var it = items.find(function(x){ return (x.day||0)===day; }) || null;
-    if(!it) return;
-    var yt = it.urls && it.urls.youtube;
-    var id = extractYouTubeID(yt);
-    if(!id) return;
-    updateNow(it);
-    currentIndex = playOrder.indexOf(day);
-    if (player && playerReady){ player.loadVideoById(id); }
-    else { queuedId = id; }
-    var el = document.getElementById('day-'+day);
-    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
-  }
-  function playNext(){
-    if(playOrder.length===0) return;
-    currentIndex = (currentIndex + 1) % playOrder.length;
-    playByDay(playOrder[currentIndex]);
-  }
-  function playPrev(){
-    if(playOrder.length===0) return;
-    currentIndex = (currentIndex - 1 + playOrder.length) % playOrder.length;
-    playByDay(playOrder[currentIndex]);
-  }
-
-  function match(it){
-    if(!term) return true;
-    var t = term.toLowerCase();
-    return (safe(it.title).toLowerCase().indexOf(t)>-1) ||
-           (safe(it.figure).toLowerCase().indexOf(t)>-1) ||
-           (safe(it.seedRitual).toLowerCase().indexOf(t)>-1);
-  }
-
-  function render(){
-    var rows = [];
-    for(var i=0;i<items.length;i++){
-      var it = items[i]||{};
-      if(!match(it)) continue;
-      var day = it.day||i+1;
-      var date = it.date||'';
-      var title = fixMojibake(safe(it.title));
-      var fig = safe(it.figure);
-      var seed = safe(it.seedRitual);
-      var yt = it.urls && it.urls.youtube;
-      var am = it.urls && it.urls.appleMusic;
-      var sp = it.urls && it.urls.spotify;
-      var jarHref = 'https://jar.plnt.earth/day/?date='+encodeURIComponent(date)+'&playlist='+encodeURIComponent(elLaneSel.value);
-
-      rows.push(
-        '<article class="card" id="day-'+day+'">'+
-          '<div class="row">'+
-            '<span class="tag">Day '+day+'</span>'+
-            '<span class="tag mono">'+date+'</span>'+
-            '<span class="tag">'+moonEmoji(date)+'</span>'+
-            '<button class="btn" type="button" data-play="'+day+'">Play</button>'+
-            '<a class="btn" href="'+jarHref+'" target="_blank" rel="noopener">Jar Day</a>'+
-            '<button class="btn" type="button" data-share="'+day+'">Share</button>'+
-          '</div>'+
-          '<div class="meta">'+
-            '<div class="title">'+title+'</div>'+
-            (fig?'<div class="muted">Figure: '+fixMojibake(fig)+'</div>':'')+
-            (seed?'<div class="muted">Seed: '+fixMojibake(seed)+'</div>':'')+
-            '<div class="platforms">'+
-              (yt ? '<span class="badge ok">YouTube ready</span>' : '<span class="badge err">YouTube link missing</span>')+
-              '<a class="play" href="'+appleHref(am,title)+'" target="_blank" rel="noopener"> Apple Music'+(am?'':' (search)')+'</a>'+
-              '<a class="play" href="'+spotifyHref(sp,title)+'" target="_blank" rel="noopener">Spotify'+(sp?'':' (search)')+'</a>'+
-            '</div>'+
-          '</div>'+
-        '</article>'
-      );
-    }
-    elCards.innerHTML = rows.join('');
-    updateCycle();
-    buildOrder();
-
-    elCards.querySelectorAll('button[data-play]').forEach(function(b){
-      b.addEventListener('click', function(){ playByDay(+this.getAttribute('data-play')); });
-    });
-    elCards.querySelectorAll('button[data-share]').forEach(function(b){
-      b.addEventListener('click', function(){
-        var d = this.getAttribute('data-share');
-        var u = new URL(location.href);
-        u.searchParams.set('lane', elLaneSel.value);
-        u.searchParams.set('day', d);
-        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(u.toString()); }
-        this.textContent = 'Copied!'; var self=this; setTimeout(function(){ self.textContent='Share'; }, 1000);
-      });
-    });
-
-    if(startDay && document.getElementById('day-'+startDay)){ playByDay(startDay); startDay=null; }
-  }
-
-  function buildDayJump(){
-    var opts = ['<option value="">Jump to day…</option>'];
-    for(var i=0;i<items.length;i++){
-      var d = items[i].day || (i+1);
-      opts.push('<option value="'+d+'">Day '+d+'</option>');
-    }
-    elDayJump.innerHTML = opts.join('');
-  }
-  function jumpTo(day){
-    var el = document.getElementById('day-'+day);
-    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-
-  function load(key){
-    return loadLane(key).then(function(arr){
-      items = arr.slice().sort(function(a,b){ return (a.day||0) - (b.day||0); });
-      buildDayJump();
-      render();
-    }).catch(function(){ elCards.innerHTML=''; elCycle.textContent='Load error'; });
-  }
-
-  try{ loopMode = localStorage.getItem('tunes.loop') === '1'; loopToggle.checked = loopMode; }catch(e){}
-  loopToggle.addEventListener('change', function(){ loopMode = !!this.checked; try{ localStorage.setItem('tunes.loop', loopMode ? '1' : '0'); }catch(e){} });
-
-  window.onYouTubeIframeAPIReady = function(){
-    player = new YT.Player('yt', {
-      width:'100%',height:'100%',
-      playerVars:{rel:0,modestbranding:1,playsinline:1},
-      events:{
-        onReady:function(){ playerReady=true; if(queuedId){ player.loadVideoById(queuedId); queuedId=null; } },
-        onStateChange:function(e){ if(e.data===YT.PlayerState.ENDED){ if(loopMode){ try{ player.seekTo(0,true); player.playVideo(); }catch(_e){} } else { playNext(); } } }
-      }
-    });
-  };
-
-  elLaneSel.value = laneQ;
-  elSearch.addEventListener('input', function(){ term = this.value.trim(); render(); });
-  elDayJump.addEventListener('change', function(){ if(this.value) jumpTo(this.value); });
-  elLaneSel.addEventListener('change', function(){
-    laneQ = this.value;
-    var u = new URL(location.href); u.searchParams.set('lane', laneQ); history.replaceState(null,'',u.toString());
-    load(laneQ);
-  });
-  document.getElementById('prevBtn').addEventListener('click', playPrev);
-  document.getElementById('nextBtn').addEventListener('click', playNext);
-  window.addEventListener('keydown', function(e){ if(e.altKey && e.key==='ArrowLeft') playPrev(); if(e.altKey && e.key==='ArrowRight') playNext(); });
-
-  load(laneQ).then(syncHeaderHeight);
-})();
-</script>
 </body>
 </html>
