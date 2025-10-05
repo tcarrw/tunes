@@ -6,20 +6,43 @@
 <title>Explainer — Mix</title>
 <meta name="description" content="Explainer playlist for Illumina 1.">
 <style>
-  :root{--bg:#0B0F19;--ink:#E6EAF2;--accent:#A4E8FF}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui;
-       max-width:760px;padding:24px;margin:auto}
-  a{color:var(--accent)}
-  section{margin-top:1.25rem;border-top:1px solid rgba(255,255,255,.2);padding-top:1rem}
+  :root{--bg:#0B0F19;--ink:#E6EAF2;--accent:#A4E8FF;--muted:#94A3B8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui}
+  .wrap{max-width:760px;margin:0 auto;padding:24px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  section{margin-top:1.25rem;border-top:1px solid rgba(255,255,255,.15);padding-top:1rem}
+  .pill{display:inline-block;margin-bottom:8px;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
-<h1>Explainer</h1>
-<p>Introductory sequence that explains Illumina through sound.</p>
-<section>
-  <h2>Listen</h2>
-  <p>Embed or links here when ready.</p>
-</section>
-<p><a href="/mixes/">← All mixes</a></p>
+<div class="wrap">
+  <h1>Explainer — Mix</h1>
+  <div class="pill" id="seedChip">Seed: —</div>
+
+  <section>
+    <h2>Listen</h2>
+    <p>Embed or playlist links will go here.</p>
+  </section>
+
+  <section>
+    <h2>Data</h2>
+    <p>JSON: <a href="https://tunes.plnt.earth/data/illumina/1/tracks/explainer.json" target="_blank" rel="noopener">explainer.json</a></p>
+  </section>
+
+  <p><a href="/mixes/">← All mixes</a></p>
+</div>
+<script>
+(function(){
+  var map={apple:"#FAD02C",pumpkin:"#FF8A3D",cumin:"#D0A15F",cinnamon:"#D66A4E",clove:"#B55B3A",fennel:"#7DE2A7",cardamom:"#C7B3FF"};
+  function getParam(k){var u=new URL(location.href);return (u.searchParams.get(k)||"").toLowerCase();}
+  var p=getParam("seed");
+  var key=p && map[p]? p : (localStorage.getItem("tunes_seed")||"").toLowerCase();
+  if(!map[key]) key="apple";
+  localStorage.setItem("tunes_seed",key);
+  document.documentElement.style.setProperty("--accent", map[key]);
+  var chip=document.getElementById("seedChip"); if(chip){ chip.textContent="Seed: "+key.charAt(0).toUpperCase()+key.slice(1); }
+})();
+</script>
 </body>
 </html>
