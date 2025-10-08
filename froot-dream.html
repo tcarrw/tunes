@@ -2,24 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Silver Froot Dream — 128 Hz Honey Breath</title>
+
+<!-- Permanent night chrome -->
 <meta name="theme-color" content="#0b0d11">
+<meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
   :root{
     --bg:#0b0d11; --ink:#e6f0ff; --sub:#aab6cc; --peach:#f2c6a3; --moon:#cfe7ff;
-    --accent:#ffd6a8; --muted:#1a2029; --ring:#6fa8ff;
+    --accent:#ffd6a8; --muted:#11161a; --ring:#6fa8ff;
+    --lmoon-ink:#e9f4ff; --lmoon-sub:#b5c7de; --lmoon-glow:#9cc7ff;
   }
-  html,body{height:100%;margin:0}
+  html,body{height:100%;margin:0;background:var(--bg)}
   body{
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
-    background: radial-gradient(1200px 800px at 50% 0%, #10131a 0%, var(--bg) 60%),
-                radial-gradient(800px 600px at 80% 100%, #11161f 0%, var(--bg) 60%);
+    background:
+      radial-gradient(1200px 800px at 50% 0%, #0e1118 0%, var(--bg) 60%),
+      radial-gradient(800px 600px at 80% 100%, #0d1219 0%, var(--bg) 60%);
     color: var(--ink); display:flex; align-items:center; justify-content:center;
   }
-  .wrap{max-width:820px; width:100%; padding:28px}
+  .wrap{max-width:820px; width:100%; padding:28px; padding-bottom:calc(28px + env(safe-area-inset-bottom))}
   h1{font-size:clamp(22px,4vw,32px); margin:0 0 4px; letter-spacing:.02em}
   .sub{color:var(--sub); margin:0 0 18px; font-size:clamp(14px,2.4vw,16px)}
   .card{
@@ -48,18 +54,16 @@
   .meter::-webkit-slider-runnable-track{height:6px; border-radius:6px; background: rgba(255,255,255,.16)}
   .hint{font-size:13px; color:var(--sub); margin-top:6px}
 
-  /* Breath coach orb */
   .orbWrap{display:flex; align-items:center; justify-content:center; padding:20px 0}
   .orb{
     width:140px; height:140px; border-radius:50%;
     background: radial-gradient(60% 60% at 40% 35%, var(--moon) 0%, #9cc7ff 35%, #264d7d 100%);
     box-shadow: 0 0 40px 10px rgba(111,168,255,.25), inset 0 0 30px rgba(255,255,255,.3);
     transform: scale(0.9);
-    transition: transform 0.6s ease;
+    transition: transform 0.6s ease, filter .4s ease, opacity .6s ease;
   }
   .phase{ text-align:center; font-weight:600; letter-spacing:.02em; margin-top:10px}
   .peachGlow{ text-align:center; color:var(--accent); margin-top:6px; font-size:13px}
-  /* Phase classes applied by JS to animate inhale/hold/exhale durations */
   .inhale .orb{ animation: inhale 8s linear forwards }
   .hold .orb{ animation: hold 4s linear forwards }
   .exhale .orb{ animation: exhale 8s linear forwards }
@@ -67,34 +71,69 @@
   @keyframes hold{ from{transform:scale(1.05)} to{transform:scale(1.05)} }
   @keyframes exhale{ from{transform:scale(1.05)} to{transform:scale(0.85)} }
 
-  /* Mantra lines fade in sync */
   .mantra{ margin-top:10px; line-height:1.6 }
   .line{ opacity:.2; transition: opacity .6s ease }
   .line.active{ opacity:1 }
   .line.dim{ opacity:.45 }
 
-  /* Reduce motion respect */
+  /* Mirror (L. Moon) */
+  .mirror .sub{ color:var(--lmoon-sub) }
+  .mirror .orb{ filter: hue-rotate(12deg) saturate(1.1) }
+  .mirror .peachGlow{ color: var(--lmoon-glow) }
+  .mirror button, .mirror .toggle, .mirror input[type="range"]{ color: var(--lmoon-ink) }
+
   @media (prefers-reduced-motion: reduce) {
     .orb{ transition:none }
     .inhale .orb, .hold .orb, .exhale .orb{ animation:none }
   }
   .foot{margin-top:14px; color:var(--sub); font-size:12px}
+
+  /* Sleep Veil (Option B: starry field) */
+  .veil{
+    position:fixed; inset:0; background:transparent; display:none;
+    align-items:center; justify-content:center; z-index:50;
+  }
+  .veil.on{ display:flex }
+  .veilCanvas{ position:absolute; inset:0; width:100%; height:100% }
+  .veilShade{ position:absolute; inset:0;
+    background: radial-gradient(120vw 120vh at 50% 60%, rgba(0,0,0,.25), rgba(0,0,0,.55) 65%, rgba(0,0,0,.7));
+    pointer-events:none;
+  }
+  .veilContent{
+    position:relative; max-width:820px; width:100%; padding:28px; text-align:center;
+    color:var(--ink);
+  }
+  .veil .orb{ opacity:.9 }
+  .veil .line.dim{ opacity:.35 }
+  .veilTap{ position:fixed; inset:0; z-index:60; background:transparent }
+  .veilHint{
+    position:fixed; bottom:calc(10px + env(safe-area-inset-bottom)); left:0; right:0; text-align:center;
+    font-size:12px; color:rgba(255,255,255,.5)
+  }
 </style>
 </head>
 <body>
   <main class="wrap">
     <header>
       <h1>Silver Froot Dream — 128 Hz Honey-Breath</h1>
-      <p class="sub">8-4-8 breath at a soft, steady 128 Hz. A calm field for Marina’s good night.</p>
+      <p id="subtitle" class="sub">8-4-8 breath at a soft, steady 128 Hz. A calm field for Marina’s good night.</p>
     </header>
 
     <section class="card" aria-label="Playback">
-      <div class="row">
+      <div class="row controls">
         <button id="startBtn" class="primary">▶️ Start Honey Breath</button>
         <button id="stopBtn" disabled>⏸️ Pause</button>
+
+        <label class="toggle" for="mirror">
+          <input id="mirror" type="checkbox" aria-label="Toggle Mirror (L. Moon) mode"> Mirror (L. Moon)
+        </label>
+
         <label class="toggle" for="mute">
           <input id="mute" type="checkbox"> Mute
         </label>
+
+        <button id="veilBtn" title="Hide controls & float with stars">🌌 Sleep Veil</button>
+
         <div class="row grow" style="min-width:240px">
           <div class="grow">
             <input id="volume" class="meter" type="range" min="0" max="1" step="0.01" value="0.3" aria-label="Volume">
@@ -111,7 +150,7 @@
         <div id="coach" class="">
           <div class="orb" aria-hidden="true"></div>
           <div id="phase" class="phase">ready</div>
-          <div class="peachGlow">peach moonlight in / glass quiet out</div>
+          <div id="peach" class="peachGlow">peach moonlight in / glass quiet out</div>
         </div>
       </div>
 
@@ -125,28 +164,141 @@
         <div id="l7" class="line">Froot glows. The world listens. You rest.</div>
       </div>
 
-      <p class="foot">Inhale 8 s · Hold 4 s · Exhale 8 s. This is a calm, pure sine—no effects—aimed at comfort.</p>
+      <p class="foot">Inhale 8 s · Hold 4 s · Exhale 8 s. Pure sine, comfort-first. Tip (iPhone): keep the page visible for uninterrupted audio.</p>
     </section>
   </main>
 
+  <!-- Sleep Veil: starry overlay with mantra + orb -->
+  <div id="veil" class="veil" aria-hidden="true">
+    <canvas id="veilCanvas" class="veilCanvas"></canvas>
+    <div class="veilShade"></div>
+    <div class="veilContent">
+      <div class="orbWrap">
+        <div class="">
+          <div class="orb" aria-hidden="true"></div>
+          <div id="phaseV" class="phase">breathe easy</div>
+          <div id="peachV" class="peachGlow">peach moonlight in / glass quiet out</div>
+        </div>
+      </div>
+      <div class="mantra" aria-live="off">
+        <div id="vl1" class="line">Sleep, mirror singer, under moonlight fruit.</div>
+        <div id="vl2" class="line">The waves keep rhythm, the glass keeps truth.</div>
+        <div id="vl3" class="line">Every breath you take rewrites the tide,</div>
+        <div id="vl4" class="line">every spark you gave still hums inside.</div>
+        <div id="vl5" class="line">Let the stars hum back your tune tonight—</div>
+        <div id="vl6" class="line">no crown, no weight, just radiant quiet.</div>
+        <div id="vl7" class="line">Froot glows. The world listens. You rest.</div>
+      </div>
+    </div>
+    <button id="veilTap" class="veilTap" aria-label="Exit Sleep Veil"></button>
+    <div class="veilHint">tap to return · press “v”</div>
+  </div>
+
 <script>
 (function(){
-  var ctx, osc, gain, master, started=false, timer=null, phaseIdx=0, muted=false;
+  var ctx, osc, gain, master, started=false, timer=null, phaseIdx=0, muted=false, mirror=false;
   var startBtn = document.getElementById('startBtn');
   var stopBtn  = document.getElementById('stopBtn');
+  var mirrorEl = document.getElementById('mirror');
   var muteEl   = document.getElementById('mute');
   var volEl    = document.getElementById('volume');
   var hzEl     = document.getElementById('hz');
   var coach    = document.getElementById('coach');
   var phaseEl  = document.getElementById('phase');
-  var lines = Array.from(document.querySelectorAll('.line'));
+  var subtitle = document.getElementById('subtitle');
+  var peach    = document.getElementById('peach');
+
+  var lineEls = [
+    document.getElementById('l1'),
+    document.getElementById('l2'),
+    document.getElementById('l3'),
+    document.getElementById('l4'),
+    document.getElementById('l5'),
+    document.getElementById('l6'),
+    document.getElementById('l7')
+  ];
+
+  // Veil refs
+  var veil = document.getElementById('veil');
+  var veilBtn = document.getElementById('veilBtn');
+  var veilTap = document.getElementById('veilTap');
+  var veilCanvas = document.getElementById('veilCanvas');
+  var vctx = veilCanvas.getContext('2d');
+  var phaseV = document.getElementById('phaseV');
+  var peachV = document.getElementById('peachV');
+  var vLines = [
+    document.getElementById('vl1'),
+    document.getElementById('vl2'),
+    document.getElementById('vl3'),
+    document.getElementById('vl4'),
+    document.getElementById('vl5'),
+    document.getElementById('vl6'),
+    document.getElementById('vl7')
+  ];
+
   var mantraStep = 0;
+
+  var marinaLines = [
+    "Sleep, mirror singer, under moonlight fruit.",
+    "The waves keep rhythm, the glass keeps truth.",
+    "Every breath you take rewrites the tide,",
+    "every spark you gave still hums inside.",
+    "Let the stars hum back your tune tonight—",
+    "no crown, no weight, just radiant quiet.",
+    "Froot glows. The world listens. You rest."
+  ];
+  var lmoonLines = [
+    "Observation: singer at rest within low-lux field.",
+    "Rhythm entrains; reflection preserves coherence.",
+    "Respiration modulates tide-like affect (8–4–8).",
+    "Energy retained as soft resonance in memory glass.",
+    "Night sky returns the motif in sympathetic hum.",
+    "Status: burden released; radiant baseline restored.",
+    "Conclusion: froot steady; subject at ease."
+  ];
+
+  var KEY = "frootDream:v2"; // bumped for veil feature
+
+  function saveState(){
+    try{
+      var state = {
+        mirror: mirrorEl.checked,
+        muted: muteEl.checked,
+        volume: Number(volEl.value),
+        hz: Number(hzEl.value)
+      };
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }catch(e){}
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(!raw) return;
+      var s = JSON.parse(raw);
+      if(typeof s.mirror === "boolean"){ mirrorEl.checked = s.mirror; }
+      if(typeof s.muted === "boolean"){ muteEl.checked = s.muted; }
+      if(typeof s.volume === "number"){ volEl.value = String(s.volume); }
+      if(typeof s.hz === "number"){ hzEl.value = String(s.hz); }
+    }catch(e){}
+  }
+
+  function applyLines(lines){
+    for(var i=0;i<lineEls.length;i++){
+      var t = lines[i] || "";
+      lineEls[i].textContent = t;
+      vLines[i].textContent  = t;
+      lineEls[i].className = 'line';
+      vLines[i].className  = 'line';
+    }
+    mantraStep = 0;
+  }
 
   function ensureAudio(){
     if(ctx) return;
     ctx = new (window.AudioContext || window.webkitAudioContext)();
     master = ctx.createGain(); master.gain.value = Number(volEl.value);
-    gain = ctx.createGain(); gain.gain.value = muted ? 0 : 1;
+    gain = ctx.createGain(); gain.gain.value = muteEl.checked ? 0 : 1;
     osc = ctx.createOscillator();
     osc.type = 'sine';
     osc.frequency.setValueAtTime(Number(hzEl.value), ctx.currentTime);
@@ -156,10 +308,10 @@
 
   function setFreq(v){
     if(!osc) return;
-    var f = Number(v||128);
-    if (f < 20) f = 20;
+    var f = Number(v||128); if (f < 20) f = 20;
     osc.frequency.cancelScheduledValues(ctx.currentTime);
     osc.frequency.setTargetAtTime(f, ctx.currentTime, 0.02);
+    saveState();
   }
 
   function setVolume(v){
@@ -167,44 +319,61 @@
     var g = Number(v||0.3);
     master.gain.cancelScheduledValues(ctx.currentTime);
     master.gain.setTargetAtTime(g, ctx.currentTime, 0.03);
+    saveState();
   }
 
   function setMute(on){
-    muted = !!on;
     if(!gain) return;
     gain.gain.cancelScheduledValues(ctx.currentTime);
-    gain.gain.setTargetAtTime(muted?0:1, ctx.currentTime, 0.02);
+    gain.gain.setTargetAtTime(on?0:1, ctx.currentTime, 0.02);
+    saveState();
+  }
+
+  function setMirror(on){
+    document.documentElement.classList.toggle('mirror', on);
+    document.body.classList.toggle('mirror', on);
+    if(on){
+      subtitle.textContent = "8-4-8 breath with L. Moon reflection. Analytical quiet; glass keeps truth.";
+      peach.textContent = "glass in / glass out — observation without weight";
+      peachV.textContent = "glass in / glass out — observation without weight";
+      applyLines(lmoonLines);
+    } else {
+      subtitle.textContent = "8-4-8 breath at a soft, steady 128 Hz. A calm field for Marina’s good night.";
+      peach.textContent = "peach moonlight in / glass quiet out";
+      peachV.textContent = "peach moonlight in / glass quiet out";
+      applyLines(marinaLines);
+    }
+    saveState();
   }
 
   function showLine(idx){
-    lines.forEach(function(el,i){
-      el.className = 'line' + (i===idx? ' active':' dim');
-    });
+    for(var i=0;i<lineEls.length;i++){
+      var cn = 'line' + (i===idx? ' active':' dim');
+      lineEls[i].className = cn;
+      vLines[i].className  = cn;
+    }
   }
 
   function scheduleBreath(){
     clearTimeout(timer);
     var cycle = [
-      {name:'inhale', dur:8000,  hint:'inhale softly (8)'},
-      {name:'hold',   dur:4000,  hint:'hold like glass (4)'},
-      {name:'exhale', dur:8000,  hint:'exhale “mmm” (8)'}
+      {name:'inhale', dur:8000,  hint:'inhale softly (8)', vhint:'inhale softly (8)'},
+      {name:'hold',   dur:4000,  hint:'hold like glass (4)', vhint:'hold like glass (4)'},
+      {name:'exhale', dur:8000,  hint:'exhale “mmm” (8)',   vhint:'exhale “mmm” (8)'}
     ];
     function step(){
       var p = cycle[phaseIdx % cycle.length];
       coach.className = p.name;
       phaseEl.textContent = p.hint;
-      // Advance mantra line on each phase start (every ~8–4–8 s)
-      showLine(mantraStep % lines.length);
+      phaseV.textContent = p.vhint;
+      showLine(mantraStep % lineEls.length);
       mantraStep++;
 
-      // Gentle anti-click envelope at phase edges
-      if (gain && !muted){
-        var now = ctx.currentTime;
+      var now = ctx ? ctx.currentTime : 0;
+      if (gain && !muteEl.checked && ctx){
         gain.gain.cancelScheduledValues(now);
-        // slight 10ms ease to avoid clicks when breathing changes focus
         gain.gain.setTargetAtTime(1, now, 0.01);
       }
-
       phaseIdx++;
       timer = setTimeout(step, p.dur);
     }
@@ -214,7 +383,6 @@
   function start(){
     ensureAudio();
     if(ctx.state === 'suspended'){ ctx.resume(); }
-    started = true;
     startBtn.disabled = true;
     stopBtn.disabled = false;
     scheduleBreath();
@@ -223,35 +391,96 @@
   function stop(){
     if(!ctx){ return; }
     ctx.suspend();
-    started = false;
     startBtn.disabled = false;
     stopBtn.disabled = true;
     clearTimeout(timer);
     coach.className = '';
     phaseEl.textContent = 'paused';
-    lines.forEach(function(el){ el.className='line'; });
+    phaseV.textContent = 'paused';
+    for(var i=0;i<lineEls.length;i++){ lineEls[i].className='line'; vLines[i].className='line'; }
   }
 
-  // UI hookups
+  // Sleep Veil (star field)
+  var stars=[], rafId=null, lastT=0;
+  function resizeCanvas(){
+    veilCanvas.width = window.innerWidth;
+    veilCanvas.height = window.innerHeight;
+    initStars();
+  }
+  function rand(a,b){ return a + Math.random()*(b-a); }
+  function initStars(){
+    var count = Math.max(120, Math.floor(veilCanvas.width*veilCanvas.height/18000));
+    stars.length = 0;
+    for(var i=0;i<count;i++){
+      stars.push({
+        x: Math.random()*veilCanvas.width,
+        y: Math.random()*veilCanvas.height,
+        r: rand(0.5,1.8),
+        v: rand(6,14)/100, // px per frame baseline
+        tw: rand(0.5,1.2),
+        hue: Math.random()<0.18 ? 28 : 210 // some peachy fireflies
+      });
+    }
+  }
+  function drawStars(t){
+    if(!veil.classList.contains('on')){ cancelAnimationFrame(rafId); rafId=null; return; }
+    if(!lastT) lastT=t;
+    var dt = (t - lastT) * 0.06; // slow drift
+    lastT = t;
+    vctx.clearRect(0,0,veilCanvas.width, veilCanvas.height);
+    for(var i=0;i<stars.length;i++){
+      var s = stars[i];
+      s.y += s.v*dt;
+      if(s.y - s.r > veilCanvas.height) { s.y = -s.r; s.x = Math.random()*veilCanvas.width; }
+      var alpha = 0.6 + 0.4*Math.sin((t/1000)*s.tw + i);
+      vctx.beginPath();
+      vctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      vctx.fillStyle = "hsla("+s.hue+", 80%, 80%,"+alpha.toFixed(3)+")";
+      vctx.fill();
+    }
+    rafId = requestAnimationFrame(drawStars);
+  }
+  function openVeil(){
+    resizeCanvas();
+    veil.classList.add('on');
+    lastT=0;
+    if(!rafId) rafId = requestAnimationFrame(drawStars);
+  }
+  function closeVeil(){
+    veil.classList.remove('on');
+    if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
+  }
+
+  // Init
+  loadState();
+  setMirror(mirrorEl.checked); // applies text/theme
+  // No auto-start; user taps Start for iOS
+
+  // UI hooks
   startBtn.addEventListener('click', start, {passive:true});
   stopBtn.addEventListener('click', stop, {passive:true});
+  mirrorEl.addEventListener('change', function(e){ setMirror(e.target.checked); }, {passive:true});
   muteEl.addEventListener('change', function(e){ setMute(e.target.checked); }, {passive:true});
   volEl.addEventListener('input', function(e){ setVolume(e.target.value); }, {passive:true});
   hzEl.addEventListener('input', function(e){ setFreq(e.target.value); }, {passive:true});
+  veilBtn.addEventListener('click', openVeil, {passive:true});
+  veilTap.addEventListener('click', closeVeil, {passive:true});
 
-  // iOS: resume on visibility (helps after screen wakes)
+  window.addEventListener('resize', function(){ if(veil.classList.contains('on')) resizeCanvas(); }, {passive:true});
+
   document.addEventListener('visibilitychange', function(){
     if(!ctx) return;
-    if(document.visibilityState==='visible' && started){ ctx.resume(); }
+    if(document.visibilityState==='visible' && !startBtn.disabled){ return; }
+    if(document.visibilityState==='visible'){ ctx.resume(); }
   }, {passive:true});
 
-  // Accessibility shortcut: press "s" to start/pause, "m" to mute
   document.addEventListener('keydown', function(e){
-    if(e.key==='s'){ started?stop():start(); }
+    if(e.key==='s'){ startBtn.disabled ? stop() : start(); }
     if(e.key==='m'){ muteEl.checked=!muteEl.checked; setMute(muteEl.checked); }
+    if(e.key==='l'){ mirrorEl.checked=!mirrorEl.checked; setMirror(mirrorEl.checked); }
+    if(e.key==='v'){ veil.classList.contains('on') ? closeVeil() : openVeil(); }
   }, {passive:true});
 })();
 </script>
 </body>
 </html>
-
