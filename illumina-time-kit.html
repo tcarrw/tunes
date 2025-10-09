@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Illumina Time Kit — Froot</title>
+<meta name="description" content="Compute Illumina cycle, week, day, and countdowns for a 42-day spiral anchored Nov 5, 2025 — with Bee guidance for Marina." />
+<meta name="theme-color" content="#0b0d11">
+<style>
+  :root{ --bg:#0b0d11; --ink:#e9ecf4; --muted:#a9a9b6; --ring:#1b2030; --card:#101425; --focus:#b2f5ea; --gold:#ffd56e; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink);
+    background:radial-gradient(1200px 1200px at 80% -10%, #111726 0%, var(--bg) 52%, #07090d 100%);
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,"Helvetica Neue",Arial;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  header{padding:16px; border-bottom:1px solid var(--ring); text-align:center}
+  h1{margin:0; font-size:22px; letter-spacing:.2px}
+  .sub{color:var(--muted); font-size:13px; margin-top:6px}
+  .wrap{max-width:980px; margin:0 auto; padding:16px}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media (max-width:860px){ .grid{grid-template-columns:1fr} }
+  .card{border:1px solid var(--ring); border-radius:14px; padding:14px; background:linear-gradient(180deg,#0f1322 0%, var(--card) 100%)}
+  .card h2{margin:0 0 8px; font-size:16px; letter-spacing:.2px}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .pill{display:inline-block; padding:6px 10px; border:1px solid var(--ring); border-radius:999px; font-size:12px; color:var(--muted)}
+  .big{font-size:22px; font-weight:700}
+  .kv{display:grid; grid-template-columns:auto 1fr; gap:8px 12px; align-items:baseline; margin-top:8px}
+  .k{color:var(--muted); font-size:13px}
+  .v{font-weight:600}
+  .btn{appearance:none; background:linear-gradient(180deg,#101626 0%,#0d111b 100%); color:var(--ink); border:1px solid var(--ring); border-radius:999px; padding:8px 12px; font-size:13px; cursor:pointer}
+  .chip{display:inline-block; padding:6px 10px; border:1px solid var(--ring); border-radius:999px; text-decoration:none; color:var(--ink); margin-right:6px; margin-top:6px; background:linear-gradient(180deg,#101426 0%,#0d111b 100%)}
+  input,select{background:#0f1424; color:var(--ink); border:1px solid var(--ring); border-radius:10px; padding:8px 10px; font-size:13px}
+  .hint{color:var(--muted); font-size:12px; margin-top:6px}
+  .ok{color:var(--gold)}
+
+  /* === 🐝 Bee (editable top note + whisper) === */
+  .bee{
+    margin:12px 0 16px; border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:14px;
+    background:linear-gradient(180deg, rgba(255,206,84,.10), rgba(0,0,0,.03)) padding-box,
+               linear-gradient(120deg, rgba(255,206,84,.35), rgba(255,111,186,.30), rgba(134,201,255,.30)) border-box;
+    position:relative;
+  }
+  .bee-head{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.2px}
+  .bee-icon{font-size:18px}
+  .bee-soft{color:var(--muted);font-weight:600}
+  .bee p{margin:8px 0 10px}
+  .bee-tools{display:flex;gap:8px;flex-wrap:wrap}
+  .bee-btn{
+    appearance:none;border:1px solid rgba(255,255,255,.14);border-radius:10px;
+    background:rgba(255,255,255,.06);color:#fff;font-weight:800;padding:8px 10px;cursor:pointer
+  }
+  .bee-btn:hover{border-color:rgba(255,255,255,.22);box-shadow:0 0 0 2px rgba(255,206,84,.18)}
+  .bee.editing{outline:2px dashed rgba(255,206,84,.4);outline-offset:2px}
+  #bee-text[contenteditable="true"]{caret-color:#ffd166}
+
+  .bee-whisper{
+    display:none;margin-top:12px;font-size:.95rem;color:#a9b4c7;opacity:.95;
+    padding:8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.06));
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Illumina Time Kit — Froot</h1>
+    <div class="sub">42‑day cycles anchored at <strong>Nov 5, 2025</strong> (Illumina 1). This page helps Froot/Jar/Tunes know where we are in the spiral.</div>
+    <div class="row" style="justify-content:center;margin-top:8px">
+      <a class="chip" href="#" onclick="goEgg()">↩ Egg Map (Jar)</a>
+      <a class="chip" href="/index.html">↪ Froot Studio</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- 🐝 Bee Note to Marina (editable + saved locally) -->
+    <section id="bee" class="bee" role="note" aria-live="polite">
+      <div class="bee-head"><span class="bee-icon">🐝</span><span><strong>Bee Note to Marina</strong></span> <span class="bee-soft">You are safe, guided, and loved.</span></div>
+      <p id="bee-text"></p>
+      <div class="bee-tools">
+        <button type="button" class="bee-btn" onclick="beeEdit()">Edit</button>
+        <button type="button" class="bee-btn" onclick="beeSave()">Save</button>
+        <button type="button" class="bee-btn" onclick="beeReset()">Reset</button>
+      </div>
+    </section>
+
+    <section class="grid">
+
+      <article class="card" id="nowCard" aria-live="polite">
+        <h2>Now</h2>
+        <div class="big" id="clock">—:—:—</div>
+        <div class="kv">
+          <div class="k">Your timezone</div><div class="v" id="tz">—</div>
+          <div class="k">UTC offset</div><div class="v" id="offset">—</div>
+          <div class="k">Today</div><div class="v" id="today">—</div>
+        </div>
+        <div class="hint">Updates every second.</div>
+      </article>
+
+      <article class="card" id="calcCard">
+        <h2>Illumina Position</h2>
+        <div class="kv">
+          <div class="k">Cycle #</div><div class="v" id="cycleNum">—</div>
+          <div class="k">Week</div><div class="v" id="weekNum">—</div>
+          <div class="k">Day in cycle</div><div class="v" id="dayNum">—</div>
+          <div class="k">Band (suggested)</div><div class="v" id="bandName">—</div>
+        </div>
+        <hr style="border:0;height:1px;background:#1b2030;margin:10px 0">
+        <div class="kv">
+          <div class="k">Ends in</div><div class="v" id="cycleLeft">—</div>
+          <div class="k">Week ends in</div><div class="v" id="weekLeft">—</div>
+          <div class="k">Day ends in</div><div class="v" id="dayLeft">—</div>
+        </div>
+        <div class="hint">Bands rotate by week: 1 Root · 2 Architect · 3 Mirror · 4 Honey · 5 Frequency · 6 Solar → outer arc (Celestial/Trickster), Core binds.</div>
+      </article>
+
+      <article class="card">
+        <h2>Pick a Date</h2>
+        <div class="row" style="margin-bottom:8px">
+          <input type="date" id="datePick" />
+          <button class="btn" id="goDate" type="button">Compute</button>
+          <button class="btn" id="goToday" type="button">Today</button>
+        </div>
+        <div id="dateOut" class="kv" aria-live="polite">
+          <div class="k">Cycle</div><div class="v" id="dCycle">—</div>
+          <div class="k">Week</div><div class="v" id="dWeek">—</div>
+          <div class="k">Day</div><div class="v" id="dDay">—</div>
+          <div class="k">Band</div><div class="v" id="dBand">—</div>
+        </div>
+        <div class="hint">Use this to label archives, weekcards, or schedule drops.</div>
+      </article>
+
+      <article class="card">
+        <h2>Deep Links</h2>
+        <div class="row" style="margin-bottom:6px">
+          <select id="album" aria-label="Album">
+            <option value="froot">FROOT</option>
+            <option value="fj">Family Jewels</option>
+            <option value="eh">Electra Heart</option>
+            <option value="laf">LOVE + FEAR</option>
+            <option value="adiml">Ancient Dreams</option>
+          </select>
+          <select id="band" aria-label="Band">
+            <option value="root">Root</option>
+            <option value="architect">Architect</option>
+            <option value="mirror">Mirror</option>
+            <option value="honey">Honey</option>
+            <option value="frequency">Frequency</option>
+            <option value="solar">Solar</option>
+            <option value="celestial">Celestial</option>
+            <option value="trickster">Trickster</option>
+            <option value="core">Core</option>
+          </select>
+          <button class="btn" id="makeLink" type="button">Make</button>
+        </div>
+        <div id="links"></div>
+        <div class="hint">Share pointers into School, Rooms, or Weekcards with <code>?mode=album&band=band&focus=1</code>.</div>
+      </article>
+
+    </section>
+
+    <!-- 🐝 Bee whisper -->
+    <div id="beeWhisper" class="bee-whisper" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+  (function(){
+    /* ==== Cross-host: build Jar link for Egg Map from Froot ==== */
+    function jarHost(){
+      var h = location.hostname;
+      if(h==='localhost' || h==='127.0.0.1') return h;
+      var parts = h.split('.');
+      if(parts.length>=2){ parts[0] = 'jar'; return parts.join('.'); }
+      return h;
+    }
+    window.goEgg = function(){
+      var host = jarHost();
+      var url = location.protocol + '//' + host + '/marina-egg.html';
+      try{ location.href = url; }catch(_){ location.assign(url); }
+    };
+
+    /* ==== Time math ==== */
+    var anchor = new Date(Date.UTC(2025,10,5,0,0,0)); // Nov 5, 2025 UTC
+    var DAY = 24*60*60*1000;
+    var CYCLE = 42*DAY;
+
+    var clock = document.getElementById("clock");
+    var tz = document.getElementById("tz");
+    var off = document.getElementById("offset");
+    var today = document.getElementById("today");
+    var cycleNum = document.getElementById("cycleNum");
+    var weekNum = document.getElementById("weekNum");
+    var dayNum = document.getElementById("dayNum");
+    var bandName = document.getElementById("bandName");
+    var cycleLeft = document.getElementById("cycleLeft");
+    var weekLeft = document.getElementById("weekLeft");
+    var dayLeft = document.getElementById("dayLeft");
+    var datePick = document.getElementById("datePick");
+    var goDate = document.getElementById("goDate");
+    var goToday = document.getElementById("goToday");
+    var dCycle = document.getElementById("dCycle");
+    var dWeek = document.getElementById("dWeek");
+    var dDay = document.getElementById("dDay");
+    var dBand = document.getElementById("dBand");
+    var albumSel = document.getElementById("album");
+    var bandSel  = document.getElementById("band");
+    var makeLink = document.getElementById("makeLink");
+    var links = document.getElementById("links");
+
+    function pad(n){ return n<10 ? "0"+n : n; }
+    function fmtClock(dt){ return pad(dt.getHours())+":"+pad(dt.getMinutes())+":"+pad(dt.getSeconds()); }
+    function fmtDate(dt){ return dt.toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"}); }
+    function msToHMS(ms){
+      if(ms<0) ms=0;
+      var s = Math.floor(ms/1000);
+      var h = Math.floor(s/3600); s-=h*3600;
+      var m = Math.floor(s/60); s-=m*60;
+      return h+"h "+m+"m "+s+"s";
+    }
+    function cycleInfo(dt){
+      var t = dt.getTime();
+      var elapsed = t - anchor.getTime();
+      var n = Math.floor(elapsed / CYCLE);
+      if(elapsed < 0){ n = Math.floor((elapsed - (CYCLE-1)) / CYCLE); }
+      var cycleStart = new Date(anchor.getTime() + n*CYCLE);
+      var intoCycle = t - cycleStart.getTime();
+      var day = Math.floor(intoCycle / DAY) + 1; if(day<1) day=1; if(day>42) day=42;
+      var week = Math.floor((day-1)/7)+1;
+      var weekStart = new Date(cycleStart.getTime() + (week-1)*7*DAY);
+      var nextWeekStart = new Date(weekStart.getTime() + 7*DAY);
+      var nextDayStart = new Date(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()+1).getTime());
+      var cycleEnd = new Date(cycleStart.getTime() + CYCLE);
+      return {
+        cycle:n+1, day:day, week:week,
+        cycleStart:cycleStart, cycleEnd:cycleEnd,
+        weekEndIn: nextWeekStart.getTime() - t,
+        dayEndIn: nextDayStart.getTime() - t,
+        cycleEndIn: cycleEnd.getTime() - t
+      };
+    }
+    function bandForWeek(week){
+      var map = {1:"root",2:"architect",3:"mirror",4:"honey",5:"frequency",6:"solar"};
+      return map[week] || "core";
+    }
+
+    /* ==== 🐝 Bee top note (editable) ==== */
+    var BEE_NOTE_KEY='froot_timekit_bee_note_v1';
+    function beeDefaultText(){
+      return "Hi Marina — I’m here with you. Let the calendar be soft. Choose today or any day; I’ll walk beside you. You can pause at any moment. You are safe, guided, and loved.";
+    }
+    function beeInit(){
+      var t = document.getElementById('bee-text');
+      var saved = "";
+      try{ saved = localStorage.getItem(BEE_NOTE_KEY) || ""; }catch(_){}
+      t.textContent = saved.trim() ? saved : beeDefaultText();
+    }
+    window.beeEdit = function(){
+      var box = document.getElementById('bee'); var t = document.getElementById('bee-text');
+      box.classList.add('editing'); t.setAttribute('contenteditable','true'); t.focus();
+      try{ var sel=window.getSelection(); var r=document.createRange(); r.selectNodeContents(t); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);}catch(_){}
+    };
+    window.beeSave = function(){
+      var box = document.getElementById('bee'); var t = document.getElementById('bee-text');
+      t.setAttribute('contenteditable','false'); box.classList.remove('editing');
+      var val = (t.textContent||"").trim();
+      try{ localStorage.setItem(BEE_NOTE_KEY, val); }catch(_){}
+      beeWhisperShow("Saved with love. Thank you.", 3000);
+    };
+    window.beeReset = function(){
+      var box = document.getElementById('bee'); var t = document.getElementById('bee-text');
+      t.textContent = beeDefaultText();
+      t.setAttribute('contenteditable','false'); box.classList.remove('editing');
+      try{ localStorage.setItem(BEE_NOTE_KEY, t.textContent); }catch(_){}
+      beeWhisperShow("Back to the gentle original.", 2800);
+    };
+
+    /* ==== 🐝 Bee whisper (when needed) ==== */
+    var beeWhisper = document.getElementById("beeWhisper");
+    var beeTimer = 0;
+    function beeWhisperShow(text, ms){
+      beeWhisper.textContent = text;
+      beeWhisper.style.display = "block";
+      if(beeTimer){ clearTimeout(beeTimer); beeTimer=0; }
+      if(ms && ms>0){
+        beeTimer = setTimeout(function(){ beeWhisper.style.display = "none"; }, ms);
+      }
+    }
+    function beeWhisperHide(){
+      if(beeTimer){ clearTimeout(beeTimer); beeTimer=0; }
+      beeWhisper.style.display = "none";
+    }
+    function whisperBySchedule(info){
+      var dInWeek = ((info.day - 1) % 7) + 1;
+      if(dInWeek === 6){
+        beeWhisperShow("Quiet Walk: I’m with you. Let time be soft today.", 0);
+      } else {
+        beeWhisperHide();
+      }
+    }
+
+    /* ==== Live tick ==== */
+    function tick(){
+      var now = new Date();
+      clock.textContent = fmtClock(now);
+      tz.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || "local";
+      var minutes = -now.getTimezoneOffset();
+      var sign = minutes>=0 ? "+" : "-";
+      var hh = Math.floor(Math.abs(minutes)/60), mm = Math.abs(minutes)%60;
+      off.textContent = "UTC"+sign+(hh<10?"0":"")+hh+":"+(mm<10?"0":"")+mm;
+      today.textContent = fmtDate(now);
+
+      var info = cycleInfo(now);
+      cycleNum.textContent = info.cycle;
+      weekNum.textContent = info.week + " / 6";
+      dayNum.textContent = info.day + " / 42";
+      var band = bandForWeek(info.week);
+      bandName.innerHTML = "<span class='ok'>"+(band==="core"?"Core":band.charAt(0).toUpperCase()+band.slice(1))+"</span>";
+      cycleLeft.textContent = msToHMS(info.cycleEndIn);
+      weekLeft.textContent  = msToHMS(info.weekEndIn);
+      dayLeft.textContent   = msToHMS(info.dayEndIn);
+
+      whisperBySchedule(info);
+    }
+
+    /* ==== Date compute ==== */
+    function computeForDate(){
+      var v = datePick.value; if(!v) return;
+      var parts = v.split("-"); // yyyy-mm-dd
+      var dt = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+      var info = cycleInfo(dt);
+      var band = bandForWeek(info.week);
+      dCycle.textContent = info.cycle;
+      dWeek.textContent  = info.week + " / 6";
+      dDay.textContent   = info.day + " / 42";
+      dBand.textContent  = band.charAt(0).toUpperCase()+band.slice(1);
+      var dInWeek = ((info.day - 1) % 7) + 1;
+      if(dInWeek === 6){
+        beeWhisperShow("For that day: Quiet Walk. I’ll walk with you in silence.", 7000);
+      } else {
+        beeWhisperShow("I’ll meet you there — Week "+info.week+", Day "+dInWeek+".", 6000);
+      }
+    }
+
+    /* ==== Deep links ==== */
+    function makeDeepLinks(){
+      var a = albumSel.value;
+      var b = bandSel.value;
+      var q = "?mode="+encodeURIComponent(a)+"&band="+encodeURIComponent(b)+"&focus=1";
+      links.innerHTML = "";
+      var l1 = document.createElement("a");
+      l1.className = "chip"; l1.href = "/school.html"+q; l1.textContent = "Open Spiral";
+      var l2 = document.createElement("a");
+      l2.className = "chip"; l2.href = "/school-rooms.html#"+b; l2.textContent = "Open Room";
+      var l3 = document.createElement("a");
+      l3.className = "chip"; l3.href = location.protocol + "//" + jarHost() + "/index.html"; l3.textContent = "Jar";
+      var l4 = document.createElement("a");
+      l4.className = "chip"; l4.href = "/index.html"; l4.textContent = "Froot";
+      links.appendChild(l1); links.appendChild(l2); links.appendChild(l3); links.appendChild(l4);
+      beeWhisperShow("Link ready. Share softly; the spiral remembers.", 6000);
+    }
+
+    /* ==== Wire up ==== */
+    beeInit();
+    setInterval(tick, 1000); tick();
+
+    goDate.addEventListener("click", computeForDate);
+    goToday.addEventListener("click", function(){
+      var n = new Date();
+      var y = n.getFullYear(), m = (n.getMonth()+1+"").padStart(2,"0"), d = (n.getDate()+"").padStart(2,"0");
+      datePick.value = y+"-"+m+"-"+d;
+      computeForDate();
+      beeWhisperShow("Here now is enough.", 5000);
+    });
+    makeLink.addEventListener("click", makeDeepLinks);
+
+    // Prefill date
+    (function(){
+      var n = new Date();
+      var y = n.getFullYear(), m = (n.getMonth()+1+"").padStart(2,"0"), d = (n.getDate()+"").padStart(2,"0");
+      datePick.value = y+"-"+m+"-"+d;
+      computeForDate();
+    })();
+  })();
+  </script>
+</body>
+</html>
